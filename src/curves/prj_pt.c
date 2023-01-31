@@ -23,6 +23,10 @@
 #include "../fp/fp_montgomery.h"
 #include "../fp/fp_rand.h"
 
+/* Hardware accelerator "glue" */
+#include "hw_accelerator_glue.h"
+
+
 #define PRJ_PT_MAGIC ((word_t)(0xe1cd70babb1d5afeULL))
 
 /*
@@ -143,6 +147,9 @@ err:
  */
 int prj_pt_is_on_curve(prj_pt_src_t in,  int *on_curve)
 {
+#if defined(WITH_EC_HW_ACCELERATOR)
+        return hw_prj_pt_is_on_curve(in, on_curve);
+#else
 	int ret, cmp;
 
 	/* In order to check that we are on the curve, we
@@ -187,6 +194,7 @@ err:
 	fp_uninit(&Z);
 
 	return ret;
+#endif
 }
 
 /*
@@ -217,6 +225,26 @@ err:
  */
 int prj_pt_to_aff(aff_pt_t out, prj_pt_src_t in)
 {
+#if defined(WITH_EC_HW_ACCELERATOR)
+	int ret, isone;
+
+	/* In case of hardware accelerator, almost nothing to do as
+	 * we only deal with affine points. We only check that
+	 * Z is 1 and copy the coordinates.
+	 */
+	ret = prj_pt_check_initialized(in); EG(ret, err);
+
+	ret = nn_isone(&(in->Z.fp_val), &isone); EG(ret, err);
+
+	MUST_HAVE(isone, ret, err);
+
+	ret = aff_pt_init(out, in->crv); EG(ret, err);
+	ret = fp_copy(&(out->x), &(in->X)); EG(ret, err);
+	ret = fp_copy(&(out->y), &(in->Y));
+
+err:
+        return ret;
+#else
 	int ret, iszero;
 
 	ret = prj_pt_check_initialized(in); EG(ret, err);
@@ -232,6 +260,7 @@ int prj_pt_to_aff(aff_pt_t out, prj_pt_src_t in)
 
 err:
 	return ret;
+#endif
 }
 
 /*
@@ -240,6 +269,23 @@ err:
  */
 int prj_pt_unique(prj_pt_t out, prj_pt_src_t in)
 {
+#if defined(WITH_EC_HW_ACCELERATOR)
+	int ret, isone;
+
+	FORCE_USED_VAR(out);
+	/* In case of hardware accelerator, nothing to do as
+	 * we only deal with affine points. We only check that
+	 * Z is 1.
+	 */
+	ret = prj_pt_check_initialized(in); EG(ret, err);
+
+	ret = nn_isone(&(in->Z.fp_val), &isone); EG(ret, err);
+
+	MUST_HAVE(isone, ret, err);
+
+err:
+        return ret;
+#else
 	int ret, iszero;
 
 	ret = prj_pt_check_initialized(in); EG(ret, err);
@@ -270,6 +316,7 @@ err1:
 
 err:
 	return ret;
+#endif
 }
 
 /*
@@ -347,6 +394,8 @@ err:
 	return ret;
 }
 
+/* Internal functions only useful when no hardware acceleration is present */
+#if !defined(WITH_EC_HW_ACCELERATOR)
 /*
  * NOTE: this internal functions assumes that upper layer have checked that in1 and in2
  * are initialized, and that cmp is not NULL.
@@ -402,6 +451,8 @@ err:
 
 	return ret;
 }
+#endif /* !WITH_EC_HW_ACCELERATOR */
+
 
  /*
  * The functions tests if given projective points 'in1' and 'in2' are equal or
@@ -411,6 +462,9 @@ err:
  */
 int prj_pt_eq_or_opp(prj_pt_src_t in1, prj_pt_src_t in2, int *eq_or_opp)
 {
+#if defined(WITH_EC_HW_ACCELERATOR)
+	return hw_prj_pt_eq_or_opp(in1, in2, eq_or_opp);
+#else /* !WITH_EC_HW_ACCELERATOR */
 	int ret, cmp, _eq_or_opp;
 
 	ret = prj_pt_check_initialized(in1); EG(ret, err);
@@ -427,6 +481,7 @@ int prj_pt_eq_or_opp(prj_pt_src_t in1, prj_pt_src_t in2, int *eq_or_opp)
 
 err:
 	return ret;
+#endif
 }
 
 /* Compute the opposite of a projective point. Supports aliasing.
@@ -434,6 +489,9 @@ err:
  */
 int prj_pt_neg(prj_pt_t out, prj_pt_src_t in)
 {
+#if defined(WITH_EC_HW_ACCELERATOR)
+	return hw_prj_pt_neg(out, in);
+#else /* !WITH_EC_HW_ACCELERATOR */
 	int ret;
 
 	ret = prj_pt_check_initialized(in); EG(ret, err);
@@ -448,6 +506,7 @@ int prj_pt_neg(prj_pt_t out, prj_pt_src_t in)
 
 err:
 	return ret;
+#endif
 }
 
 /*
@@ -624,7 +683,7 @@ err:
 }
 
 
-#ifdef NO_USE_COMPLETE_FORMULAS
+#if defined(NO_USE_COMPLETE_FORMULAS) && !defined(WITH_EC_HW_ACCELERATOR)
 
 /*
  * The function is an internal one: no check is performed on parameters,
@@ -881,7 +940,7 @@ err:
 }
 
 
-#else /* NO_USE_COMPLETE_FORMULAS */
+#elif !defined(WITH_EC_HW_ACCELERATOR) /* NO_USE_COMPLETE_FORMULAS && !WITH_EC_HW_ACCELERATOR */
 
 
 /*
@@ -1082,6 +1141,9 @@ err:
  */
 static int _prj_pt_dbl_monty(prj_pt_t out, prj_pt_src_t in)
 {
+#if defined(WITH_EC_HW_ACCELERATOR)
+	return hw_prj_pt_dbl(out, in);
+#else /* !WITH_EC_HW_ACCELERATOR */
 	int ret;
 
 #ifdef NO_USE_COMPLETE_FORMULAS
@@ -1099,6 +1161,7 @@ static int _prj_pt_dbl_monty(prj_pt_t out, prj_pt_src_t in)
 
 err:
 	return ret;
+#endif
 }
 
 /*
@@ -1158,10 +1221,14 @@ ATTRIBUTE_WARN_UNUSED_RET static inline int _prj_pt_add_monty(prj_pt_t out,
 							      prj_pt_src_t in1,
 							      prj_pt_src_t in2)
 {
+#if defined(WITH_EC_HW_ACCELERATOR)
+	return hw_prj_pt_add(out, in1, in2);
+#else /* !WITH_EC_HW_ACCELERATOR */
 #ifndef NO_USE_COMPLETE_FORMULAS
 	return __prj_pt_add_monty_cf(out, in1, in2);
 #else
 	return __prj_pt_add_monty_no_cf(out, in1, in2);
+#endif
 #endif
 }
 
@@ -1259,6 +1326,7 @@ err:
  *      performed in constant time wrt the size of the scalar m.
  */
 /***********/
+#if !defined(WITH_EC_HW_ACCELERATOR) /* NOTE: primitive only useful in pure software */
 /*
  * Internal point blinding function: as it is internal, in is supposed to be initialized and
  * aliasing is NOT supported.
@@ -1289,6 +1357,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int _blind_projective_point(prj_pt_t out, prj_p
 err:
 	return ret;
 }
+#endif
 
 /* If nothing is specified regarding the scalar multiplication algorithm, we use
  * the Montgomery Ladder. For the specific case of small stack devices, we release
@@ -1313,7 +1382,7 @@ err:
 #error "You can either choose USE_DOUBLE_ADD_ALWAYS or USE_MONTY_LADDER, not both!"
 #endif
 
-#if defined(USE_DOUBLE_ADD_ALWAYS) && !defined(USE_SMALL_STACK)
+#if defined(USE_DOUBLE_ADD_ALWAYS) && !defined(USE_SMALL_STACK) && !defined(WITH_EC_HW_ACCELERATOR)
 ATTRIBUTE_WARN_UNUSED_RET static int _prj_pt_mul_ltr_monty_dbl_add_always(prj_pt_t out, nn_src_t m, prj_pt_src_t in)
 {
 	/* We use Itoh et al. notations here for T and the random r */
@@ -1447,7 +1516,7 @@ err:
 }
 #endif
 
-#if defined(USE_DOUBLE_ADD_ALWAYS) && defined(USE_SMALL_STACK)
+#if defined(USE_DOUBLE_ADD_ALWAYS) && defined(USE_SMALL_STACK) && !defined(WITH_EC_HW_ACCELERATOR)
 /* NOTE: in small stack case where we compile for low memory devices, we do not use Itoh et al. countermeasure
  * as it requires too much temporary space on the stack.
  */
@@ -1565,7 +1634,7 @@ err:
 #endif
 
 
-#ifdef USE_MONTY_LADDER
+#if defined(USE_MONTY_LADDER) && !defined(WITH_EC_HW_ACCELERATOR)
 ATTRIBUTE_WARN_UNUSED_RET static int _prj_pt_mul_ltr_monty_ladder(prj_pt_t out, nn_src_t m, prj_pt_src_t in)
 {
 	/* We use Itoh et al. notations here for T and the random r */
@@ -1725,12 +1794,16 @@ err:
  * Double and Add Always algorithm, or the Montgomery Ladder one.
  */
 ATTRIBUTE_WARN_UNUSED_RET static int _prj_pt_mul_ltr_monty(prj_pt_t out, nn_src_t m, prj_pt_src_t in){
+#if defined(WITH_EC_HW_ACCELERATOR)
+	return hw_prj_pt_mul_ltr(out, m, in);
+#else /* !WITH_EC_HW_ACCELERATOR */
 #if defined(USE_DOUBLE_ADD_ALWAYS)
 	return _prj_pt_mul_ltr_monty_dbl_add_always(out, m, in);
 #elif defined(USE_MONTY_LADDER)
 	return _prj_pt_mul_ltr_monty_ladder(out, m, in);
 #else
 #error "Error: neither Double and Add Always nor Montgomery Ladder has been selected!"
+#endif
 #endif
 }
 
@@ -1781,6 +1854,37 @@ err:
 
 int prj_pt_mul_blind(prj_pt_t out, nn_src_t m, prj_pt_src_t in)
 {
+#if defined(WITH_EC_HW_ACCELERATOR)
+	int ret, on_curve;
+
+	ret = prj_pt_check_initialized(in); EG(ret, err);
+	ret = nn_check_initialized(m); EG(ret, err);
+
+	/* Check that the input is on the curve */
+	MUST_HAVE((!prj_pt_is_on_curve(in, &on_curve)) && on_curve, ret, err);
+
+	/* Handle possible aliasing */
+	if (out == in) {
+		prj_pt out_cpy;
+		out_cpy.magic = WORD(0);
+
+		ret = prj_pt_init(&out_cpy, in->crv); EG(ret, err1);
+		ret = hw_prj_pt_mul_ltr_blind(&out_cpy, m, in); EG(ret, err1);
+		ret = prj_pt_copy(out, &out_cpy);
+
+err1:
+		prj_pt_uninit(&out_cpy);
+		EG(ret, err);
+	} else {
+		ret = hw_prj_pt_mul_ltr_blind(out, m, in); EG(ret, err);
+	}
+
+	/* Check that the output is on the curve */
+	MUST_HAVE((!prj_pt_is_on_curve(out, &on_curve)) && on_curve, ret, err);
+
+err:
+	return ret;
+#else /* !WITH_EC_HW_ACCELERATOR */
 	/* Blind the scalar m with (b*q) where q is the curve order.
 	 * NOTE: the curve order and the "generator" order are
 	 * usually the same (i.e. cofactor = 1) for the classical
@@ -1819,6 +1923,7 @@ err:
 	PTR_NULLIFY(q);
 
 	return ret;
+#endif
 }
 
 /* Naive double and add scalar multiplication.
@@ -1834,6 +1939,9 @@ err:
  */
 static int __prj_pt_unprotected_mult(prj_pt_t out, nn_src_t scalar, prj_pt_src_t public_in)
 {
+#if defined(WITH_EC_HW_ACCELERATOR)
+	return hw_prj_pt_mul_ltr_small_scalar(out, scalar, public_in);
+#else /* !WITH_EC_HW_ACCELERATOR */
         u8 expbit;
         bitcnt_t explen;
         int ret, iszero, on_curve;
@@ -1877,6 +1985,7 @@ err:
         VAR_ZEROIFY(explen);
 
         return ret;
+#endif
 }
 
 /* Aliased version of __prj_pt_unprotected_mult */

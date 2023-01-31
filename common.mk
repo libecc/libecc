@@ -277,6 +277,64 @@ ifeq ($(USE_ISO14888_3_ECRDSA),1)
 CFLAGS += -DUSE_ISO14888_3_ECRDSA
 endif
 
+IPECC_REPO=https://github.com/ANSSI-FR/IPECC.git
+install_hw_driver:
+	@echo "[+] Cloning the IPECC reposiory"
+	@rm -rf tmp_install_hw_driver
+	@mkdir tmp_install_hw_driver
+	@cd tmp_install_hw_driver && git clone $(IPECC_REPO)
+	@cp tmp_install_hw_driver/IPECC/driver/hw_accelerator_driver*.c src/curves/
+	@cp tmp_install_hw_driver/IPECC/driver/hw_accelerator_driver*.h src/curves/
+	@rm -rf tmp_install_hw_driver
+
+clean_hw_driver:
+	@rm -f src/curves/hw_accelerator_driver*.c
+	@rm -f src/curves/hw_accelerator_driver*.h
+
+HW_ERROR  = Error: you asked for USE_EC_HW but no driver detected in the source!
+HW_ERROR += Please install the IPECC driver using "make install_hw_driver" and run
+HW_ERROR += your "make" command again.
+# Do we use a hardware accelerator for the EC operations?
+ifeq ($(USE_EC_HW),1)
+  ifneq ($(shell test -e src/curves/hw_accelerator_driver.h && echo -n yes),yes)
+    $(error $(HW_ERROR))
+  endif
+CFLAGS += -DWITH_EC_HW_ACCELERATOR
+CFLAGS += -Wno-unused-macros -Wno-unused-function
+endif
+# Platform type
+ifeq ($(USE_EC_HW_STANDALONE),1)
+CFLAGS += -DWITH_EC_HW_STANDALONE
+endif
+ifeq ($(USE_EC_HW_UIO),1)
+CFLAGS += -DWITH_EC_HW_UIO
+endif
+ifeq ($(USE_EC_HW_DEVMEM),1)
+CFLAGS += -DWITH_EC_HW_DEVMEM
+endif
+# Debug mode for the EC hardware?
+ifeq ($(USE_EC_HW_DEBUG),1)
+CFLAGS += -DWITH_EC_HW_DEBUG
+endif
+# For the real EC HW acceleration, do we use
+# 32 or 64 bits mode for words?
+ifeq ($(USE_EC_HW_ACCELERATOR_WORD32),1)
+CFLAGS += -DEC_HW_ACCELERATOR_WORD32
+endif
+ifeq ($(USE_EC_HW_ACCELERATOR_WORD64),1)
+CFLAGS += -DEC_HW_ACCELERATOR_WORD64
+endif
+####
+# Do we use multi-threading locking for the EC hardware?
+ifeq ($(USE_EC_HW_LOCKING),1)
+CFLAGS += -DWITH_EC_HW_LOCKING
+endif
+#### Socket emulation
+# Do we use socket emulation for hardware?
+ifeq ($(USE_EC_HW_SOCKET_EMUL),1)
+CFLAGS += -DWITH_EC_HW_SOCKET_EMUL
+endif
+
 # Do we have a C++ compiler instead of a C compiler?
 GPP := $(shell $(CROSS_COMPILE)$(CC) -v 2>&1 | grep g++)
 CLANGPP := $(shell echo $(CROSS_COMPILE)$(CC) | grep clang++)
