@@ -57,12 +57,12 @@ WARNING_CFLAGS += -Wpedantic -Wformat=2 -Wformat-overflow=2 -Wformat-truncation=
 endif
 endif
 
-# In case of clang version >= 17, the new -Wunsafe-buffer-usage
+# In case of clang version >= 16, the new -Wunsafe-buffer-usage
 # flag is really picky for many false positives, remove it
 ifneq ($(CLANG),)
-CLANG_VERSION_GTE_17_EXPRESSION := $(shell echo `$(CROSS_COMPILE)$(CC) -dumpversion | cut -f1-2 -d.` \>= 17.0 | sed -e 's/\./*100+/g')
-CLANG_VERSION_GTE_17 := $(shell awk "BEGIN{printf \"%d\n\", $(CLANG_VERSION_GTE_17_EXPRESSION)}")
-  ifeq ($(CLANG_VERSION_GTE_17), 1)
+CLANG_VERSION_GTE_16_EXPRESSION := $(shell echo `$(CROSS_COMPILE)$(CC) -dumpversion | cut -f1-2 -d.` \>= 16.0 | sed -e 's/\./*100+/g')
+CLANG_VERSION_GTE_16 := $(shell awk "BEGIN{printf \"%d\n\", $(CLANG_VERSION_GTE_16_EXPRESSION)}")
+  ifeq ($(CLANG_VERSION_GTE_16), 1)
   # NOTE: XXX: this is really a shame to remove this, but
   # we have to wait until this is less sensitive and false positive
   # prone to use it!

@@ -1,8 +1,8 @@
-[![compilation](https://github.com/ANSSI-FR/libecc/actions/workflows/libecc_compilation_tests.yml/badge.svg?branch=master)](https://github.com/ANSSI-FR/libecc/actions/workflows/libecc_compilation_tests.yml)
-[![runtime](https://github.com/ANSSI-FR/libecc/actions/workflows/libecc_runtime_tests.yml/badge.svg?branch=master)](https://github.com/ANSSI-FR/libecc/actions/workflows/libecc_runtime_tests.yml)
-[![crossarch](https://github.com/ANSSI-FR/libecc/actions/workflows/libecc_crossarch_tests.yml/badge.svg?branch=master)](https://github.com/ANSSI-FR/libecc/actions/workflows/libecc_crossarch_tests.yml)
-[![python](https://github.com/ANSSI-FR/libecc/actions/workflows/libecc_python_tests.yml/badge.svg?branch=master)](https://github.com/ANSSI-FR/libecc/actions/workflows/libecc_python_tests.yml)
-[![examples](https://github.com/ANSSI-FR/libecc/actions/workflows/libecc_examples.yml/badge.svg?branch=master)](https://github.com/ANSSI-FR/libecc/actions/workflows/libecc_examples.yml)
+[![compilation](https://github.com/libecc/libecc/actions/workflows/libecc_compilation_tests.yml/badge.svg?branch=master)](https://github.com/libecc/libecc/actions/workflows/libecc_compilation_tests.yml)
+[![runtime](https://github.com/libecc/libecc/actions/workflows/libecc_runtime_tests.yml/badge.svg?branch=master)](https://github.com/libecc/libecc/actions/workflows/libecc_runtime_tests.yml)
+[![crossarch](https://github.com/libecc/libecc/actions/workflows/libecc_crossarch_tests.yml/badge.svg?branch=master)](https://github.com/libecc/libecc/actions/workflows/libecc_crossarch_tests.yml)
+[![python](https://github.com/libecc/libecc/actions/workflows/libecc_python_tests.yml/badge.svg?branch=master)](https://github.com/libecc/libecc/actions/workflows/libecc_python_tests.yml)
+[![examples](https://github.com/libecc/libecc/actions/workflows/libecc_examples.yml/badge.svg?branch=master)](https://github.com/libecc/libecc/actions/workflows/libecc_examples.yml)
 
 
 # libecc project

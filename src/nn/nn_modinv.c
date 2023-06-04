@@ -303,7 +303,12 @@ err:
 /*
  * Invert x modulo 2^exp using Hensel lifting. Returns 0 on success, -1 on
  * error. On success, x_isodd is 1 if x is odd, 0 if it is even.
- * Operations are done in *constant time*. The function supports aliasing.
+ * Please note that the result is correct (inverse of x) only when x is prime
+ * to 2^exp, i.e. x is odd (x_odd is 1).
+ *
+ * Operations are done in *constant time*.
+ *
+ * Aliasing is supported.
  */
 int nn_modinv_2exp(nn_t _out, nn_src_t x, bitcnt_t exp, int *x_isodd)
 {
@@ -325,6 +330,11 @@ int nn_modinv_2exp(nn_t _out, nn_src_t x, bitcnt_t exp, int *x_isodd)
 	ret = nn_init(&tmp_sqr, 0); EG(ret, err);
 	ret = nn_init(&tmp_mul, 0); EG(ret, err);
 	ret = nn_isodd(x, &isodd); EG(ret, err);
+	if (exp == (bitcnt_t)0){
+		/* Specific case of zero exponent, output 0 */
+		(*x_isodd) = isodd;
+		goto err;
+	}
 	if (!isodd) {
 		ret = nn_zero(_out); EG(ret, err);
 		(*x_isodd) = 0;
@@ -444,7 +454,13 @@ ATTRIBUTE_WARN_UNUSED_RET static int _nn_modinv_fermat_common(nn_t out, nn_src_t
 
 	/* 0 is not invertible in any case */
 	ret = nn_iszero(x, &cmp); EG(ret, err);
-	MUST_HAVE((!cmp), ret, err);
+	if(cmp){
+		/* Zero the output and return an error */
+		ret = nn_init(out, 0); EG(ret, err);
+		ret = nn_zero(out); EG(ret, err);
+		ret = -1;
+		goto err;
+	}
 
 	/* For p <= 2, p being prime either p = 1 or p = 2.
 	 * When p = 2, only 1 has an inverse, if p = 1 no one has an inverse.
@@ -461,20 +477,28 @@ ATTRIBUTE_WARN_UNUSED_RET static int _nn_modinv_fermat_common(nn_t out, nn_src_t
 			ret = 0;
 		}
 		else{
-			/* x is even, no inverse */
+			/* x is even, no inverse. Zero the output */
+			ret = nn_init(out, 0); EG(ret, err);
+			ret = nn_zero(out); EG(ret, err);
 			ret = -1;
 		}
 		(*lesstwo) = 1;
 		goto err;
         } else if (cmp < 0){
 		/* This is the p = 1 case, no inverse here: hence return an error */
+		/* Zero the output */
+		ret = nn_init(out, 0); EG(ret, err);
+		ret = nn_zero(out); EG(ret, err);
 		ret = -1;
 		(*lesstwo) = 1;
 		goto err;
 	}
 
 	/* Else we compute (p-2) for the upper layer */
-	ret = nn_init(p_minus_two, 0); EG(ret, err);
+	if(p != p_minus_two){
+		/* Handle aliasing of p and p_minus_two */
+		ret = nn_init(p_minus_two, 0); EG(ret, err);
+	}
 
 	ret = nn_init(&two, 0); EG(ret, err);
 	ret = nn_set_word_value(&two, WORD(2)); EG(ret, err);
@@ -498,8 +522,10 @@ err:
  * XXX WARNING: using this function with p not prime will produce wrong
  * results without triggering an error!
  *
- * The function supports aliasing. It returns 0 on success, -1 on error
+ * The function returns 0 on success, -1 on error
  * (e.g. if x has no inverse modulo p, i.e. x = 0).
+ *
+ * Aliasing is supported.
  */
 int nn_modinv_fermat(nn_t out, nn_src_t x, nn_src_t p)
 {
@@ -532,8 +558,10 @@ err:
  * XXX WARNING: using this function with p not prime will produce wrong
  * results without triggering an error!
  *
- * The function supports aliasing. It returns 0 on success, -1 on error
+ * The function returns 0 on success, -1 on error
  * (e.g. if x has no inverse modulo p, i.e. x = 0).
+ *
+ * Aliasing is supported.
  */
 int nn_modinv_fermat_redc(nn_t out, nn_src_t x, nn_src_t p, nn_src_t r, nn_src_t r_square, word_t mpinv)
 {
