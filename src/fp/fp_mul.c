@@ -20,6 +20,9 @@
 #include "../nn/nn_div.h"
 #include "../nn/nn_modinv.h"
 
+/*
+ * Aliasing is supported.
+ */
 int fp_mul(fp_t out, fp_src_t in1, fp_src_t in2)
 {
 	int ret;
@@ -39,6 +42,9 @@ err:
 	return ret;
 }
 
+/*
+ * Aliasing is supported.
+ */
 int fp_sqr(fp_t out, fp_src_t in)
 {
 	return fp_mul(out, in, in);
@@ -47,6 +53,8 @@ int fp_sqr(fp_t out, fp_src_t in)
 /* We use Fermat's little theorem for our inversion in Fp:
  *    x^(p-1) = 1 mod (p) means that x^(p-2) mod(p) is the modular
  *    inverse of x mod (p)
+ *
+ * Aliasing is supported.
  */
 int fp_inv(fp_t out, fp_src_t in)
 {
@@ -79,6 +87,10 @@ err:
 	return ret;
 }
 
+/*
+ * Aliasing of out and num is NOT supported.
+ * Aliasing of out and den is supported.
+ */
 int fp_div(fp_t out, fp_src_t num, fp_src_t den)
 {
 	int ret;
@@ -86,6 +98,9 @@ int fp_div(fp_t out, fp_src_t num, fp_src_t den)
 	ret = fp_check_initialized(num); EG(ret, err);
  	ret = fp_check_initialized(den); EG(ret, err);
 	ret = fp_check_initialized(out); EG(ret, err);
+
+	/* Unsupported multi-aliasing */
+	MUST_HAVE((out != num), ret, err);
 
 	MUST_HAVE(out->ctx == num->ctx, ret, err);
 	MUST_HAVE(out->ctx == den->ctx, ret, err);

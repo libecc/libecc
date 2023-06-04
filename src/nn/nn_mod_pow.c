@@ -238,6 +238,8 @@ err:
 /* Aliased version of previous one.
  * NOTE: our nn_mod_pow_redc primitives suppose that the modulo is odd for Montgomery multiplication
  * primitives to provide consistent results.
+ *
+ * Aliasing is supported.
  */
 int nn_mod_pow_redc(nn_t out, nn_src_t base, nn_src_t exp, nn_src_t mod, nn_src_t r, nn_src_t r_square, word_t mpinv)
 {

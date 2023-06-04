@@ -168,6 +168,8 @@ int nn_one(nn_t A)
  * Conditionally swap two nn's content *in constant time*. Swapping is done
  * if 'cnd' is not zero. Nothing is done otherwise. Returns 0 on success, -1
  * on error.
+ *
+ * Aliasing of inputs is supported.
  */
 int nn_cnd_swap(int cnd, nn_t in1, nn_t in2)
 {
@@ -361,6 +363,8 @@ err:
  * function returns 0 on success and provides the comparison value in
  * 'cmp' parameter (0 if A == B, -1 if A < B, +1 if A > B). -1 is returned
  * on error, in which case 'cmp' is not meaningful.
+ *
+ * Aliasing of inputs is supported.
  */
 int nn_cmp(nn_src_t A, nn_src_t B, int *cmp)
 {
@@ -390,6 +394,8 @@ err:
  * 'dst_nn' must point to a declared nn, but *need not be initialized*; it will
  * be (manually) initialized by the function. 'src_nn' must have been
  * initialized prior to the call. The function returns 0 on success, -1 on error.
+ *
+ * Alising of input and output is supported.
  */
 int nn_copy(nn_t dst_nn, nn_src_t src_nn)
 {
@@ -565,6 +571,8 @@ err:
  * NN elements in 'tab'
  *
  * Returns 0 on success, -1 on error.
+ *
+ * Aliasing of out and the selected element inside the tab is NOT supported.
  */
 int nn_tabselect(nn_t out, u8 idx, nn_src_t *tab, u8 tabsize)
 {

@@ -141,6 +141,8 @@ err:
 /*
  * Compute out = in1 * in2. 'out' is initialized by the function.
  * The function returns 0 on success, -1 on error.
+ *
+ * Aliasing supported.
  */
 int nn_mul(nn_t out, nn_src_t in1, nn_src_t in2)
 {
@@ -162,6 +164,8 @@ int nn_sqr_low(nn_t out, nn_src_t in, u8 wlimit)
 /*
  * Compute out = in * in. 'out' is initialized by the function.
  * The function returns 0 on success, -1 on error.
+ *
+ * Aliasing supported.
  */
 int nn_sqr(nn_t out, nn_src_t in)
 {
@@ -171,6 +175,8 @@ int nn_sqr(nn_t out, nn_src_t in)
 /*
  * Multiply a multiprecision number by a word, i.e. out = in * w. The function
  * returns 0 on success, -1 on error.
+ *
+ * Aliasing supported.
  */
 int nn_mul_word(nn_t out, nn_src_t in, word_t w)
 {

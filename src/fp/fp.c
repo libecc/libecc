@@ -322,6 +322,8 @@ err:
  * output is already initialized, check that the Fp contexts are consistent.
  * Else, output is initialized with the same field context as input. Returns 0
  * on success, -1 on error.
+ *
+ * Aliasing of input and output is supported.
  */
 int fp_copy(fp_t out, fp_src_t in)
 {
@@ -355,6 +357,9 @@ err:
  * Fp elements in 'tab'
  *
  * Returns 0 on success, -1 on error.
+ *
+ * Aliasing of out and the selected element inside the tab is NOT supported.
+ *
  */
 int fp_tabselect(fp_t out, u8 idx, fp_src_t *tab, u8 tabsize)
 {
@@ -400,6 +405,8 @@ err:
  * in2 are not equal or opposite, 'eq_or_opp' is set to 0. The function
  * returns 0 on success and -1 on error. 'eq_or_opp' is only meaningful
  * on success, i.e. if the return value is 0.
+ *
+ * Aliasing of inputs is supported.
  */
 int fp_eq_or_opp(fp_src_t in1, fp_src_t in2, int *eq_or_opp)
 {

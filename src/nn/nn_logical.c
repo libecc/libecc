@@ -33,6 +33,8 @@
  * are lost (the NN size of the output is not modified).
  *
  * The function returns 0 on sucess, -1 on error.
+ *
+ * Aliasing supported.
  */
 int nn_lshift_fixedlen(nn_t out, nn_src_t in, bitcnt_t cnt)
 {
@@ -86,6 +88,8 @@ err:
  * will be roughly in bit length  plus cnt, maxed to NN_MAX_BIT_LEN.
  *
  * The function returns 0 on success, -1 on error.
+ *
+ * Aliasing supported.
  */
 int nn_lshift(nn_t out, nn_src_t in, bitcnt_t cnt)
 {
@@ -147,6 +151,8 @@ err:
  * keeping the same NN output size.
  *
  * The function returns 0 on success, -1 on error.
+ *
+ * Aliasing supported.
  */
 int nn_rshift_fixedlen(nn_t out, nn_src_t in, bitcnt_t cnt)
 {
@@ -199,6 +205,8 @@ err:
  * equal to input bit length minus cnt.
  *
  * The function returns 0 on success, -1 on error.
+ *
+ * Aliasing supported.
  */
 int nn_rshift(nn_t out, nn_src_t in, bitcnt_t cnt)
 {
@@ -263,6 +271,8 @@ err:
  * of x by cnt is "simply": (x >> cnt) ^ (x << (bitlen - cnt))
  *
  * The function returns 0 on success, -1 on error.
+ *
+ * Aliasing supported.
  */
 int nn_rrot(nn_t out, nn_src_t in, bitcnt_t cnt, bitcnt_t bitlen)
 {
@@ -301,6 +311,8 @@ err:
  * of x by cnt is "simply": (x << cnt) ^ (x >> (bitlen - cnt))
  *
  * The function returns 0 on success, -1 on error.
+ *
+ * Aliasing supported.
  */
 int nn_lrot(nn_t out, nn_src_t in, bitcnt_t cnt, bitcnt_t bitlen)
 {
@@ -340,6 +352,8 @@ err:
  * particular value.
  *
  * The function returns 0 on success, -1 on error.
+ *
+ * Aliasing supported.
  */
 int nn_xor(nn_t A, nn_src_t B, nn_src_t C)
 {
@@ -358,7 +372,7 @@ int nn_xor(nn_t A, nn_src_t B, nn_src_t C)
 	A->wlen = (C->wlen < B->wlen) ? B->wlen : C->wlen;
 
 	for (i = 0; i < A->wlen; i++) {
-		A->val[i] = B->val[i] ^ C->val[i];
+		A->val[i] = (B->val[i] ^ C->val[i]);
 	}
 
 err:
@@ -373,6 +387,8 @@ err:
  * particular value.
  *
  * The function returns 0 on success, -1 on error.
+ *
+ * Aliasing supported.
  */
 int nn_or(nn_t A, nn_src_t B, nn_src_t C)
 {
@@ -391,7 +407,7 @@ int nn_or(nn_t A, nn_src_t B, nn_src_t C)
 	A->wlen = (C->wlen < B->wlen) ? B->wlen : C->wlen;
 
 	for (i = 0; i < A->wlen; i++) {
-		A->val[i] = B->val[i] | C->val[i];
+		A->val[i] = (B->val[i] | C->val[i]);
 	}
 
 err:
@@ -406,6 +422,8 @@ err:
  * particular value.
  *
  * The function returns 0 on success, -1 on error.
+ *
+ * Aliasing supported.
  */
 int nn_and(nn_t A, nn_src_t B, nn_src_t C)
 {
@@ -424,7 +442,7 @@ int nn_and(nn_t A, nn_src_t B, nn_src_t C)
 	A->wlen = (C->wlen < B->wlen) ? B->wlen : C->wlen;
 
 	for (i = 0; i < A->wlen; i++) {
-		A->val[i] = B->val[i] & C->val[i];
+		A->val[i] = (B->val[i] & C->val[i]);
 	}
 
 err:
@@ -437,6 +455,8 @@ err:
  * the function.
  *
  * The function returns 0 on success, -1 on error.
+ *
+ * Aliasing supported.
  */
 int nn_not(nn_t A, nn_src_t B)
 {

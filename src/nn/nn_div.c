@@ -342,6 +342,9 @@ int nn_divrem_normalized(nn_t q, nn_t r, nn_src_t a, nn_src_t b, word_t v)
 	ret = nn_check_initialized(q); EG(ret, err);
 	ret = nn_check_initialized(r); EG(ret, err);
 
+	/* Unsupported aliasings */
+	MUST_HAVE((q != r) && (q != a) && (q != b), ret, err);
+
 	if (r == b) {
 		ret = _nn_divrem_normalized_aliased(q, a, r, v);
 	} else {
@@ -513,6 +516,9 @@ int nn_divrem_unshifted(nn_t q, nn_t r, nn_src_t a, nn_src_t b,
 	ret = nn_check_initialized(a); EG(ret, err);
 	ret = nn_check_initialized(q); EG(ret, err);
 	ret = nn_check_initialized(r); EG(ret, err);
+
+	/* Unsupported aliasings */
+	MUST_HAVE((q != r) && (q != a) && (q != b), ret, err);
 
 	if (r == b) {
 		ret = _nn_divrem_unshifted_aliased(q, a, r, v, cnt);
@@ -779,6 +785,8 @@ err:
  * Aliasing of outputs with the input is possible since p_in is copied in
  * local p at the beginning of the function.
  *
+ * The function does not support aliasing.
+ *
  * The function returns 0 on success, -1 on error.
  */
 int nn_compute_div_coefs(nn_t p_normalized, word_t *p_shift,
@@ -793,6 +801,9 @@ int nn_compute_div_coefs(nn_t p_normalized, word_t *p_shift,
 
 	MUST_HAVE((p_shift != NULL), ret, err);
 	MUST_HAVE((p_reciprocal != NULL), ret, err);
+
+	/* Unsupported aliasing */
+	MUST_HAVE((p_normalized != p_in), ret, err);
 
 	ret = nn_init(&p, 0); EG(ret, err);
 	ret = nn_copy(&p, p_in); EG(ret, err);
@@ -964,6 +975,8 @@ err:
  * Compute quotient and remainder and normalize them.
  * Not constant time, see documentation of _nn_divrem().
  * Returns 0 on success, -1 on error.
+ *
+ * Aliasing is supported.
  */
 int nn_divrem(nn_t q, nn_t r, nn_src_t a, nn_src_t b)
 {
@@ -982,6 +995,8 @@ err:
 /*
  * Compute remainder only and do not normalize it. Not constant time, see
  * documentation of _nn_divrem(). Returns 0 on success, -1 on error.
+ *
+ * Aliasing is supported.
  */
 int nn_mod_notrim(nn_t r, nn_src_t a, nn_src_t b)
 {
@@ -1001,6 +1016,8 @@ int nn_mod_notrim(nn_t r, nn_src_t a, nn_src_t b)
  * Compute remainder only and normalize it. Not constant time, see
  * documentation of _nn_divrem(). r is initialized by the function.
  * Returns 0 on success, -1 on error.
+ *
+ * Aliasing is supported.
  */
 int nn_mod(nn_t r, nn_src_t a, nn_src_t b)
 {
@@ -1175,6 +1192,8 @@ err:
 /*
  * Aliased version of xgcd, and no assumption on a and b. Not constant time at
  * all. returns 0 on success, -1 on error. XXX document 'sign'
+ *
+ * Aliasing is supported.
  */
 int nn_xgcd(nn_t g, nn_t u, nn_t v, nn_src_t a, nn_src_t b, int *sign)
 {
@@ -1230,6 +1249,8 @@ err:
  * Compute g = gcd(a, b). Internally use the xgcd and drop u and v.
  * Not constant time at all. Returns 0 on success, -1 on error.
  * XXX document 'sign'.
+ *
+ * Aliasing is supported.
  */
 int nn_gcd(nn_t g, nn_src_t a, nn_src_t b, int *sign)
 {

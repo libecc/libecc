@@ -19,6 +19,8 @@
 /*
  * Compute out = in1 + in2 mod p. 'out' parameter must have been initialized
  * by the caller. Returns 0 on success, -1 on error.
+ *
+ * Aliasing is supported.
  */
 int fp_add(fp_t out, fp_src_t in1, fp_src_t in2)
 {
@@ -44,6 +46,8 @@ err:
 /*
  * Compute out = in + 1 mod p. 'out' parameter must have been initialized
  * by the caller. Returns 0 on success, -1 on error.
+ *
+ * Aliasing is supported.
  */
 int fp_inc(fp_t out, fp_src_t in)
 {
@@ -65,6 +69,8 @@ err:
 /*
  * Compute out = in1 - in2 mod p. 'out' parameter must have been initialized
  * by the caller. Returns 0 on success, -1 on error.
+ *
+ * Aliasing is supported.
  */
 int fp_sub(fp_t out, fp_src_t in1, fp_src_t in2)
 {
@@ -90,6 +96,8 @@ err:
 /*
  * Compute out = in - 1 mod p. 'out' parameter must have been initialized
  * by the caller. Returns 0 on success, -1 on error.
+ *
+ * Aliasing is supported.
  */
 int fp_dec(fp_t out, fp_src_t in)
 {
@@ -111,6 +119,8 @@ err:
 /*
  * Compute out = -in mod p = (p - in) mod p. 'out' parameter must have been
  * initialized by the caller. Returns 0 on success, -1 on error.
+ *
+ * Aliasing is supported.
  */
 int fp_neg(fp_t out, fp_src_t in)
 {

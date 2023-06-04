@@ -100,9 +100,10 @@ err:
  *           - Otherwise find, by repeated squaring, the lowest i , 0 < i < m , such as t^(2^i) ≡ 1
  *           - Let b ≡ c^(2^(m-i-1)), and set r ≡ r*b, t ≡ t*b^2 , c ≡ b^2 and m = i.
  *
- * Input aliasing is supported.
- *
  * NOTE: the algorithm is NOT constant time.
+ *
+ * Aliasing is supported.
+ * 
  */
 int fp_sqrt(fp_t sqrt1, fp_t sqrt2, fp_src_t n)
 {

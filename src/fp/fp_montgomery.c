@@ -22,6 +22,8 @@
 /* Compute out = in1 + in2 mod p in the Montgomery form.
  * Inputs and outputs are in their Montgomery form.
  * Returns 0 on success, -1 on error.
+ *
+ * Aliasing is supported.
  */
 int fp_add_monty(fp_t out, fp_src_t in1, fp_src_t in2)
 {
@@ -31,6 +33,8 @@ int fp_add_monty(fp_t out, fp_src_t in1, fp_src_t in2)
 /* Compute out = in1 - in2 mod p in the Montgomery form.
  * Inputs and outputs are in their Montgomery form.
  * Returns 0 on success, -1 on error.
+ *
+ * Aliasing is supported.
  */
 int fp_sub_monty(fp_t out, fp_src_t in1, fp_src_t in2)
 {
@@ -40,6 +44,8 @@ int fp_sub_monty(fp_t out, fp_src_t in1, fp_src_t in2)
 /* Compute out = in1 * in2 mod p in the Montgomery form.
  * Inputs and outputs are in their Montgomery form.
  * Returns 0 on success, -1 on error.
+ *
+ * Aliasing is supported.
  */
 int fp_mul_monty(fp_t out, fp_src_t in1, fp_src_t in2)
 {
@@ -49,6 +55,8 @@ int fp_mul_monty(fp_t out, fp_src_t in1, fp_src_t in2)
 /* Compute out = in * in mod p in the Montgomery form.
  * Inputs and outputs are in their Montgomery form.
  * Returns 0 on success, -1 on error.
+ *
+ * Aliasing is supported.
  */
 int fp_sqr_monty(fp_t out, fp_src_t in)
 {
@@ -60,6 +68,7 @@ int fp_sqr_monty(fp_t out, fp_src_t in)
  * Inputs and outputs are in their Montgomery form.
  * Returns 0 on success, -1 on error. out must be initialized by the caler.
  *
+ * Aliasing is supported.
  */
 int fp_div_monty(fp_t out, fp_src_t in1, fp_src_t in2)
 {

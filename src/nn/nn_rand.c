@@ -88,6 +88,7 @@ err:
  *  3) compute out = tmp_rand mod q'        (note: out is in [0, q-2])
  *  4) compute out += 1                     (note: out is in [1, q-1])
  *
+ * Aliasing is supported.
  */
 int nn_get_random_mod(nn_t out, nn_src_t q)
 {

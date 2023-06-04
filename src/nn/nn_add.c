@@ -333,8 +333,10 @@ err:
 /*
  * Compute out = in1 + in2 mod p. The function returns 0 on success, -1 on
  * error.
+ *
+ * Aliasing not fully supported, for internal use only.
  */
-int nn_mod_add(nn_t out, nn_src_t in1, nn_src_t in2, nn_src_t p)
+static int _nn_mod_add(nn_t out, nn_src_t in1, nn_src_t in2, nn_src_t p)
 {
 	int ret, larger, cmp;
 
@@ -369,9 +371,40 @@ err:
 }
 
 /*
- * Compute out = in1 + 1 mod p. The function returns 0 on success, -1 on error.
+ * Compute out = in1 + in2 mod p. The function returns 0 on success, -1 on
+ * error.
+ *
+ * Aliasing is supported.
  */
-int nn_mod_inc(nn_t out, nn_src_t in1, nn_src_t p)
+int nn_mod_add(nn_t out, nn_src_t in1, nn_src_t in2, nn_src_t p)
+{
+	int ret;
+
+	if(out == p){
+		nn p_cpy;
+		p_cpy.magic = WORD(0);
+
+		ret = nn_copy(&p_cpy, p); EG(ret, err1);
+		ret = _nn_mod_add(out, in1, in2, &p_cpy);
+
+err1:
+		nn_uninit(&p_cpy);
+		EG(ret, err);
+	}
+	else{
+		ret = _nn_mod_add(out, in1, in2, p);
+	}
+
+err:
+	return ret;
+}
+
+/*
+ * Compute out = in1 + 1 mod p. The function returns 0 on success, -1 on error.
+ *
+ * Aliasing not fully supported, for internal use only.
+ */
+static int _nn_mod_inc(nn_t out, nn_src_t in1, nn_src_t p)
 {
 	int larger, ret, cmp;
 
@@ -392,10 +425,41 @@ err:
 }
 
 /*
+ * Compute out = in1 + 1 mod p. The function returns 0 on success, -1 on error.
+ *
+ * Aliasing supported.
+ */
+int nn_mod_inc(nn_t out, nn_src_t in1, nn_src_t p)
+{
+	int ret;
+
+	if(out == p){
+		nn p_cpy;
+		p_cpy.magic = WORD(0);
+
+		ret = nn_copy(&p_cpy, p); EG(ret, err1);
+		ret = _nn_mod_inc(out, in1, &p_cpy);
+
+err1:
+		nn_uninit(&p_cpy);
+		EG(ret, err);
+	}
+	else{
+		ret = _nn_mod_inc(out, in1, p);
+	}
+
+err:
+	return ret;
+
+}
+
+/*
  * Compute out = in1 - in2 mod p. The function returns 0 on success, -1 on
  * error.
+ *
+ * Aliasing not supported, for internal use only.
  */
-int nn_mod_sub(nn_t out, nn_src_t in1, nn_src_t in2, nn_src_t p)
+static int _nn_mod_sub(nn_t out, nn_src_t in1, nn_src_t in2, nn_src_t p)
 {
 	int smaller, ret, cmp;
 	nn_src_t in2_;
@@ -433,9 +497,40 @@ err:
 }
 
 /*
- * Compute out = in1 - 1 mod p. The function returns 0 on success, -1 on error
+ * Compute out = in1 - in2 mod p. The function returns 0 on success, -1 on
+ * error.
+ *
+ * Aliasing supported.
  */
-int nn_mod_dec(nn_t out, nn_src_t in1, nn_src_t p)
+int nn_mod_sub(nn_t out, nn_src_t in1, nn_src_t in2, nn_src_t p)
+{
+	int ret;
+
+	if(out == p){
+		nn p_cpy;
+		p_cpy.magic = WORD(0);
+
+		ret = nn_copy(&p_cpy, p); EG(ret, err1);
+		ret = _nn_mod_sub(out, in1, in2, &p_cpy);
+
+err1:
+		nn_uninit(&p_cpy);
+		EG(ret, err);
+	}
+	else{
+		ret = _nn_mod_sub(out, in1, in2, p);
+	}
+
+err:
+	return ret;
+}
+
+/*
+ * Compute out = in1 - 1 mod p. The function returns 0 on success, -1 on error
+ *
+ * Aliasing not supported, for internal use only.
+ */
+static int _nn_mod_dec(nn_t out, nn_src_t in1, nn_src_t p)
 {
 	int ret, iszero, cmp;
 
@@ -457,11 +552,41 @@ err:
 }
 
 /*
+ * Compute out = in1 - 1 mod p. The function returns 0 on success, -1 on error
+ *
+ * Aliasing supported.
+ */
+int nn_mod_dec(nn_t out, nn_src_t in1, nn_src_t p)
+{
+	int ret;
+
+	if(out == p){
+		nn p_cpy;
+		p_cpy.magic = WORD(0);
+
+		ret = nn_copy(&p_cpy, p); EG(ret, err1);
+		ret = _nn_mod_dec(out, in1, &p_cpy);
+
+err1:
+		nn_uninit(&p_cpy);
+		EG(ret, err);
+	}
+	else{
+		ret = _nn_mod_dec(out, in1, p);
+	}
+
+err:
+	return ret;
+}
+
+/*
  * Compute out = -in mod p. The function returns 0 on success, -1 on error.
  * Because we only support positive integers, we compute
  * out = p - in (except when value is 0).
  *
  * We suppose that in is already reduced modulo p.
+ *
+ * Aliasing is supported.
  *
  */
 int nn_mod_neg(nn_t out, nn_src_t in, nn_src_t p)

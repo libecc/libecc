@@ -52,7 +52,10 @@ err:
 	return ret;
 }
 
-/* Aliased version of previous one. */
+/* Aliased version of previous one.
+ *
+ * Aliasing is supported.
+ */
 int fp_pow(fp_t out, fp_src_t base, nn_src_t exp)
 {
 	int ret;
