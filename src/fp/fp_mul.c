@@ -21,6 +21,9 @@
 #include "../nn/nn_modinv.h"
 
 /*
+ * Compute out = in1 * in2 mod p. 'out' parameter must have been initialized
+ * by the caller. Returns 0 on success, -1 on error.
+ *
  * Aliasing is supported.
  */
 int fp_mul(fp_t out, fp_src_t in1, fp_src_t in2)
@@ -43,6 +46,9 @@ err:
 }
 
 /*
+ * Compute out = in * in mod p. 'out' parameter must have been initialized
+ * by the caller. Returns 0 on success, -1 on error.
+ *
  * Aliasing is supported.
  */
 int fp_sqr(fp_t out, fp_src_t in)
@@ -75,6 +81,10 @@ err:
 	return ret;
 }
 
+/*
+ * Compute out = w^-1 mod p. 'out' parameter must have been initialized
+ * by the caller. Returns 0 on success, -1 on error.
+ */
 int fp_inv_word(fp_t out, word_t w)
 {
 	int ret;
@@ -88,8 +98,10 @@ err:
 }
 
 /*
- * Aliasing of out and num is NOT supported.
- * Aliasing of out and den is supported.
+ * Compute out such that num = out * den mod p. 'out' parameter must have been initialized
+ * by the caller. Returns 0 on success, -1 on error.
+ *
+ * Aliasing is supported.
  */
 int fp_div(fp_t out, fp_src_t num, fp_src_t den)
 {
@@ -99,14 +111,26 @@ int fp_div(fp_t out, fp_src_t num, fp_src_t den)
  	ret = fp_check_initialized(den); EG(ret, err);
 	ret = fp_check_initialized(out); EG(ret, err);
 
-	/* Unsupported multi-aliasing */
-	MUST_HAVE((out != num), ret, err);
-
 	MUST_HAVE(out->ctx == num->ctx, ret, err);
 	MUST_HAVE(out->ctx == den->ctx, ret, err);
 
-	ret = fp_inv(out, den); EG(ret, err);
-	ret = fp_mul(out, num, out);
+	if(out == num){
+		/* Handle aliasing of out and num */
+		fp _num;
+		_num.magic = WORD(0);
+
+		ret = fp_copy(&_num, num); EG(ret, err1);
+		ret = fp_inv(out, den); EG(ret, err1);
+		ret = fp_mul(out, &_num, out);
+
+err1:
+		fp_uninit(&_num);
+		EG(ret, err);
+	}
+	else{
+		ret = fp_inv(out, den); EG(ret, err);
+		ret = fp_mul(out, num, out);
+	}
 
 err:
 	return ret;

@@ -112,6 +112,7 @@ typedef unsigned long long uint64_t;
  */
 #ifdef __SIZEOF_INT__
 #if(__SIZEOF_INT__ == 2)
+#define UINT32_IS_LONG /* This will be useful for print formatting */
 typedef unsigned long uint32_t;
 #else
 typedef unsigned int uint32_t;
@@ -121,6 +122,7 @@ typedef unsigned int uint32_t;
 /* The user has provided WORDSIZE=16, so we guess that
  * we have LP32 or ILP32: a long type would be 32-bit.
  */
+#define UINT32_IS_LONG /* This will be useful for print formatting */
 typedef unsigned long uint32_t;
 #else
 /* Wild guess for uint32_t mapping */

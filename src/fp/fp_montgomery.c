@@ -66,7 +66,7 @@ int fp_sqr_monty(fp_t out, fp_src_t in)
 /*
  * Compute out such that in1 = out * in2 mod p in the Montgomery form.
  * Inputs and outputs are in their Montgomery form.
- * Returns 0 on success, -1 on error. out must be initialized by the caler.
+ * Returns 0 on success, -1 on error. out must be initialized by the caller.
  *
  * Aliasing is supported.
  */

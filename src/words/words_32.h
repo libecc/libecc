@@ -39,12 +39,21 @@ typedef uint16_t hword_t;
 #define WORD_MAX UINT32_MAX
 #define HWORD_MAX UINT16_MAX
 
+/* Prefix for the specific case of u32 that can be either
+ * unsigned int or unsigned long
+ */
+#ifdef UINT32_IS_LONG
+#define PRI32_PREFIX "l"
+#else
+#define PRI32_PREFIX
+#endif
+
 /* PRINTF_WORD_HEX_FMT: printf hex format string for word */
 #ifndef PRIx16
 #define PRIx16 "hx"
 #endif
 #ifndef PRIx32
-#define PRIx32 "x"
+#define PRIx32 PRI32_PREFIX "x"
 #endif
 #ifndef PRIx64
 #define PRIx64 "llx"
@@ -55,7 +64,7 @@ typedef uint16_t hword_t;
 #define PRIu16 "hu"
 #endif
 #ifndef PRIu32
-#define PRIu32 "u"
+#define PRIu32 PRI32_PREFIX "u"
 #endif
 #ifndef PRIu64
 #define PRIu64 "llu"

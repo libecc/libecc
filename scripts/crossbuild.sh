@@ -68,13 +68,21 @@ check_triplet_wordsize(){
 	# NOTE: for 64 bit triplets, multiarch/crossbuild docker's gcc 4.9 has a bug handling loop unrolling in -O3 and
 	# is mistaken in detecting arrays overflows at compilation time
 	# See https://gcc.gnu.org/bugzilla/show_bug.cgi?id=64277
+	# Also, add the "-Wno-pedantic-ms-format" for specific quikrs of mingw with "%lld" (...)
 	if [ "$triplet" = "x86_64-w64-mingw32" ] || [ "$triplet" = "aarch64-linux-gnu" ]; then
 		extra_lib_cflags="-O2"
 		extra_bin_cflags=""
+		if [ "$triplet" = "x86_64-w64-mingw32" ] && [ "$wordsize" = "64" ]; then
+			extra_lib_cflags=$extra_lib_cflags" -Wno-pedantic-ms-format"
+		fi
 	# There is also a misbehavior for mingw improperly finding unintialized variables
+	# Also, add the "-Wno-pedantic-ms-format" for specific quikrs of mingw with "%lld" (...)
 	elif [ "$triplet" = "i686-w64-mingw32" ]; then
 		extra_lib_cflags="-Wno-maybe-uninitialized"
 		extra_bin_cflags=""
+		if [ "$wordsize" = "64" ]; then
+			extra_lib_cflags=$extra_lib_cflags" -Wno-pedantic-ms-format"
+		fi
         # NOTE: on darwin based clang, some of our options are too recent for the installed
         # llvm ... Hence we remove warnings as errors here
 	elif [ "$triplet" = "i386-apple-darwin" ] || [ "$triplet" = "x86_64-apple-darwin" ] || [ "$triplet" = "x86_64h-apple-darwin" ]; then
@@ -87,93 +95,93 @@ check_triplet_wordsize(){
 	############## Release compilation
 	echo "======== COMPILING RELEASE FOR $triplet / $wordsize" 2>&1 | tee -a $COMPILATION_LOG_FILE
 	# Library, self tests and utils
-	docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR -w $ROOT_DIR -e EXTRA_LIB_CFLAGS="$extra_lib_cflags" -e EXTRA_BIN_CFLAGS="$extra_bin_cflags" multiarch/crossbuild make "$wordsize" 2>&1 | tee -a $COMPILATION_LOG_FILE
+	docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR -w $ROOT_DIR -e EXTRA_LIB_CFLAGS="$extra_lib_cflags" -e EXTRA_BIN_CFLAGS="$extra_bin_cflags" multiarch/crossbuild make "$wordsize" 2>&1 | tee -a $COMPILATION_LOG_FILE
 	mkdir -p $CROSSBUILD_OUTPUT/"$triplet"/word"$wordsize"
 	check_and_copy $ROOT_DIR/build/ec_self_tests $CROSSBUILD_OUTPUT/"$triplet"/word"$wordsize"/ec_self_tests_"$triplet"_word"$wordsize" $ERROR_LOG_FILE
 	check_and_copy $ROOT_DIR/build/ec_utils $CROSSBUILD_OUTPUT/"$triplet"/word"$wordsize"/ec_utils_"$triplet"_word"$wordsize" $ERROR_LOG_FILE
 	# Examples
-	docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR/ -w $ROOT_DIR/src/examples -e EXTRA_LIB_CFLAGS="$extra_lib_cflags" -e EXTRA_BIN_CFLAGS="$extra_bin_cflags" multiarch/crossbuild make "$wordsize" 2>&1 | tee -a $COMPILATION_LOG_FILE
+	docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR/ -w $ROOT_DIR/src/examples -e EXTRA_LIB_CFLAGS="$extra_lib_cflags" -e EXTRA_BIN_CFLAGS="$extra_bin_cflags" multiarch/crossbuild make "$wordsize" 2>&1 | tee -a $COMPILATION_LOG_FILE
 	copy_compiled_examples "$ROOT_DIR" "$CROSSBUILD_OUTPUT" "$triplet" "$wordsize" "$ERROR_LOG_FILE" ""
 	# Clean
-	docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR -w $ROOT_DIR multiarch/crossbuild make clean
-	docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR/src/examples -w $ROOT_DIR/src/examples multiarch/crossbuild make clean
+	docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR -w $ROOT_DIR multiarch/crossbuild make clean
+	docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR/src/examples -w $ROOT_DIR/src/examples multiarch/crossbuild make clean
 	############## Debug compilation
 	echo "======== COMPILING DEBUG FOR $triplet / $wordsize" 2>&1 | tee -a $COMPILATION_LOG_FILE
 	############## Release compilation
 	# Library, self tests and utils
-	docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR -w $ROOT_DIR -e EXTRA_LIB_CFLAGS="$extra_lib_cflags" -e EXTRA_BIN_CFLAGS="$extra_bin_cflags" multiarch/crossbuild make debug"$wordsize" 2>&1 | tee -a $COMPILATION_LOG_FILE
+	docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR -w $ROOT_DIR -e EXTRA_LIB_CFLAGS="$extra_lib_cflags" -e EXTRA_BIN_CFLAGS="$extra_bin_cflags" multiarch/crossbuild make debug"$wordsize" 2>&1 | tee -a $COMPILATION_LOG_FILE
 	mkdir -p $CROSSBUILD_OUTPUT/"$triplet"/word"$wordsize"
 	check_and_copy $ROOT_DIR/build/ec_self_tests $CROSSBUILD_OUTPUT/"$triplet"/word"$wordsize"/ec_self_tests_"$triplet"_word"$wordsize"_debug $ERROR_LOG_FILE
 	check_and_copy $ROOT_DIR/build/ec_utils $CROSSBUILD_OUTPUT/"$triplet"/word"$wordsize"/ec_utils_"$triplet"_word"$wordsize"_debug $ERROR_LOG_FILE
 	# Examples
-	docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR/ -w $ROOT_DIR/src/examples -e EXTRA_LIB_CFLAGS="$extra_lib_cflags" -e EXTRA_BIN_CFLAGS="$extra_bin_cflags" multiarch/crossbuild make debug"$wordsize" 2>&1 | tee -a $COMPILATION_LOG_FILE
+	docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR/ -w $ROOT_DIR/src/examples -e EXTRA_LIB_CFLAGS="$extra_lib_cflags" -e EXTRA_BIN_CFLAGS="$extra_bin_cflags" multiarch/crossbuild make debug"$wordsize" 2>&1 | tee -a $COMPILATION_LOG_FILE
 	copy_compiled_examples "$ROOT_DIR" "$CROSSBUILD_OUTPUT" "$triplet" "$wordsize" "$ERROR_LOG_FILE" "_debug"
 	# Clean
-	docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR -w $ROOT_DIR multiarch/crossbuild make clean
-	docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR/src/examples -w $ROOT_DIR/src/examples multiarch/crossbuild make clean
+	docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR -w $ROOT_DIR multiarch/crossbuild make clean
+	docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR/src/examples -w $ROOT_DIR/src/examples multiarch/crossbuild make clean
 	echo "===========================================" 2>&1 | tee -a $COMPILATION_LOG_FILE
 	# Compile static binaries for everyone except Mac OS (gcc on it does not support -static)
 	if [ "$triplet" != "i386-apple-darwin" ] && [ "$triplet" != "x86_64-apple-darwin" ] && [ "$triplet" != "x86_64h-apple-darwin" ]; then
 		############## Release compilation with static binaries (for emulation)
 		echo "======== COMPILING STATIC RELEASE FOR $triplet / $wordsize" 2>&1 | tee -a $COMPILATION_LOG_FILE
 		# Library, self tests and utils
-		docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR -w $ROOT_DIR -e EXTRA_LIB_CFLAGS="$extra_lib_cflags" -e EXTRA_BIN_CFLAGS="$extra_bin_cflags" -e BIN_LDFLAGS="-static" multiarch/crossbuild make "$wordsize" 2>&1 | tee -a $COMPILATION_LOG_FILE
+		docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR -w $ROOT_DIR -e EXTRA_LIB_CFLAGS="$extra_lib_cflags" -e EXTRA_BIN_CFLAGS="$extra_bin_cflags" -e BIN_LDFLAGS="-static" multiarch/crossbuild make "$wordsize" 2>&1 | tee -a $COMPILATION_LOG_FILE
 		mkdir -p $CROSSBUILD_OUTPUT/"$triplet"/word"$wordsize"
 		check_and_copy $ROOT_DIR/build/ec_self_tests $CROSSBUILD_OUTPUT/"$triplet"/word"$wordsize"/ec_self_tests_"$triplet"_word"$wordsize"_static $ERROR_LOG_FILE
 		check_and_copy $ROOT_DIR/build/ec_utils $CROSSBUILD_OUTPUT/"$triplet"/word"$wordsize"/ec_utils_"$triplet"_word"$wordsize"_static $ERROR_LOG_FILE
 		# Examples
-		docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR/ -w $ROOT_DIR/src/examples -e EXTRA_LIB_CFLAGS="$extra_lib_cflags" -e EXTRA_BIN_CFLAGS="$extra_bin_cflags" -e BIN_LDFLAGS="-static" multiarch/crossbuild make "$wordsize" 2>&1 | tee -a $COMPILATION_LOG_FILE
+		docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR/ -w $ROOT_DIR/src/examples -e EXTRA_LIB_CFLAGS="$extra_lib_cflags" -e EXTRA_BIN_CFLAGS="$extra_bin_cflags" -e BIN_LDFLAGS="-static" multiarch/crossbuild make "$wordsize" 2>&1 | tee -a $COMPILATION_LOG_FILE
 		copy_compiled_examples "$ROOT_DIR" "$CROSSBUILD_OUTPUT" "$triplet" "$wordsize" "$ERROR_LOG_FILE" "_static"
 		# Clean
-		docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR -w $ROOT_DIR multiarch/crossbuild make clean
-		docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR/src/examples -w $ROOT_DIR/src/examples multiarch/crossbuild make clean
+		docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR -w $ROOT_DIR multiarch/crossbuild make clean
+		docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR/src/examples -w $ROOT_DIR/src/examples multiarch/crossbuild make clean
 		##### 4096 bits case for 64 bit word size only
 		###############################################
 		if [ "$wordsize" = "64" ]; then
-			docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR -w $ROOT_DIR multiarch/crossbuild make clean
-			docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR/src/examples -w $ROOT_DIR/src/examples multiarch/crossbuild make clean
+			docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR -w $ROOT_DIR multiarch/crossbuild make clean
+			docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR/src/examples -w $ROOT_DIR/src/examples multiarch/crossbuild make clean
 			# Self tests and utils
-			docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR -w $ROOT_DIR -e EXTRA_LIB_CFLAGS="$extra_lib_cflags -DUSER_NN_BIT_LEN=4096" -e EXTRA_BIN_CFLAGS="$extra_bin_cflags -DUSER_NN_BIT_LEN=4096" -e BIN_LDFLAGS="-static" multiarch/crossbuild make "$wordsize" 2>&1 | tee -a $COMPILATION_LOG_FILE
+			docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR -w $ROOT_DIR -e EXTRA_LIB_CFLAGS="$extra_lib_cflags -DUSER_NN_BIT_LEN=4096" -e EXTRA_BIN_CFLAGS="$extra_bin_cflags -DUSER_NN_BIT_LEN=4096" -e BIN_LDFLAGS="-static" multiarch/crossbuild make "$wordsize" 2>&1 | tee -a $COMPILATION_LOG_FILE
 			mkdir -p $CROSSBUILD_OUTPUT/"$triplet"/word"$wordsize"
 			check_and_copy $ROOT_DIR/build/ec_self_tests $CROSSBUILD_OUTPUT/"$triplet"/word"$wordsize"/ec_self_tests_"$triplet"_word"$wordsize"_static_4096 $ERROR_LOG_FILE
 			check_and_copy $ROOT_DIR/build/ec_utils $CROSSBUILD_OUTPUT/"$triplet"/word"$wordsize"/ec_utils_"$triplet"_word"$wordsize"_static_4096 $ERROR_LOG_FILE
 			# Examples
-			docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR/ -w $ROOT_DIR/src/examples -e EXTRA_LIB_CFLAGS="$extra_lib_cflags -DUSER_NN_BIT_LEN=4096" -e EXTRA_BIN_CFLAGS="$extra_bin_cflags -DUSER_NN_BIT_LEN=4096" -e BIN_LDFLAGS="-static" multiarch/crossbuild make "$wordsize" 2>&1 | tee -a $COMPILATION_LOG_FILE
+			docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR/ -w $ROOT_DIR/src/examples -e EXTRA_LIB_CFLAGS="$extra_lib_cflags -DUSER_NN_BIT_LEN=4096" -e EXTRA_BIN_CFLAGS="$extra_bin_cflags -DUSER_NN_BIT_LEN=4096" -e BIN_LDFLAGS="-static" multiarch/crossbuild make "$wordsize" 2>&1 | tee -a $COMPILATION_LOG_FILE
 			copy_compiled_examples "$ROOT_DIR" "$CROSSBUILD_OUTPUT" "$triplet" "$wordsize" "$ERROR_LOG_FILE" "_static_4096"
 			# Clean
-			docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR -w $ROOT_DIR multiarch/crossbuild make clean
-			docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR/src/examples -w $ROOT_DIR/src/examples multiarch/crossbuild make clean
+			docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR -w $ROOT_DIR multiarch/crossbuild make clean
+			docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR/src/examples -w $ROOT_DIR/src/examples multiarch/crossbuild make clean
 		fi
 		############## Debug compilation with static binaries (for emulation)
 		echo "======== COMPILING STATIC DEBUG FOR $triplet / $wordsize" 2>&1 | tee -a $COMPILATION_LOG_FILE
 		############## Release compilation with static binaries (for emulation)
 		# Self tests and utils
-		docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR -w $ROOT_DIR -e EXTRA_LIB_CFLAGS="$extra_lib_cflags" -e EXTRA_BIN_CFLAGS="$extra_bin_cflags" -e BIN_LDFLAGS="-static" multiarch/crossbuild make debug"$wordsize" 2>&1 | tee -a $COMPILATION_LOG_FILE
+		docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR -w $ROOT_DIR -e EXTRA_LIB_CFLAGS="$extra_lib_cflags" -e EXTRA_BIN_CFLAGS="$extra_bin_cflags" -e BIN_LDFLAGS="-static" multiarch/crossbuild make debug"$wordsize" 2>&1 | tee -a $COMPILATION_LOG_FILE
 		mkdir -p $CROSSBUILD_OUTPUT/"$triplet"/word"$wordsize"
 		check_and_copy $ROOT_DIR/build/ec_self_tests $CROSSBUILD_OUTPUT/"$triplet"/word"$wordsize"/ec_self_tests_"$triplet"_word"$wordsize"_debug_static $ERROR_LOG_FILE
 		check_and_copy $ROOT_DIR/build/ec_utils $CROSSBUILD_OUTPUT/"$triplet"/word"$wordsize"/ec_utils_"$triplet"_word"$wordsize"_debug_static $ERROR_LOG_FILE
 		# Examples
-		docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR/ -w $ROOT_DIR/src/examples -e EXTRA_LIB_CFLAGS="$extra_lib_cflags" -e EXTRA_BIN_CFLAGS="$extra_bin_cflags" -e BIN_LDFLAGS="-static" multiarch/crossbuild make debug"$wordsize" 2>&1 | tee -a $COMPILATION_LOG_FILE
+		docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR/ -w $ROOT_DIR/src/examples -e EXTRA_LIB_CFLAGS="$extra_lib_cflags" -e EXTRA_BIN_CFLAGS="$extra_bin_cflags" -e BIN_LDFLAGS="-static" multiarch/crossbuild make debug"$wordsize" 2>&1 | tee -a $COMPILATION_LOG_FILE
 		copy_compiled_examples "$ROOT_DIR" "$CROSSBUILD_OUTPUT" "$triplet" "$wordsize" "$ERROR_LOG_FILE" "_debug_static"
 		# Clean
-		docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR -w $ROOT_DIR multiarch/crossbuild make clean
-		docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR/src/examples -w $ROOT_DIR/src/examples multiarch/crossbuild make clean
+		docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR -w $ROOT_DIR multiarch/crossbuild make clean
+		docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR/src/examples -w $ROOT_DIR/src/examples multiarch/crossbuild make clean
 		##### 4096 bits case for 64 bit word size only
 		###############################################
 		if [ "$wordsize" = "64" ]; then
-			docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR -w $ROOT_DIR multiarch/crossbuild make clean
-			docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR/src/examples -w $ROOT_DIR/src/examples multiarch/crossbuild make clean
+			docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR -w $ROOT_DIR multiarch/crossbuild make clean
+			docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR/src/examples -w $ROOT_DIR/src/examples multiarch/crossbuild make clean
 			# Self tests and utils
-			docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR -w $ROOT_DIR -e EXTRA_LIB_CFLAGS="$extra_lib_cflags -DUSER_NN_BIT_LEN=4096" -e EXTRA_BIN_CFLAGS="$extra_bin_cflags -DUSER_NN_BIT_LEN=4096" -e BIN_LDFLAGS="-static" multiarch/crossbuild make debug"$wordsize" 2>&1 | tee -a $COMPILATION_LOG_FILE
+			docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR -w $ROOT_DIR -e EXTRA_LIB_CFLAGS="$extra_lib_cflags -DUSER_NN_BIT_LEN=4096" -e EXTRA_BIN_CFLAGS="$extra_bin_cflags -DUSER_NN_BIT_LEN=4096" -e BIN_LDFLAGS="-static" multiarch/crossbuild make debug"$wordsize" 2>&1 | tee -a $COMPILATION_LOG_FILE
 			mkdir -p $CROSSBUILD_OUTPUT/"$triplet"/word"$wordsize"
 			check_and_copy $ROOT_DIR/build/ec_self_tests $CROSSBUILD_OUTPUT/"$triplet"/word"$wordsize"/ec_self_tests_"$triplet"_word"$wordsize"_debug_static_4096 $ERROR_LOG_FILE
 			check_and_copy $ROOT_DIR/build/ec_utils $CROSSBUILD_OUTPUT/"$triplet"/word"$wordsize"/ec_utils_"$triplet"_word"$wordsize"_debug_static_4096 $ERROR_LOG_FILE
 			# Examples
-			docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR/ -w $ROOT_DIR/src/examples -e EXTRA_LIB_CFLAGS="$extra_lib_cflags -DUSER_NN_BIT_LEN=4096" -e EXTRA_BIN_CFLAGS="$extra_bin_cflags -DUSER_NN_BIT_LEN=4096" -e BIN_LDFLAGS="-static" multiarch/crossbuild make debug"$wordsize" 2>&1 | tee -a $COMPILATION_LOG_FILE
+			docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR/ -w $ROOT_DIR/src/examples -e EXTRA_LIB_CFLAGS="$extra_lib_cflags -DUSER_NN_BIT_LEN=4096" -e EXTRA_BIN_CFLAGS="$extra_bin_cflags -DUSER_NN_BIT_LEN=4096" -e BIN_LDFLAGS="-static" multiarch/crossbuild make debug"$wordsize" 2>&1 | tee -a $COMPILATION_LOG_FILE
 			copy_compiled_examples "$ROOT_DIR" "$CROSSBUILD_OUTPUT" "$triplet" "$wordsize" "$ERROR_LOG_FILE" "_debug_static_4096"
 			# Clean
-			docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR -w $ROOT_DIR multiarch/crossbuild make clean
-			docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR/src/examples -w $ROOT_DIR/src/examples multiarch/crossbuild make clean
+			docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR -w $ROOT_DIR multiarch/crossbuild make clean
+			docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -e CROSS_TRIPLE=$triplet -v $ROOT_DIR:$ROOT_DIR/src/examples -w $ROOT_DIR/src/examples multiarch/crossbuild make clean
 		fi
 		echo "===========================================" 2>&1 | tee -a $COMPILATION_LOG_FILE
 	fi
@@ -240,9 +248,9 @@ then
 	then
 		echo "Cleaning before running ..."
 		rm -rf $CROSSBUILD_OUTPUT/*
-		docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -v $SRC_DIR:/ecc -w /ecc multiarch/crossbuild make clean
-		docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -v $SRC_DIR:/ecc -w /ecc/src/examples multiarch/crossbuild make clean
-		docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -v $SRC_DIR:/ecc -w /ecc/src/arithmetic_tests multiarch/crossbuild make clean
+		docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -v $SRC_DIR:/ecc -w /ecc multiarch/crossbuild make clean
+		docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -v $SRC_DIR:/ecc -w /ecc/src/examples multiarch/crossbuild make clean
+		docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -v $SRC_DIR:/ecc -w /ecc/src/arithmetic_tests multiarch/crossbuild make clean
 	fi
 	# If no specific word size has been given, do all the sizes
 	if [ "$3" = "" ]
@@ -260,9 +268,9 @@ fi
 # Clean
 echo "Cleaning before running ..."
 rm -rf $CROSSBUILD_OUTPUT/*
-docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -v $SRC_DIR:/ecc -w /ecc multiarch/crossbuild make clean
-docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -v $SRC_DIR:/ecc -w /ecc/src/examples multiarch/crossbuild make clean
-docker run -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -v $SRC_DIR:/ecc -w /ecc/src/arithmetic_tests multiarch/crossbuild make clean
+docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -v $SRC_DIR:/ecc -w /ecc multiarch/crossbuild make clean
+docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -v $SRC_DIR:/ecc -w /ecc/src/examples multiarch/crossbuild make clean
+docker run -e VERBOSE=1 -e ASSERT_PRINT="1" -e COMPLETE="$COMPLETE" -e BLINDING="$BLINDING" -e LADDER="$LADDER" -e CRYPTOFUZZ="$CRYPTOFUZZ" --rm -v $SRC_DIR:/ecc -w /ecc/src/arithmetic_tests multiarch/crossbuild make clean
 
 ALL_CHECKS=""
 for wordsize in 16 32 64;

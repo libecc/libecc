@@ -29,6 +29,8 @@ ATTRIBUTE_WARN_UNUSED_RET static inline int _fp_mul_redc1(nn_t out, nn_src_t in1
 }
 
 /*
+ * Compute out = in1 * in2 mod (p) in redcified form.
+ *
  * Exported version based on previous one, that sanity checks input parameters.
  * The function returns 0 on success, -1 on error.
  *
@@ -53,6 +55,8 @@ err:
 }
 
 /*
+ * Compute out = in * in mod (p) in redcified form.
+ *
  * Aliasing is supported.
  */
 int fp_sqr_redc1(fp_t out, fp_src_t in)
@@ -61,6 +65,7 @@ int fp_sqr_redc1(fp_t out, fp_src_t in)
 }
 
 /*
+ * Compute out = redcified form of in.
  * redcify could be done by shifting and division by p. The function returns 0
  * on success, -1 on error.
  *
@@ -83,6 +88,7 @@ err:
 }
 
 /* 
+ * Compute out = unredcified form of in.
  * The function returns 0 on success, -1 on error.
  *
  * Aliasing is supported.

@@ -197,11 +197,11 @@ ATTRIBUTE_WARN_UNUSED_RET static inline int perform_rsa_tests(const rsa_test **t
 		}
 err1:
 		if(ret){
-			ext_printf("[-] Test %s failed (modbits = %d)\n", t->name, t->modbits);
+			ext_printf("[-] Test %s failed (modbits = %" PRIu32 ")\n", t->name, t->modbits);
 			goto err;
 		}
 		else{
-			ext_printf("[+] Test %s passed (modbits = %d)\n", t->name, t->modbits);
+			ext_printf("[+] Test %s passed (modbits = %" PRIu32 ")\n", t->name, t->modbits);
 		}
 	}
 

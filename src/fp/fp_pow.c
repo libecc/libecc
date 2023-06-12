@@ -52,7 +52,9 @@ err:
 	return ret;
 }
 
-/* Aliased version of previous one.
+/*
+ * Compute out = base^exp (p). 'base', 'exp' and 'out' are supposed to be initialized.
+ * Aliased version of previous one.
  *
  * Aliasing is supported.
  */
@@ -62,12 +64,13 @@ int fp_pow(fp_t out, fp_src_t base, nn_src_t exp)
 
 	ret = fp_check_initialized(base); EG(ret, err);
 	ret = nn_check_initialized(exp); EG(ret, err);
+	ret = fp_check_initialized(out); EG(ret, err);
+	MUST_HAVE(((&(out->ctx->p)) == (&(base->ctx->p))), ret, err);
 
 	/* Handle output aliasing */
 	if (out == base) {
 		ret = _fp_pow_aliased(out, exp);
 	} else {
-		ret = fp_init(out, base->ctx);  EG(ret, err);
 		ret = _fp_pow(out, base, exp);
 	}
 

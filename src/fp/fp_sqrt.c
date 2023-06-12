@@ -102,6 +102,10 @@ err:
  *
  * NOTE: the algorithm is NOT constant time.
  *
+ * The outputs, sqrt1 and sqrt2 ARE initialized by the function.
+ * The function returns 0 on success, -1 on error (in which case values of sqrt1 and sqrt2
+ * must not be considered).
+ *
  * Aliasing is supported.
  * 
  */

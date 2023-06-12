@@ -591,7 +591,7 @@ gen_num_batch:
 		ret = ec_verify_batch(signatures, signatures_len, pubkeys, messages, messages_len,
 				num_batch, c->sig_type, c->hash_type, adata, adata_len, NULL, NULL);
 		if(ret){
-			ext_printf("Error when verifying signature ec_verify_batch no memory for batch size %d\n", num_batch);
+			ext_printf("Error when verifying signature ec_verify_batch no memory for batch size %" PRIu32 "\n", num_batch);
 			goto err;
 		}
 		{
@@ -602,7 +602,7 @@ gen_num_batch:
 			ret = ec_verify_batch(signatures, signatures_len, pubkeys, messages, messages_len,
 					num_batch, c->sig_type, c->hash_type, adata, adata_len, NULL, &scratch_pad_area_len);
 			if(ret){
-				ext_printf("Error when getting scratch_pad_area length for ec_verify_batch optimized  for batch size %d\n", num_batch);
+				ext_printf("Error when getting scratch_pad_area length for ec_verify_batch optimized  for batch size %" PRIu32 "\n", num_batch);
 				goto err;
 			}
 			MUST_HAVE((scratch_pad_area_len <= sizeof(scratch_pad_area)), ret, err);
@@ -611,7 +611,7 @@ gen_num_batch:
 			ret = ec_verify_batch(signatures, signatures_len, pubkeys, messages, messages_len,
 					num_batch, c->sig_type, c->hash_type, adata, adata_len, scratch_pad_area, &scratch_pad_area_len);
 			if(ret){
-				ext_printf("Error when verifying signature ec_verify_batch optimized for batch size %d\n", num_batch);
+				ext_printf("Error when verifying signature ec_verify_batch optimized for batch size %" PRIu32 "\n", num_batch);
 				goto err;
 			}
 		}
@@ -1885,14 +1885,14 @@ ATTRIBUTE_WARN_UNUSED_RET static int perf_test_one(const ec_sig_mapping *sig, co
 	ret = ec_performance_test(&t, &n_perf_sign, &n_perf_verif, &n_perf_batch_verif, &batch_verify_ok);
 	OPENMP_LOCK();
 	if(batch_verify_ok == 1){
-		ext_printf("[%s] %30s perf: %d sign/s and %d verif/s, %d batch verif/s (for %d batch)\n",
-			   ret ? "-" : "+", t.name, n_perf_sign, n_perf_verif, n_perf_batch_verif, PERF_BATCH_VERIFICATION);
+		ext_printf("[%s] %30s perf: %u sign/s and %u verif/s, %u batch verif/s (for %u batch)\n",
+			   ret ? "-" : "+", t.name, n_perf_sign, n_perf_verif, n_perf_batch_verif, (unsigned int)PERF_BATCH_VERIFICATION);
 		if ((n_perf_sign == 0) || (n_perf_verif == 0) || (n_perf_batch_verif == 0)) {
 			ext_printf("\t(0 is less than one sig/verif per sec)\n");
 		}
 	}
 	else{
-		ext_printf("[%s] %30s perf: %d sign/s and %d verif/s\n",
+		ext_printf("[%s] %30s perf: %u sign/s and %u verif/s\n",
 			   ret ? "-" : "+", t.name, n_perf_sign, n_perf_verif);
 		if ((n_perf_sign == 0) || (n_perf_verif == 0)) {
 			ext_printf("\t(0 is less than one sig/verif per sec)\n");

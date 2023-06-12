@@ -13,13 +13,15 @@ ifeq ($(WITH_DYNAMIC_LIBS),1)
 all:	kcdsa_dyn
 endif
 
+# NOTE: avoid a false positive detecting a -Werror=stringop-overflow in kcdsa.c with Wno-error
+BIN_CFLAGS += -Wno-error
+
 libhash:
 	# Compile the hashes
 	$(VERBOSE_MAKE)cd ../../hash && EXTRA_CFLAGS="$(CFLAGS)" make libhash.a
 
 kcdsa: libhash
-	# NOTE: remove a false positive detecting a -Werror=stringop-overflow in kcdsa.c with a -Wno-error
-	$(VERBOSE_MAKE)$(CROSS_COMPILE)$(CC) $(BIN_CFLAGS) -Wno-error -DKCDSA kcdsa.c ../dsa/dsa.c $(ROOT_DIR)/src/external_deps/print.c $(ROOT_DIR)/src/external_deps/rand.c $(BIN_LDFLAGS) ../../hash/libhash.a $(LIBSIGN) -o kcdsa
+	$(VERBOSE_MAKE)$(CROSS_COMPILE)$(CC) $(BIN_CFLAGS) -DKCDSA kcdsa.c ../dsa/dsa.c $(ROOT_DIR)/src/external_deps/print.c $(ROOT_DIR)/src/external_deps/rand.c $(BIN_LDFLAGS) ../../hash/libhash.a $(LIBSIGN) -o kcdsa
 
 # If the user asked for dynamic libraries, compile versions of our binaries against them
 ifeq ($(WITH_DYNAMIC_LIBS),1)
