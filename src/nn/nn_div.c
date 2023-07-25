@@ -194,7 +194,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int _nn_divrem_normalized(nn_t q, nn_t r,
 				 nn_src_t a, nn_src_t b, word_t v)
 {
 	word_t borrow, qstar, qh, ql, rh, rl; /* for 3-by-2 div. */
-	int small, cmp, ret;
+	int _small, cmp, ret;
 	u8 i;
 
 	MUST_HAVE(!(b->wlen <= 0), ret, err);
@@ -251,16 +251,16 @@ ATTRIBUTE_WARN_UNUSED_RET static int _nn_divrem_normalized(nn_t q, nn_t r,
 		 * At most one multiprecision correction is needed.
 		 */
 		ret = _nn_cmp_shift(r, b, shift, &cmp); EG(ret, err);
-		small = ((!!(r->val[i - 1])) | (cmp >= 0));
+		_small = ((!!(r->val[i - 1])) | (cmp >= 0));
 		/* Perform conditional multiprecision correction. */
-		ret = _nn_cnd_sub_shift(small, r, b, shift, &borrow); EG(ret, err);
+		ret = _nn_cnd_sub_shift(_small, r, b, shift, &borrow); EG(ret, err);
 		MUST_HAVE(!(r->val[i - 1] != borrow), ret, err);
 		r->val[i - 1] = (word_t)(r->val[i - 1] - borrow);
 		/*
 		 * Adjust the quotient if it was too small and set it in the
 		 * multiprecision array.
 		 */
-		qstar = (word_t)(qstar + (word_t)small);
+		qstar = (word_t)(qstar + (word_t)_small);
 		q->val[shift] = qstar;
 		/*
 		 * Check that the MSW of remainder was cancelled out and that

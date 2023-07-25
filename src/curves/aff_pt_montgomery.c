@@ -200,7 +200,7 @@ err:
 }
 
 /*
- * Import an Edwards affine point from a buffer with the following layout; the 2
+ * Import an Montgomery affine point from a buffer with the following layout; the 2
  * coordinates (elements of Fp) are each encoded on p_len bytes, where p_len
  * is the size of p in bytes (e.g. 66 for a prime p of 521 bits). Each
  * coordinate is encoded in big endian. Size of buffer must exactly match
@@ -247,7 +247,7 @@ err:
 }
 
 
-/* Export an Edwards affine point to a buffer with the following layout; the 2
+/* Export an Montgomery affine point to a buffer with the following layout; the 2
  * coordinates (elements of Fp) are each encoded on p_len bytes, where p_len
  * is the size of p in bytes (e.g. 66 for a prime p of 521 bits). Each
  * coordinate is encoded in big endian. Size of buffer must exactly match
