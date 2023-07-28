@@ -46,6 +46,7 @@ ifneq ($(CLANG),)
   # Comparison results (true if true, empty if false)
   CLANG_VERSION_GTE_12 := $(shell [ $(CLANG_VERSION) -ge 1200 ]  && echo true)
   CLANG_VERSION_GTE_13 := $(shell [ $(CLANG_VERSION) -ge 1300 ]  && echo true)
+  CLANG_VERSION_GTE_16 := $(shell [ $(CLANG_VERSION) -ge 1600 ]  && echo true)
   CLANG_VERSION_GTE_17 := $(shell [ $(CLANG_VERSION) -ge 1700 ]  && echo true)
 endif
 
@@ -91,7 +92,7 @@ ifneq ($(CLANG),)
     # We have to do this because the '_' prefix seems now reserved to builtins
     WARNING_CFLAGS += -Wno-reserved-identifier
   endif
-  ifeq ($(CLANG_VERSION_GTE_17), true)
+  ifeq ($(CLANG_VERSION_GTE_16), true)
     # NOTE: XXX: this is really a shame to remove this, but
     # we have to wait until this is less sensitive and false positive
     # prone to use it!
