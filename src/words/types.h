@@ -61,6 +61,7 @@
  * (i.e. under #else) what is precisely needed.
  */
 #include <stdint.h>
+#include <inttypes.h>
 #include <stddef.h>
 #else /* WITH_STDLIB */
 
