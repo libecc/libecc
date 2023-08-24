@@ -5,6 +5,10 @@ project('ecc', 'c',
 
 top_dir = meson.current_source_dir()
 
+# dunamai is used for version sync with gconf (in the same way poetry-dynamic-versioning does)
+pymod = import('python')
+py3 = pymod.find_installation('python3', modules: ['dunamai'])
+
 # about libecc
 # below file listings should be moved in successive small 'meson.build' file in each subdir, that
 # only contains the file listing, replacing them with a lonely 'subdir('src/xxx') instead.
@@ -194,4 +198,3 @@ libsign_lib = static_library('libsign',
   link_with: libarith_lib,
   include_directories: ecc_inc,
 )
-
