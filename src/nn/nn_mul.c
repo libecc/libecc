@@ -13,9 +13,10 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include <libecc/nn/nn_mul_public.h>
 #include <libecc/nn/nn_add.h>
 #include <libecc/nn/nn.h>
+/* Use internal API header */
+#include "nn_mul.h"
 
 /*
  * Compute out = (in1 * in2) & (2^(WORD_BYTES * wlimits) - 1).
