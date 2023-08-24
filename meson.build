@@ -179,7 +179,6 @@ key_mod_src = files('src/sig/ec_key.c')
 libarith_lib = static_library('libarith',
     sources: [ fp_mod_src, nn_mod_src, rand_src, utils_arith_src ],
     include_directories: ecc_inc,
-    link_language: 'c',
 )
 
 libarith_dep = declare_dependency(
