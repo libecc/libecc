@@ -1,2 +1,3 @@
 option('use_external_rand', type: 'boolean', value: false, description: 'use external get_random() implementation')
+option('with_tests', type: 'boolean', value: false, description: 'enable test suites support')
 option('with_rand_source', type: 'string', value: '', description: 'get_random() implementation source')

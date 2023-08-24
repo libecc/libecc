@@ -13,9 +13,9 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
+#include <libecc/external_deps/print.h>
 #include <libecc/utils/utils.h>
 #include <libecc/libsig.h>
-#include <libecc/external_deps/print.h>
 
 /*
  * Use extern declarations to avoid including

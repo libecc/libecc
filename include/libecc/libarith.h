@@ -26,7 +26,7 @@
 #include <libecc/nn/nn_modinv.h>
 #include <libecc/nn/nn_mod_pow.h>
 #include <libecc/nn/nn_rand.h>
-#include "utils/print_nn.h"
+#include <libecc/utils/print_nn.h>
 
 /* Fp layer include */
 #include <libecc/fp/fp.h>
