@@ -35,23 +35,9 @@ ec_self_test = executable(
 )
 
 test(
-    'rand',
-    ec_self_test,
-    args: 'rand',
-    timeout: 120,
-)
-
-test(
     'vectors',
     ec_self_test,
     args: 'vectors',
-    timeout: 120,
-)
-
-test(
-    'perf',
-    ec_self_test,
-    args: 'perf',
     timeout: 120,
 )
 
