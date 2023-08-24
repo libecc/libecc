@@ -1,0 +1,38 @@
+sig_mod_src = files(
+  'decdsa.c',
+  'decdsa.h',
+  'ecdsa.c',
+  'ecdsa.h',
+  'ecfsdsa.c',
+  'ecfsdsa.h',
+  'ecgdsa.c',
+  'ecgdsa.h',
+  'eckcdsa.c',
+  'eckcdsa.h',
+  'ecosdsa.c',
+  'ecosdsa.h',
+  'ecrdsa.c',
+  'ecrdsa.h',
+  'ecsdsa.c',
+  'ecsdsa.h',
+  'eddsa.c',
+  'eddsa.h',
+  'fuzzing_ecdsa.c',
+  'fuzzing_ecdsa.h',
+  'fuzzing_ecgdsa.c',
+  'fuzzing_ecgdsa.h',
+  'fuzzing_ecrdsa.c',
+  'fuzzing_ecrdsa.h',
+  'ecdsa_common.c',
+  'ecsdsa_common.c',
+  'sig_algs.c',
+  'sm2.c',
+  'bign_common.c',
+  'bign.c',
+  'dbign.c',
+  'bip0340.c',
+  )
+
+key_mod_src = files(
+    'ec_key.c'
+  )
