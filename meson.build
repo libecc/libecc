@@ -1,4 +1,4 @@
-project('ecc', 'c',
+project('libecc', 'c',
     meson_version: '>=1.1.0',
     version: run_command('dunamai', 'from', 'git', '--style', 'semver', '--dirty', check: true).stdout().strip(),
     default_options: ['c_std=gnu11', 'default_library=static', 'warning_level=3' ])
@@ -14,6 +14,7 @@ py3 = pymod.find_installation('python3', modules: ['dunamai'])
 # only contains the file listing, replacing them with a lonely 'subdir('src/xxx') instead.
 
 ecc_inc = include_directories('include')
+subdir('include/libecc')
 
 # module declaration, each module files listing is declare in its own directory
 subdir('src/utils')
