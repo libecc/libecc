@@ -13,11 +13,11 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "libec.h"
+#include <libecc/libec.h>
 /* We include the printf external dependency for printf output */
-#include "print.h"
+#include <libecc/external_deps/print.h>
 /* We include the time external dependency for performance measurement */
-#include "time.h"
+#include <libecc/external_deps/time.h>
 
 /* The followin function picks a random Fp element x, where Fp is the
  * curve underlying prime field, and computes y in Fp such that:

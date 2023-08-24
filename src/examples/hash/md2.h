@@ -12,7 +12,7 @@
 #define __MD2_H__
 
 /* Include libec for useful types and macros */
-#include "libec.h"
+#include <libecc/libec.h>
 
 #define MD2_STATE_SIZE   16
 #define MD2_BLOCK_SIZE   16

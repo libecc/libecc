@@ -646,7 +646,7 @@ err:
 
 /********* main test program for SSS *************/
 #ifdef SSS
-#include "utils/print_buf.h"
+#include <libecc/utils/print_buf.h>
 
 #define K 50
 #define N 150

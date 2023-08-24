@@ -30,7 +30,7 @@
  */
 
 /* We include the NN layer API header */
-#include "libarith.h"
+#include <libecc/libarith.h>
 
 /* Declare our Miller-Rabin test implemented
  * in another module.

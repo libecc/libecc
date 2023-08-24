@@ -16,7 +16,7 @@
  * manipulate a ring of integers, we include libsig for
  * the hash algorithms.
  */
-#include "../lib_ecc_config.h"
+#include <libecc/lib_ecc_config.h>
 
 /* The hash algorithms wrapper */
 #include "../../hash/hash.h"

@@ -16,7 +16,7 @@
  * NOTE: we include libsig for the libecc
  * hash algorithms.
  */
-#include "libec.h"
+#include <libecc/libec.h>
 
 /* MD-2 */
 #include "md2.h"

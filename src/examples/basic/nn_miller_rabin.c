@@ -14,7 +14,7 @@
  *  See LICENSE file at the root folder of the project.
  */
 /* We include the NN layer API header */
-#include "libarith.h"
+#include <libecc/libarith.h>
 
 ATTRIBUTE_WARN_UNUSED_RET int miller_rabin(nn_src_t n, const unsigned int t, int *res);
 

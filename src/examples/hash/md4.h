@@ -11,7 +11,7 @@
 #ifndef __MD4_H__
 
 /* Include libec for useful types and macros */
-#include "libec.h"
+#include <libecc/libec.h>
 
 /****************************************************/
 /*

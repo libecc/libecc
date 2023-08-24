@@ -465,7 +465,7 @@ err:
 }
 
 #ifdef HASH
-#include "utils/print_buf.h"
+#include <libecc/utils/print_buf.h>
 int main(int argc, char *argv[])
 {
         int ret = 0;
