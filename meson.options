@@ -1,3 +1,2 @@
-option('use_external_rand', type: 'feature', description: 'use external get_random() implementation')
-option('with_rand_srource', type: 'string', value: '', description: 'get_random() implementation source')
-
+option('use_external_rand', type: 'boolean', value: false, description: 'use external get_random() implementation')
+option('with_rand_source', type: 'string', value: '', description: 'get_random() implementation source')

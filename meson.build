@@ -168,8 +168,9 @@ ecdh_mod_src = files(
   )
 
 
-if get_option('use_external_rand').enabled()
-rand_src = files(get_option('with_rand'))
+use_external_rand_opt = get_option('use_external_rand')
+if use_external_rand_opt
+rand_src = files(get_option('with_rand_source'))
 else
 rand_src = files()
 endif
