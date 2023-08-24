@@ -21,7 +21,7 @@
 #include <libecc/fp/fp.h>
 #include <libecc/curves/ec_params.h>
 #include <libecc/nn/nn_rand.h>
-#include <libecc/nn/nn_add_public.h>
+#include <libecc/nn/nn_add.h>
 #include <libecc/nn/nn_logical.h>
 #include <libecc/curves/prj_pt.h>
 #include <libecc/hash/hash_algs.h>

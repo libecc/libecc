@@ -16,13 +16,12 @@
 #include <libecc/curves/ec_shortw.h>
 #include <libecc/curves/prj_pt.h>
 #include <libecc/nn/nn_logical.h>
+#include <libecc/nn/nn_add.h>
 #include <libecc/nn/nn_rand.h>
 #include <libecc/fp/fp_add.h>
 #include <libecc/fp/fp_mul.h>
 #include <libecc/fp/fp_montgomery.h>
 #include <libecc/fp/fp_rand.h>
-/* Include the "internal" header as we use non public API here */
-#include "..//nn/nn_add.h"
 
 #define PRJ_PT_MAGIC ((word_t)(0xe1cd70babb1d5afeULL))
 

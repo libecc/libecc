@@ -14,7 +14,7 @@
  *  See LICENSE file at the root folder of the project.
  */
 #include <libecc/nn/nn_mul_public.h>
-#include <libecc/nn/nn_add_public.h>
+#include <libecc/nn/nn_add.h>
 #include <libecc/nn/nn.h>
 
 /*

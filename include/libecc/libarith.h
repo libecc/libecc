@@ -19,7 +19,7 @@
 /* NN layer includes */
 #include <libecc/nn/nn.h>
 #include <libecc/nn/nn_logical.h>
-#include <libecc/nn/nn_add_public.h>
+#include <libecc/nn/nn_add.h>
 #include <libecc/nn/nn_mul_public.h>
 #include <libecc/nn/nn_mul_redc1.h>
 #include <libecc/nn/nn_div_public.h>
