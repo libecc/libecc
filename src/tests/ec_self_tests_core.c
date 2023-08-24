@@ -14,10 +14,10 @@
  *  See LICENSE file at the root folder of the project.
  */
 #include "ec_self_tests_core.h"
-#include "../utils/utils.h"
+#include <libecc/utils/utils.h>
 #include "../external_deps/rand.h"
 #include "../external_deps/time.h"
-#include "../external_deps/print.h"
+#include <libecc/external_deps/print.h>
 
 /* Parallelize self tests? */
 #ifdef WITH_OPENMP_SELF_TESTS

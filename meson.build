@@ -24,14 +24,26 @@ subdir('src/curves')
 subdir('src/hash')
 subdir('src/sig')
 subdir('src/ecdh')
+subdir('src/external_deps')
 
 # detect if an external rand source implementation is passed
 use_external_rand_opt = get_option('use_external_rand')
 if use_external_rand_opt
-rand_src = files(get_option('with_rand_source'))
+  rand_src = files(get_option('with_rand_source'))
 else
-rand_src = files()
+  rand_src = files()
 endif
+
+# globally used build args, TODO: to make configurable
+build_args = [
+  '-fno-builtin',
+  '-D_FORTIFY_SOURCE=2',
+  '-fstack-protector-strong',
+  '-DWITH_STDLIB',
+  '-DUSE_WARN_UNUSED_RET',
+  '-ffreestanding'
+]
+
 
 # libecc libraries declaration. For each library, the library itself and the
 # corresponding dependency object (includedir and library to link with) is
@@ -40,34 +52,65 @@ endif
 # INFO: defaulting to static lib only (see project declaration).
 # to build both static and dynamic library, use -Ddefault_library=both option
 #
-libarith_lib = library('libarith',
-    sources: [ fp_mod_src, nn_mod_src, rand_src, utils_arith_src ],
+libarith_lib = library('arith',
+    sources: [
+      fp_mod_src,
+      nn_mod_src,
+      rand_src,
+      utils_arith_src,
+    ],
     include_directories: ecc_inc,
     install : true,
+    c_args: build_args,
 )
 libarith_dep = declare_dependency(
     link_with: libarith_lib,
     include_directories: ecc_inc,
 )
 
-libec_lib = library('libecc',
-  sources: [ curves_mod_src, utils_ec_src ],
-  link_with: libarith_lib,
+libec_lib = library('ecc',
+  sources: [
+    curves_mod_src,
+    utils_ec_src,
+    fp_mod_src,
+    nn_mod_src,
+    rand_src,
+    utils_arith_src
+  ],
   include_directories: ecc_inc,
   install : true,
+  c_args: build_args,
 )
 libec_dep = declare_dependency(
     link_with: libec_lib,
     include_directories: ecc_inc,
 )
 
-libsign_lib = library('libsign',
-  sources: [ hash_mod_src, sig_mod_src, key_mod_src, utils_sign_src, ecdh_mod_src ],
-  link_with: libarith_lib,
+libsign_lib = library('sign',
+  sources: [
+    hash_mod_src,
+    sig_mod_src,
+    key_mod_src,
+    utils_sign_src,
+    ecdh_mod_src,
+    curves_mod_src,
+    utils_ec_src,
+    fp_mod_src,
+    nn_mod_src,
+    rand_src,
+    utils_arith_src
+  ],
   include_directories: ecc_inc,
   install : true,
+  c_args: build_args,
 )
 libsign_dep = declare_dependency(
     link_with: libsign_lib,
     include_directories: ecc_inc,
 )
+
+# About tests, see src/tests/meson.build. Enabled with -Dwith_tests=true
+with_tests_opt = get_option('with_tests')
+if with_tests_opt
+  subdir('src/tests')
+endif
