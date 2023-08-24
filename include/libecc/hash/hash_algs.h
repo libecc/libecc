@@ -16,9 +16,9 @@
 #ifndef __HASH_ALGS_H__
 #define __HASH_ALGS_H__
 
-#include "../lib_ecc_config.h"
-#include "../lib_ecc_types.h"
-#include "../words/words.h"
+#include <libecc/lib_ecc_config.h>
+#include <libecc/lib_ecc_types.h>
+#include <libecc/words/words.h>
 #include "sha224.h"
 #include "sha256.h"
 #include "sha384.h"
@@ -39,7 +39,7 @@
 #include "bash256.h"
 #include "bash384.h"
 #include "bash512.h"
-#include "../utils/utils.h"
+#include <libecc/utils/utils.h>
 
 #if (MAX_DIGEST_SIZE == 0)
 #error "It seems you disabled all hash algorithms in lib_ecc_config.h"

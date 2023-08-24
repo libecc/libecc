@@ -8,10 +8,10 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "../lib_ecc_config.h"
+#include <libecc/lib_ecc_config.h>
 #ifdef WITH_HASH_BASH384
 
-#include "bash384.h"
+#include <libecc/hash/bash384.h>
 
 /* Init hash function. Returns 0 on success, -1 on error. */
 int bash384_init(bash384_context *ctx)

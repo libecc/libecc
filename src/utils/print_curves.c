@@ -13,7 +13,7 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "print_curves.h"
+#include <libecc/utils/print_curves.h>
 
 /*
  * Locally convert given projective point to affine representation and

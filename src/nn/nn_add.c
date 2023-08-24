@@ -13,8 +13,8 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "nn_add.h"
-#include "nn.h"
+#include <libecc/nn/nn_add.h>
+#include <libecc/nn/nn.h>
 
 /*
  * This module provides conditional addition and subtraction functions between

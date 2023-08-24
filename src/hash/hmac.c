@@ -8,10 +8,10 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "../lib_ecc_config.h"
+#include <libecc/lib_ecc_config.h>
 #ifdef WITH_HMAC
 
-#include "hmac.h"
+#include <libecc/hash/hmac.h>
 
 int hmac_init(hmac_context *ctx, const u8 *hmackey, u32 hmackey_len,
 	      hash_alg_type hash_type)

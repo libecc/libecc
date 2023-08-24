@@ -16,8 +16,8 @@
 #ifndef __AFF_PT_H__
 #define __AFF_PT_H__
 
-#include "../fp/fp.h"
-#include "../fp/fp_sqrt.h"
+#include <libecc/fp/fp.h>
+#include <libecc/fp/fp_sqrt.h>
 #include "ec_shortw.h"
 #include "ec_montgomery.h"
 #include "ec_edwards.h"

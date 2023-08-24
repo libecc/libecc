@@ -7,8 +7,5 @@ curves_mod_src = files(
   'ec_shortw.c',
   'aff_pt_edwards.c',
   'curves.c',
-  'ec_edwards.h',
-  'ec_montgomery.h',
-  'ec_params.h',
   'prj_pt.c',
   )

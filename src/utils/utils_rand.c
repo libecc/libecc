@@ -13,7 +13,7 @@
 /* Unsafe random source:
  * Initial seeding is performed using good entropy, then
  * a congruential linear system is used.
- */ 
+ */
 static u64 seed = 0;
 int get_unsafe_random(unsigned char *buf, u16 len)
 {

@@ -8,7 +8,7 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "../lib_ecc_config.h"
+#include <libecc/lib_ecc_config.h>
 #if defined(WITH_SIG_EDDSA25519) || defined(WITH_SIG_EDDSA448)
 
 /*
@@ -38,20 +38,20 @@
 #endif
 #endif
 
-#include "../nn/nn_rand.h"
-#include "../nn/nn_mul.h"
-#include "../nn/nn_logical.h"
-#include "../fp/fp.h"
-#include "../fp/fp_sqrt.h"
+#include <libecc/nn/nn_rand.h>
+#include <libecc/nn/nn_mul.h>
+#include <libecc/nn/nn_logical.h>
+#include <libecc/fp/fp.h>
+#include <libecc/fp/fp_sqrt.h>
 
-#include "sig_algs_internal.h"
-#include "sig_algs.h"
-#include "ec_key.h"
-#include "../utils/utils.h"
+#include <libecc/sig/sig_algs_internal.h>
+#include <libecc/sig/sig_algs.h>
+#include <libecc/sig/ec_key.h>
+#include <libecc/utils/utils.h>
 #ifdef VERBOSE_INNER_VALUES
 #define EC_SIG_ALG "EDDSA"
 #endif
-#include "../utils/dbg_sig.h"
+#include <libecc/utils/dbg_sig.h>
 
 
 ATTRIBUTE_WARN_UNUSED_RET static inline int dom(u16 x, const u8 *y, u16 olen_y, const hash_mapping *h,

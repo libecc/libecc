@@ -13,10 +13,10 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "../nn/nn_logical.h"
-#include "../nn/nn_mod_pow.h"
-#include "fp_pow.h"
-#include "fp.h"
+#include <libecc/nn/nn_logical.h>
+#include <libecc/nn/nn_mod_pow.h>
+#include <libecc/fp/fp_pow.h>
+#include <libecc/fp/fp.h>
 
 /*
  * NOT constant time with regard to the bitlength of exp.

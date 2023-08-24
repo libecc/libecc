@@ -17,25 +17,25 @@
 #define __LIBARITH_H__
 
 /* NN layer includes */
-#include "nn/nn.h"
-#include "nn/nn_logical.h"
-#include "nn/nn_add_public.h"
-#include "nn/nn_mul_public.h"
-#include "nn/nn_mul_redc1.h"
-#include "nn/nn_div_public.h"
-#include "nn/nn_modinv.h"
-#include "nn/nn_mod_pow.h"
-#include "nn/nn_rand.h"
+#include <libecc/nn.h>
+#include <libecc/nn_logical.h>
+#include <libecc/nn_add_public.h>
+#include <libecc/nn_mul_public.h>
+#include <libecc/nn_mul_redc1.h>
+#include <libecc/nn_div_public.h>
+#include <libecc/nn_modinv.h>
+#include <libecc/nn_mod_pow.h>
+#include <libecc/nn_rand.h>
 #include "utils/print_nn.h"
 
 /* Fp layer include */
-#include "fp/fp.h"
-#include "fp/fp_add.h"
-#include "fp/fp_montgomery.h"
-#include "fp/fp_mul.h"
-#include "fp/fp_sqrt.h"
-#include "fp/fp_pow.h"
-#include "fp/fp_rand.h"
+#include <libecc/fp.h>
+#include <libecc/fp_add.h>
+#include <libecc/fp_montgomery.h>
+#include <libecc/fp_mul.h>
+#include <libecc/fp_sqrt.h>
+#include <libecc/fp_pow.h>
+#include <libecc/fp_rand.h>
 #include "utils/print_fp.h"
 
 #endif /* __LIBARITH_H__ */

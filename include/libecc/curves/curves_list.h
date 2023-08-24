@@ -16,9 +16,9 @@
 #ifndef __CURVES_LIST_H__
 #define __CURVES_LIST_H__
 
-#include "../lib_ecc_config.h"
-#include "../lib_ecc_types.h"
-#include "../words/words.h"
+#include <libecc/lib_ecc_config.h>
+#include <libecc/lib_ecc_types.h>
+#include <libecc/words/words.h>
 #include "known/ec_params_brainpoolp192r1.h"
 #include "known/ec_params_brainpoolp224r1.h"
 #include "known/ec_params_brainpoolp256r1.h"

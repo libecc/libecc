@@ -13,9 +13,9 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "ec_key.h"
-#include "sig_algs.h"
-#include "../curves/curves.h"
+#include <libecc/sig/ec_key.h>
+#include <libecc/sig/sig_algs.h>
+#include <libecc/curves/curves.h>
 
 /*
  * Check if given private key 'A' has been initialized. Returns 0 on success,

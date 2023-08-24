@@ -13,13 +13,13 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "nn_modinv.h"
-#include "nn_div.h"
-#include "nn_mul.h"
-#include "nn_logical.h"
-#include "nn_add.h"
-#include "nn_mod_pow.h"
-#include "nn.h"
+#include <libecc/nn/nn_modinv.h>
+#include <libecc/nn/nn_div.h>
+#include <libecc/nn/nn_mul.h>
+#include <libecc/nn/nn_logical.h>
+#include <libecc/nn/nn_add.h>
+#include <libecc/nn/nn_mod_pow.h>
+#include <libecc/nn/nn.h>
 
 /*
  * Compute out = x^-1 mod m, i.e. out such that (out * x) = 1 mod m

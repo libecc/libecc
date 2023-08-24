@@ -1,11 +1,11 @@
 #ifndef __HMAC_H__
 #define __HMAC_H__
 
-#include "../lib_ecc_config.h"
+#include <libecc/lib_ecc_config.h>
 #ifdef WITH_HMAC
 
-#include "../words/words.h"
-#include "../utils/utils.h"
+#include <libecc/words/words.h>
+#include <libecc/utils/utils.h>
 #include "hash_algs.h"
 
 #define HMAC_MAGIC ((word_t)(0x9849020187612083ULL))

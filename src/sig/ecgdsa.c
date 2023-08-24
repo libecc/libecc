@@ -13,20 +13,20 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "../lib_ecc_config.h"
+#include <libecc/lib_ecc_config.h>
 #ifdef WITH_SIG_ECGDSA
 
-#include "../nn/nn.h"
-#include "../nn/nn_rand.h"
-#include "../nn/nn_mul.h"
-#include "../nn/nn_logical.h"
+#include <libecc/nn/nn.h>
+#include <libecc/nn/nn_rand.h>
+#include <libecc/nn/nn_mul.h>
+#include <libecc/nn/nn_logical.h>
 
-#include "sig_algs_internal.h"
-#include "ec_key.h"
+#include <libecc/sig/sig_algs_internal.h>
+#include <libecc/sig/ec_key.h>
 #ifdef VERBOSE_INNER_VALUES
 #define EC_SIG_ALG "ECGDSA"
 #endif
-#include "../utils/dbg_sig.h"
+#include <libecc/utils/dbg_sig.h>
 
 int ecgdsa_init_pub_key(ec_pub_key *out_pub, const ec_priv_key *in_priv)
 {

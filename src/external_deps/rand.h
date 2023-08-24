@@ -15,7 +15,7 @@
  */
 #ifndef __RAND_H__
 #define __RAND_H__
-#include "../words/words.h"
+#include <libecc/words/words.h>
 
 ATTRIBUTE_WARN_UNUSED_RET int get_random(unsigned char *buf, u16 len);
 

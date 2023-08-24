@@ -13,8 +13,8 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "ec_params.h"
-#include "curves.h"
+#include <libecc/curves/ec_params.h>
+#include <libecc/curves/curves.h>
 
 /*
  * Initialize (already allocated) curve parameters structure pointed by

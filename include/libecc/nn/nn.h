@@ -16,9 +16,9 @@
 #ifndef __NN_H__
 #define __NN_H__
 
-#include "../words/words.h"
+#include <libecc/words/words.h>
 #include "nn_config.h"
-#include "../utils/utils.h"
+#include <libecc/utils/utils.h>
 
 /*
  * For a given amount of bytes (resp. bits), return the minimum number

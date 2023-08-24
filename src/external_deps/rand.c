@@ -26,7 +26,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include "../words/words.h"
+#include <libecc/words/words.h>
 
 /*
  * Copy file content to buffer. Return 0 on success, i.e. if the request

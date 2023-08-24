@@ -16,15 +16,15 @@
 #ifndef __EC_KEY_H__
 #define __EC_KEY_H__
 
-#include "../lib_ecc_config.h"
-#include "../lib_ecc_types.h"
-#include "../fp/fp.h"
-#include "../curves/ec_params.h"
-#include "../nn/nn_rand.h"
-#include "../nn/nn_add.h"
-#include "../nn/nn_logical.h"
-#include "../curves/prj_pt.h"
-#include "../hash/hash_algs.h"
+#include <libecc/lib_ecc_config.h>
+#include <libecc/lib_ecc_types.h>
+#include <libecc/fp/fp.h>
+#include <libecc/curves/ec_params.h>
+#include <libecc/nn/nn_rand.h>
+#include <libecc/nn/nn_add.h>
+#include <libecc/nn/nn_logical.h>
+#include <libecc/curves/prj_pt.h>
+#include <libecc/hash/hash_algs.h>
 
 /* Enum for exported keys */
 typedef enum {

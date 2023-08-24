@@ -16,7 +16,7 @@
 #ifndef __PRINT_CURVES_H__
 #define __PRINT_CURVES_H__
 
-#include "../curves/curves.h"
+#include <libecc/curves/curves.h>
 #include "print_fp.h"
 
 void ec_point_print(const char *msg, prj_pt_src_t prj_pt);

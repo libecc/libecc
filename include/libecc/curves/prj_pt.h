@@ -16,10 +16,10 @@
 #ifndef __PRJ_PT_H__
 #define __PRJ_PT_H__
 
-#include "../nn/nn_mul.h"
-#include "../fp/fp.h"
-#include "../fp/fp_mul.h"
-#include "../fp/fp_mul_redc1.h"
+#include <libecc/nn/nn_mul.h>
+#include <libecc/fp/fp.h>
+#include <libecc/fp/fp_mul.h>
+#include <libecc/fp/fp_mul_redc1.h>
 #include "ec_shortw.h"
 #include "aff_pt.h"
 

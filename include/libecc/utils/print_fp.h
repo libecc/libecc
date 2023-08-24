@@ -16,7 +16,7 @@
 #ifndef __PRINT_FP_H__
 #define __PRINT_FP_H__
 
-#include "../fp/fp.h"
+#include <libecc/fp/fp.h>
 #include "print_nn.h"
 
 void fp_ctx_print(const char *msg, fp_ctx_src_t ctx);

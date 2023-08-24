@@ -13,11 +13,11 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "fp.h"
-#include "fp_add.h"
-#include "../nn/nn_add.h"
-#include "../nn/nn_logical.h"
-#include "../nn/nn_mul_redc1.h"
+#include <libecc/fp/fp.h>
+#include <libecc/fp/fp_add.h>
+#include <libecc/nn/nn_add.h>
+#include <libecc/nn/nn_logical.h>
+#include <libecc/nn/nn_mul_redc1.h>
 
 #define FP_CTX_MAGIC ((word_t)(0x114366fc34955125ULL))
 

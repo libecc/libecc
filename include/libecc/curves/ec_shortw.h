@@ -16,11 +16,11 @@
 #ifndef __EC_SHORTW_H__
 #define __EC_SHORTW_H__
 
-#include "../nn/nn.h"
-#include "../fp/fp.h"
-#include "../fp/fp_add.h"
-#include "../fp/fp_mul.h"
-#include "../fp/fp_mul_redc1.h"
+#include <libecc/nn/nn.h>
+#include <libecc/fp/fp.h>
+#include <libecc/fp/fp_add.h>
+#include <libecc/fp/fp_mul.h>
+#include <libecc/fp/fp_mul_redc1.h>
 
 typedef struct {
 	fp a;

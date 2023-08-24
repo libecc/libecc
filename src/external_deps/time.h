@@ -16,7 +16,7 @@
 #ifndef __TIME_H__
 #define __TIME_H__
 
-#include "../words/words.h"
+#include <libecc/words/words.h>
 
 ATTRIBUTE_WARN_UNUSED_RET int get_ms_time(u64 *time);
 

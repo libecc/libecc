@@ -13,24 +13,24 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "../lib_ecc_config.h"
+#include <libecc/lib_ecc_config.h>
 #if defined(WITH_SIG_ECDSA) || defined(WITH_SIG_DECDSA)
 
-#include "../nn/nn_rand.h"
-#include "../nn/nn_mul.h"
-#include "../nn/nn_logical.h"
+#include <libecc/nn/nn_rand.h>
+#include <libecc/nn/nn_mul.h>
+#include <libecc/nn/nn_logical.h>
 
-#include "sig_algs_internal.h"
-#include "ec_key.h"
-#include "../utils/utils.h"
+#include <libecc/sig/sig_algs_internal.h>
+#include <libecc/sig/ec_key.h>
+#include <libecc/utils/utils.h>
 #ifdef VERBOSE_INNER_VALUES
 #define EC_SIG_ALG "ECDSA"
 #endif
-#include "../utils/dbg_sig.h"
+#include <libecc/utils/dbg_sig.h>
 
 
 #if defined(WITH_SIG_DECDSA)
-#include "../hash/hmac.h"
+#include <libecc/hash/hmac.h>
 
 /*
  * Deterministic nonce generation function for deterministic ECDSA, as

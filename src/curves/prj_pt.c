@@ -13,15 +13,15 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "ec_shortw.h"
-#include "prj_pt.h"
-#include "../nn/nn_logical.h"
-#include "../nn/nn_add.h"
-#include "../nn/nn_rand.h"
-#include "../fp/fp_add.h"
-#include "../fp/fp_mul.h"
-#include "../fp/fp_montgomery.h"
-#include "../fp/fp_rand.h"
+#include <libecc/curves/ec_shortw.h>
+#include <libecc/curves/prj_pt.h>
+#include <libecc/nn/nn_logical.h>
+#include <libecc/nn/nn_add.h>
+#include <libecc/nn/nn_rand.h>
+#include <libecc/fp/fp_add.h>
+#include <libecc/fp/fp_mul.h>
+#include <libecc/fp/fp_montgomery.h>
+#include <libecc/fp/fp_rand.h>
 
 #define PRJ_PT_MAGIC ((word_t)(0xe1cd70babb1d5afeULL))
 

@@ -8,10 +8,10 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "../lib_ecc_config.h"
+#include <libecc/lib_ecc_config.h>
 #ifdef WITH_HASH_BASH512
 
-#include "bash512.h"
+#include <libecc/hash/bash512.h>
 
 /* Init hash function. Returns 0 on success, -1 on error. */
 int bash512_init(bash512_context *ctx)

@@ -67,11 +67,3 @@ libsign_dep = declare_dependency(
     link_with: libsign_lib,
     include_directories: ecc_inc,
 )
-
-# building dynamic libraries on request only
-with_dynamic_libs_opt = get_option('with_dynamic_libs')
-if with_dynamic_libs_opt
-
-
-
-endif

@@ -16,12 +16,12 @@
 #ifndef __FP_H__
 #define __FP_H__
 
-#include "../nn/nn.h"
-#include "../nn/nn_div.h"
-#include "../nn/nn_modinv.h"
-#include "../nn/nn_mul.h"
-#include "../nn/nn_mul_redc1.h"
-#include "../fp/fp_config.h"
+#include <libecc/nn/nn.h>
+#include <libecc/nn/nn_div.h>
+#include <libecc/nn/nn_modinv.h>
+#include <libecc/nn/nn_mul.h>
+#include <libecc/nn/nn_mul_redc1.h>
+#include <libecc/fp/fp_config.h>
 
 /*
  * First, definition of our Fp context, containing all the elements

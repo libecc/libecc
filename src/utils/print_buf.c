@@ -8,8 +8,8 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "print_buf.h"
-#include "../external_deps/print.h"
+#include <libecc/utils/print_buf.h>
+#include <libecc/external_deps/print.h>
 
 /* Print the buffer of a given size */
 void buf_print(const char *msg, const u8 *buf, u16 buflen)

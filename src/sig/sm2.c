@@ -9,20 +9,20 @@
  *  See LICENSE file at the root folder of the project.
  */
 
-#include "../lib_ecc_config.h"
+#include <libecc/lib_ecc_config.h>
 #ifdef WITH_SIG_SM2
 
-#include "../nn/nn_rand.h"
-#include "../nn/nn_mul.h"
-#include "../nn/nn_logical.h"
+#include <libecc/nn/nn_rand.h>
+#include <libecc/nn/nn_mul.h>
+#include <libecc/nn/nn_logical.h>
 
-#include "sig_algs_internal.h"
-#include "ec_key.h"
-#include "../utils/utils.h"
+#include <libecc/sig/sig_algs_internal.h>
+#include <libecc/sig/ec_key.h>
+#include <libecc/utils/utils.h>
 #ifdef VERBOSE_INNER_VALUES
 #define EC_SIG_ALG "SM2"
 #endif
-#include "../utils/dbg_sig.h"
+#include <libecc/utils/dbg_sig.h>
 
 /*
  * NOTE: SM2 has an oddity in private key generation when compared to

@@ -13,9 +13,9 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "fp_sqrt.h"
-#include "../nn/nn_add.h"
-#include "../nn/nn_logical.h"
+#include <libecc/fp/fp_sqrt.h>
+#include <libecc/nn/nn_add.h>
+#include <libecc/nn/nn_logical.h>
 
 /*
  * Compute the legendre symbol of an element of Fp:

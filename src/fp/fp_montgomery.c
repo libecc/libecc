@@ -13,11 +13,11 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "fp.h"
-#include "fp_add.h"
-#include "fp_mul.h"
-#include "fp_mul_redc1.h"
-#include "fp_montgomery.h"
+#include <libecc/fp/fp.h>
+#include <libecc/fp/fp_add.h>
+#include <libecc/fp/fp_mul.h>
+#include <libecc/fp/fp_mul_redc1.h>
+#include <libecc/fp/fp_montgomery.h>
 
 /* Compute out = in1 + in2 mod p in the Montgomery form.
  * Inputs and outputs are in their Montgomery form.

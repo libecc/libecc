@@ -16,8 +16,8 @@
 #ifndef __PRINT_NN_H__
 #define __PRINT_NN_H__
 
-#include "../nn/nn.h"
-#include "../external_deps/print.h"
+#include <libecc/nn/nn.h>
+#include <libecc/external_deps/print.h>
 
 void nn_print(const char *msg, nn_src_t a);
 
