@@ -16,7 +16,7 @@
 
 #include <libecc/words/words.h>
 #include <libecc/utils/utils.h>
-#include "shake.h"
+#include <libecc/hash/shake.h>
 
 /* NOTE: this is an instantiation of SHAKE256 with
  * maximum size of 114 bytes, specifically suited for EdDSA Ed448

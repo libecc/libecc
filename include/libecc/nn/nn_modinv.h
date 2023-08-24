@@ -15,7 +15,7 @@
  */
 #ifndef __NN_MODINV_H__
 #define __NN_MODINV_H__
-#include "nn.h"
+#include <libecc/nn/nn.h>
 
 ATTRIBUTE_WARN_UNUSED_RET int nn_modinv(nn_t out, nn_src_t x, nn_src_t m);
 ATTRIBUTE_WARN_UNUSED_RET int nn_modinv_2exp(nn_t out, nn_src_t in, bitcnt_t exp, int *in_isodd);

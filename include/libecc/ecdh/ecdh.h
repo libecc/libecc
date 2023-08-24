@@ -15,7 +15,7 @@
 #ifndef __ECDH_H__
 #define __ECDH_H__
 
-#include "ecccdh.h"
-#include "x25519_448.h"
+#include <libecc/ecdh/ecccdh.h>
+#include <libecc/ecdh/x25519_448.h>
 
 #endif /* __ECDH_H__ */

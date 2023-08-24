@@ -16,7 +16,7 @@
 #ifndef __CURVES_H__
 #define __CURVES_H__
 
-#include "ec_params.h"
+#include <libecc/curves/ec_params.h>
 
 ATTRIBUTE_WARN_UNUSED_RET int ec_get_curve_params_by_name(const u8 *ec_name, u8 ec_name_len,
 				const ec_str_params **ec_params);

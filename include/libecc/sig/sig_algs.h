@@ -16,7 +16,7 @@
 #ifndef __SIG_ALGS_H__
 #define __SIG_ALGS_H__
 
-#include "sig_algs_internal.h"
+#include <libecc/sig/sig_algs_internal.h>
 
 /* Private key generation function specific to each scheme */
 ATTRIBUTE_WARN_UNUSED_RET int gen_priv_key(ec_priv_key *priv_key);

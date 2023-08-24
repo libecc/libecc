@@ -17,9 +17,9 @@
 #define __FP_H__
 
 #include <libecc/nn/nn.h>
-#include <libecc/nn/nn_div.h>
+#include <libecc/nn/nn_div_public.h>
 #include <libecc/nn/nn_modinv.h>
-#include <libecc/nn/nn_mul.h>
+#include <libecc/nn/nn_mul_public.h>
 #include <libecc/nn/nn_mul_redc1.h>
 #include <libecc/fp/fp_config.h>
 

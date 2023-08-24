@@ -13,16 +13,10 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#ifndef __PRINT_FP_H__
-#define __PRINT_FP_H__
+#ifndef __RAND_H__
+#define __RAND_H__
+#include <libecc/words/words.h>
 
-#include <libecc/fp/fp.h>
-#include <libecc/utils/print_nn.h>
+ATTRIBUTE_WARN_UNUSED_RET int get_random(unsigned char *buf, u16 len);
 
-void fp_ctx_print(const char *msg, fp_ctx_src_t ctx);
-
-void fp_print(const char *msg, fp_src_t a);
-
-void fp_print_all(const char *msg, fp_src_t a);
-
-#endif /* __PRINT_FP_H__ */
+#endif /* __RAND_H__ */

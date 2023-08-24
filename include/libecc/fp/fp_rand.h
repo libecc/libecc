@@ -15,7 +15,7 @@
  */
 #ifndef __FP_RAND_H__
 #define __FP_RAND_H__
-#include "fp.h"
+#include <libecc/fp/fp.h>
 
 ATTRIBUTE_WARN_UNUSED_RET int fp_get_random(fp_t out, fp_ctx_src_t ctx);
 

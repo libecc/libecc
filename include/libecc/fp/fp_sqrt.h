@@ -15,10 +15,10 @@
  */
 #ifndef __FP_SQRT_H__
 #define __FP_SQRT_H__
-#include "fp.h"
-#include "fp_add.h"
-#include "fp_mul.h"
-#include "fp_pow.h"
+#include <libecc/fp/fp.h>
+#include <libecc/fp/fp_add.h>
+#include <libecc/fp/fp_mul.h>
+#include <libecc/fp/fp_pow.h>
 
 ATTRIBUTE_WARN_UNUSED_RET int fp_sqrt(fp_t sqrt1, fp_t sqrt2, fp_src_t n);
 

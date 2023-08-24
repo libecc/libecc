@@ -15,7 +15,7 @@
  */
 #ifndef __NN_ADD_PUBLIC_H__
 #define __NN_ADD_PUBLIC_H__
-#include "nn.h"
+#include <libecc/nn/nn.h>
 
 ATTRIBUTE_WARN_UNUSED_RET int nn_add(nn_t C, nn_src_t A, nn_src_t B);
 ATTRIBUTE_WARN_UNUSED_RET int nn_inc(nn_t C, nn_src_t A);

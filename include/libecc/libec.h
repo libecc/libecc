@@ -17,14 +17,14 @@
 #define __LIBEC_H__
 
 /* Include the libarith package */
-#include "libarith.h"
+#include <libecc/libarith.h>
 /* Curve layer includes */
-#include "curves/curves.h"
-#include "curves/curves_list.h"
-#include "curves/ec_shortw.h"
-#include "curves/prj_pt.h"
-#include "curves/aff_pt.h"
+#include <libecc/curves/curves.h>
+#include <libecc/curves/curves_list.h>
+#include <libecc/curves/ec_shortw.h>
+#include <libecc/curves/prj_pt.h>
+#include <libecc/curves/aff_pt.h>
 
-#include "utils/print_curves.h"
+#include <libecc/utils/print_curves.h>
 
 #endif /* __LIBEC_H__ */

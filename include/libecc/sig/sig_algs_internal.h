@@ -16,27 +16,27 @@
 #ifndef __SIG_ALGS_INTERNAL_H__
 #define __SIG_ALGS_INTERNAL_H__
 
-#include "../hash/hash_algs.h"
-#include "../curves/curves.h"
-#include "ec_key.h"
-#include "ecdsa.h"
-#include "eckcdsa.h"
-#include "ecsdsa.h"
-#include "ecosdsa.h"
-#include "ecfsdsa.h"
-#include "ecgdsa.h"
-#include "ecrdsa.h"
-#include "sm2.h"
-#include "eddsa.h"
-#include "decdsa.h"
-#include "bign.h"
-#include "dbign.h"
-#include "bip0340.h"
+#include <libecc/hash/hash_algs.h>
+#include <libecc/curves/curves.h>
+#include <libecc/sig/ec_key.h>
+#include <libecc/sig/ecdsa.h>
+#include <libecc/sig/eckcdsa.h>
+#include <libecc/sig/ecsdsa.h>
+#include <libecc/sig/ecosdsa.h>
+#include <libecc/sig/ecfsdsa.h>
+#include <libecc/sig/ecgdsa.h>
+#include <libecc/sig/ecrdsa.h>
+#include <libecc/sig/sm2.h>
+#include <libecc/sig/eddsa.h>
+#include <libecc/sig/decdsa.h>
+#include <libecc/sig/bign.h>
+#include <libecc/sig/dbign.h>
+#include <libecc/sig/bip0340.h>
 /* Includes for fuzzing */
 #ifdef USE_CRYPTOFUZZ
-#include "fuzzing_ecdsa.h"
-#include "fuzzing_ecgdsa.h"
-#include "fuzzing_ecrdsa.h"
+#include <libecc/sig/fuzzing_ecdsa.h>
+#include <libecc/sig/fuzzing_ecgdsa.h>
+#include <libecc/sig/fuzzing_ecrdsa.h>
 #endif
 
 #if (EC_MAX_SIGLEN == 0)

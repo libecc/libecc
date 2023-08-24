@@ -11,7 +11,7 @@
 #ifndef __SHAKE_H__
 #define __SHAKE_H__
 
-#include "keccak.h"
+#include <libecc/hash/keccak.h>
 
 typedef enum {
 	SHAKE_LITTLE = 0,

@@ -15,7 +15,7 @@
  */
 #ifndef __NN_DIV_PUBLIC_H__
 #define __NN_DIV_PUBLIC_H__
-#include "nn.h"
+#include <libecc/nn/nn.h>
 
 /* Compute quotient q and remainder r for given a and b such that a = q*b + r */
 ATTRIBUTE_WARN_UNUSED_RET int nn_divrem(nn_t q, nn_t r, nn_src_t a, nn_src_t b);

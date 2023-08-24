@@ -8,17 +8,17 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "../lib_ecc_config.h"
-#include "../lib_ecc_types.h"
+#include <libecc/lib_ecc_config.h>
+#include <libecc/lib_ecc_types.h>
 #ifdef WITH_SIG_BIP0340
 
 #ifndef __BIP0340_H__
 #define __BIP0340_H__
 
-#include "ec_key.h"
-#include "../utils/utils.h"
-#include "../hash/hash_algs.h"
-#include "../curves/curves.h"
+#include <libecc/sig/ec_key.h>
+#include <libecc/utils/utils.h>
+#include <libecc/hash/hash_algs.h>
+#include <libecc/curves/curves.h>
 
 #define BIP0340_R_LEN(p_bit_len) (BYTECEIL(p_bit_len))
 #define BIP0340_S_LEN(q_bit_len) (BYTECEIL(q_bit_len))

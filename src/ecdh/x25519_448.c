@@ -33,7 +33,7 @@
 #include <libecc/fp/fp_sqrt.h>
 
 /* For randomness source */
-#include "../external_deps/rand.h"
+#include <libecc/external_deps/rand.h>
 
 /* This module mainly implements the X25519 and X448 functions strictly as defined in
  * RFC7748.

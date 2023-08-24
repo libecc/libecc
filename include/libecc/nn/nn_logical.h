@@ -15,7 +15,7 @@
  */
 #ifndef __LOGICAL_H__
 #define __LOGICAL_H__
-#include "nn.h"
+#include <libecc/nn/nn.h>
 
 ATTRIBUTE_WARN_UNUSED_RET int nn_rshift_fixedlen(nn_t out, nn_src_t in, bitcnt_t cnt);
 ATTRIBUTE_WARN_UNUSED_RET int nn_rshift(nn_t out, nn_src_t in, bitcnt_t cnt);

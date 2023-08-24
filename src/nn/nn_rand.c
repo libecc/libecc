@@ -14,11 +14,13 @@
  *  See LICENSE file at the root folder of the project.
  */
 #include <libecc/nn/nn_rand.h>
-#include <libecc/nn/nn_div.h>
-#include <libecc/nn/nn_add.h>
+#include <libecc/nn/nn_add_public.h>
 #include <libecc/nn/nn_logical.h>
+/* Include the "internal" header as we use non public API here */
+#include "../nn/nn_div.h"
 
-#include "../external_deps/rand.h"
+
+#include <libecc/external_deps/rand.h>
 
 /*
  * The function initializes nn structure pointed by 'out' to a random value of

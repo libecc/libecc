@@ -16,7 +16,7 @@
 
 #include <libecc/words/words.h>
 #include <libecc/utils/utils.h>
-#include "bash.h"
+#include <libecc/hash/bash.h>
 
 #define BASH256_BLOCK_SIZE   128
 #define BASH256_DIGEST_SIZE  32

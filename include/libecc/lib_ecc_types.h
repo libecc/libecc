@@ -16,7 +16,7 @@
 #ifndef __LIB_ECC_TYPES_H__
 #define __LIB_ECC_TYPES_H__
 
-#include "lib_ecc_config.h"
+#include <libecc/lib_ecc_config.h>
 
 /* Signature algorithm types */
 typedef enum {

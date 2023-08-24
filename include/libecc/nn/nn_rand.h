@@ -15,7 +15,7 @@
  */
 #ifndef __NN_RAND_H__
 #define __NN_RAND_H__
-#include "nn.h"
+#include <libecc/nn/nn.h>
 
 ATTRIBUTE_WARN_UNUSED_RET int nn_get_random_len(nn_t out, u16 len);
 ATTRIBUTE_WARN_UNUSED_RET int nn_get_random_maxlen(nn_t out, u16 max_len);

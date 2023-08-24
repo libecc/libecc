@@ -14,7 +14,7 @@
  *  See LICENSE file at the root folder of the project.
  */
 
-#include "time.h"
+#include <libecc/external_deps/time.h>
 
 /* Unix and compatible case (including macOS) */
 #if defined(WITH_STDLIB) && (defined(__unix__) || defined(__APPLE__))

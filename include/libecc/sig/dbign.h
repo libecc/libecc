@@ -8,14 +8,14 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "../lib_ecc_config.h"
-#include "../lib_ecc_types.h"
+#include <libecc/lib_ecc_config.h>
+#include <libecc/lib_ecc_types.h>
 #ifdef WITH_SIG_DBIGN
 
 #ifndef __DBIGN_H__
 #define __DBIGN_H__
 
-#include "bign_common.h"
+#include <libecc/sig/bign_common.h>
 
 ATTRIBUTE_WARN_UNUSED_RET int dbign_init_pub_key(ec_pub_key *out_pub, const ec_priv_key *in_priv);
 

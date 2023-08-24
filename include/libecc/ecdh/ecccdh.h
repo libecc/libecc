@@ -8,17 +8,17 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "../lib_ecc_config.h"
-#include "../lib_ecc_types.h"
+#include <libecc/lib_ecc_config.h>
+#include <libecc/lib_ecc_types.h>
 #if defined(WITH_ECCCDH)
 
 
 #ifndef __ECCCDH_H__
 #define __ECCCDH_H__
 
-#include "../curves/curves.h"
-#include "../sig/ec_key.h"
-#include "../utils/utils.h"
+#include <libecc/curves/curves.h>
+#include <libecc/sig/ec_key.h>
+#include <libecc/utils/utils.h>
 
 /* Get the size of the shared secret associated to the curve parameters.
  *

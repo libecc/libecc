@@ -15,7 +15,7 @@
  */
 #ifndef __NN_MUL_REDC1_H__
 #define __NN_MUL_REDC1_H__
-#include "nn.h"
+#include <libecc/nn/nn.h>
 
 ATTRIBUTE_WARN_UNUSED_RET int nn_compute_redc1_coefs(nn_t r, nn_t r_square, nn_src_t p_in,
 			      word_t *mpinv);

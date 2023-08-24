@@ -21,7 +21,7 @@
 
 #include <libecc/words/words.h>
 #include <libecc/utils/utils.h>
-#include "sha3.h"
+#include <libecc/hash/sha3.h>
 
 #define SHA3_224_BLOCK_SIZE   144
 #define SHA3_224_DIGEST_SIZE  28

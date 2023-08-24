@@ -17,7 +17,7 @@
 #define __EC_PARAMS_H__
 #include <libecc/fp/fp.h>
 #include <libecc/curves/prj_pt.h>
-#include "known/ec_params_external.h"
+#include <libecc/curves/known/ec_params_external.h>
 
 /* Info: this include is here because an update on
  * MAX_CURVE_OID_LEN and MAX_CURVE_NAME_LEN can be done

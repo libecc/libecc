@@ -8,7 +8,7 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "utils_rand.h"
+#include <libecc/utils/utils_rand.h>
 
 /* Unsafe random source:
  * Initial seeding is performed using good entropy, then

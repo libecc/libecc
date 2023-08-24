@@ -13,8 +13,8 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "../lib_ecc_config.h"
-#include "../lib_ecc_types.h"
+#include <libecc/lib_ecc_config.h>
+#include <libecc/lib_ecc_types.h>
 #if defined(WITH_SIG_ECRDSA) && defined(USE_CRYPTOFUZZ)
 
 #ifndef __FUZZING_ECRDSA_H__

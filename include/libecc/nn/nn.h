@@ -17,7 +17,7 @@
 #define __NN_H__
 
 #include <libecc/words/words.h>
-#include "nn_config.h"
+#include <libecc/nn/nn_config.h>
 #include <libecc/utils/utils.h>
 
 /*

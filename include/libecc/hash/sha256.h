@@ -21,7 +21,7 @@
 
 #include <libecc/words/words.h>
 #include <libecc/utils/utils.h>
-#include "sha2.h"
+#include <libecc/hash/sha2.h>
 
 #define SHA256_STATE_SIZE   8
 #define SHA256_BLOCK_SIZE   64

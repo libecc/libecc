@@ -21,8 +21,8 @@
 
 #include <libecc/words/words.h>
 #include <libecc/utils/utils.h>
-#include "sha2.h"
-#include "sha512_core.h"
+#include <libecc/hash/sha2.h>
+#include <libecc/hash/sha512_core.h>
 
 #define SHA512_256_STATE_SIZE   SHA512_CORE_STATE_SIZE
 #define SHA512_256_BLOCK_SIZE   SHA512_CORE_BLOCK_SIZE

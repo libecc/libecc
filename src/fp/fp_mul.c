@@ -15,10 +15,11 @@
  */
 #include <libecc/fp/fp_mul.h>
 #include <libecc/fp/fp_pow.h>
-#include <libecc/nn/nn_add.h>
-#include <libecc/nn/nn_mul.h>
-#include <libecc/nn/nn_div.h>
+#include <libecc/nn/nn_add_public.h>
+#include <libecc/nn/nn_mul_public.h>
 #include <libecc/nn/nn_modinv.h>
+/* Include the "internal" header as we use non public API here */
+#include "../nn/nn_div.h"
 
 /*
  * Compute out = in1 * in2 mod p. 'out' parameter must have been initialized

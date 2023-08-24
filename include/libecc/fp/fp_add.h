@@ -15,7 +15,7 @@
  */
 #ifndef __FP_ADD_H__
 #define __FP_ADD_H__
-#include "fp.h"
+#include <libecc/fp/fp.h>
 
 ATTRIBUTE_WARN_UNUSED_RET int fp_add(fp_t out, fp_src_t in1, fp_src_t in2);
 ATTRIBUTE_WARN_UNUSED_RET int fp_inc(fp_t out, fp_src_t in);

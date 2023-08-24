@@ -16,7 +16,7 @@
 #ifndef __SHA3_H__
 #define __SHA3_H__
 
-#include "keccak.h"
+#include <libecc/hash/keccak.h>
 
 typedef enum {
 	SHA3_LITTLE = 0,

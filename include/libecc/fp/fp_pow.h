@@ -15,7 +15,7 @@
  */
 #ifndef __FP_POW_H__
 #define __FP_POW_H__
-#include "fp.h"
+#include <libecc/fp/fp.h>
 
 ATTRIBUTE_WARN_UNUSED_RET int fp_pow(fp_t out, fp_src_t base, nn_src_t exp);
 

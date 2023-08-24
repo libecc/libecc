@@ -14,12 +14,13 @@
  *  See LICENSE file at the root folder of the project.
  */
 #include <libecc/nn/nn_mul_redc1.h>
-#include <libecc/nn/nn_mul.h>
-#include <libecc/nn/nn_add.h>
+#include <libecc/nn/nn_mul_public.h>
 #include <libecc/nn/nn_logical.h>
-#include <libecc/nn/nn_div.h>
+#include <libecc/nn/nn_div_public.h>
 #include <libecc/nn/nn_modinv.h>
 #include <libecc/nn/nn.h>
+/* Include the "internal" header as we use non public API here */
+#include "../nn/nn_add.h"
 
 /*
  * Given an odd number p, compute Montgomery coefficients r, r_square

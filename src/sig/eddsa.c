@@ -39,10 +39,13 @@
 #endif
 
 #include <libecc/nn/nn_rand.h>
-#include <libecc/nn/nn_mul.h>
+#include <libecc/nn/nn_mul_public.h>
 #include <libecc/nn/nn_logical.h>
 #include <libecc/fp/fp.h>
 #include <libecc/fp/fp_sqrt.h>
+/* Include the "internal" header as we use non public API here */
+#include "../nn/nn_div.h"
+
 
 #include <libecc/sig/sig_algs_internal.h>
 #include <libecc/sig/sig_algs.h>

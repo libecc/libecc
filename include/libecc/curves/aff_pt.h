@@ -18,9 +18,9 @@
 
 #include <libecc/fp/fp.h>
 #include <libecc/fp/fp_sqrt.h>
-#include "ec_shortw.h"
-#include "ec_montgomery.h"
-#include "ec_edwards.h"
+#include <libecc/curves/ec_shortw.h>
+#include <libecc/curves/ec_montgomery.h>
+#include <libecc/curves/ec_edwards.h>
 
 typedef struct {
 	fp x;

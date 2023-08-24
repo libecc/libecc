@@ -13,18 +13,18 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "../lib_ecc_config.h"
-#include "../lib_ecc_types.h"
+#include <libecc/lib_ecc_config.h>
+#include <libecc/lib_ecc_types.h>
 #ifdef WITH_SIG_ECGDSA
 
 #ifndef __ECGDSA_H__
 #define __ECGDSA_H__
 
-#include "../words/words.h"
-#include "ec_key.h"
-#include "../utils/utils.h"
-#include "../hash/hash_algs.h"
-#include "../curves/curves.h"
+#include <libecc/words/words.h>
+#include <libecc/sig/ec_key.h>
+#include <libecc/utils/utils.h>
+#include <libecc/hash/hash_algs.h>
+#include <libecc/curves/curves.h>
 
 #define ECGDSA_R_LEN(q_bit_len)  (BYTECEIL(q_bit_len))
 #define ECGDSA_S_LEN(q_bit_len)  (BYTECEIL(q_bit_len))

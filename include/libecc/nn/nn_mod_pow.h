@@ -15,7 +15,7 @@
  */
 #ifndef __NN_MOD_POW_H__
 #define __NN_MOD_POW_H__
-#include "nn.h"
+#include <libecc/nn/nn.h>
 
 ATTRIBUTE_WARN_UNUSED_RET int nn_mod_pow_redc(nn_t out, nn_src_t base, nn_src_t exp, nn_src_t mod, nn_src_t r, nn_src_t r_square, word_t mpinv);
 ATTRIBUTE_WARN_UNUSED_RET int nn_mod_pow(nn_t out, nn_src_t base, nn_src_t exp, nn_src_t mod);

@@ -9,18 +9,18 @@
  *  See LICENSE file at the root folder of the project.
  */
 
-#include "../lib_ecc_config.h"
-#include "../lib_ecc_types.h"
+#include <libecc/lib_ecc_config.h>
+#include <libecc/lib_ecc_types.h>
 #ifdef WITH_SIG_SM2
 
 #ifndef __SM2_H__
 #define __SM2_H__
 
-#include "../words/words.h"
-#include "ec_key.h"
-#include "../hash/hash_algs.h"
-#include "../curves/curves.h"
-#include "../utils/utils.h"
+#include <libecc/words/words.h>
+#include <libecc/sig/ec_key.h>
+#include <libecc/hash/hash_algs.h>
+#include <libecc/curves/curves.h>
+#include <libecc/utils/utils.h>
 
 #define SM2_R_LEN(q_bit_len)  (BYTECEIL(q_bit_len))
 #define SM2_S_LEN(q_bit_len)  (BYTECEIL(q_bit_len))

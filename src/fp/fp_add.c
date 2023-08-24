@@ -14,7 +14,7 @@
  *  See LICENSE file at the root folder of the project.
  */
 #include <libecc/fp/fp_add.h>
-#include <libecc/nn/nn_add.h>
+#include <libecc/nn/nn_add_public.h>
 
 /*
  * Compute out = in1 + in2 mod p. 'out' parameter must have been initialized

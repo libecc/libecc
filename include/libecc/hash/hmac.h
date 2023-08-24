@@ -6,7 +6,7 @@
 
 #include <libecc/words/words.h>
 #include <libecc/utils/utils.h>
-#include "hash_algs.h"
+#include <libecc/hash/hash_algs.h>
 
 #define HMAC_MAGIC ((word_t)(0x9849020187612083ULL))
 #define HMAC_CHECK_INITIALIZED(A, ret, err) \

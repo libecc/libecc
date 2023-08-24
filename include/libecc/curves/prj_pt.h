@@ -16,12 +16,12 @@
 #ifndef __PRJ_PT_H__
 #define __PRJ_PT_H__
 
-#include <libecc/nn/nn_mul.h>
+#include <libecc/nn/nn_mul_public.h>
 #include <libecc/fp/fp.h>
 #include <libecc/fp/fp_mul.h>
 #include <libecc/fp/fp_mul_redc1.h>
-#include "ec_shortw.h"
-#include "aff_pt.h"
+#include <libecc/curves/ec_shortw.h>
+#include <libecc/curves/aff_pt.h>
 
 typedef struct {
 	fp X;

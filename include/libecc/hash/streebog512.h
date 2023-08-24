@@ -16,7 +16,7 @@
 
 #include <libecc/words/words.h>
 #include <libecc/utils/utils.h>
-#include "streebog.h"
+#include <libecc/hash/streebog.h>
 
 #define STREEBOG512_BLOCK_SIZE   STREEBOG_BLOCK_SIZE
 #define STREEBOG512_DIGEST_SIZE  64

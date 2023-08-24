@@ -21,7 +21,7 @@
  * resistance, see below in the implementation of
  * nn_cnd_swap.
  */
-#include "../utils/utils_rand.h"
+#include <libecc/utils/utils_rand.h>
 
 /*
  * Except otherwise specified, all functions accept *initialized* nn.

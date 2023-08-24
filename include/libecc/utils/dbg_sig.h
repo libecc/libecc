@@ -15,9 +15,9 @@
  */
 #ifndef __DBG_SIG_H__
 #define __DBG_SIG_H__
-#include "print_curves.h"
-#include "print_keys.h"
-#include "print_buf.h"
+#include <libecc/utils/print_curves.h>
+#include <libecc/utils/print_keys.h>
+#include <libecc/utils/print_buf.h>
 
 /* Macro to allow inner values of tests vectors print */
 #ifdef VERBOSE_INNER_VALUES

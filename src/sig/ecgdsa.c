@@ -18,7 +18,7 @@
 
 #include <libecc/nn/nn.h>
 #include <libecc/nn/nn_rand.h>
-#include <libecc/nn/nn_mul.h>
+#include <libecc/nn/nn_mul_public.h>
 #include <libecc/nn/nn_logical.h>
 
 #include <libecc/sig/sig_algs_internal.h>

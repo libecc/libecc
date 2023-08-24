@@ -8,18 +8,18 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "../lib_ecc_config.h"
-#include "../lib_ecc_types.h"
+#include <libecc/lib_ecc_config.h>
+#include <libecc/lib_ecc_types.h>
 #if defined(WITH_SIG_BIGN) || defined(WITH_SIG_DBIGN)
 
 #ifndef __BIGN_COMMON_H__
 #define __BIGN_COMMON_H__
 
-#include "../words/words.h"
-#include "ec_key.h"
-#include "../hash/hash_algs.h"
-#include "../curves/curves.h"
-#include "../utils/utils.h"
+#include <libecc/words/words.h>
+#include <libecc/sig/ec_key.h>
+#include <libecc/hash/hash_algs.h>
+#include <libecc/curves/curves.h>
+#include <libecc/utils/utils.h>
 
 
 /* NOTE: BIGN uses per its standard the BELT-HASH hash function as its "internal"

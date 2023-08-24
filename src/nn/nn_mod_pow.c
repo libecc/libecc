@@ -14,7 +14,7 @@
  *  See LICENSE file at the root folder of the project.
  */
 #include <libecc/nn/nn_mul_redc1.h>
-#include <libecc/nn/nn_div.h>
+#include <libecc/nn/nn_div_public.h>
 #include <libecc/nn/nn_logical.h>
 #include <libecc/nn/nn_mod_pow.h>
 #include <libecc/nn/nn_rand.h>
