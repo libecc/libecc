@@ -112,7 +112,7 @@ libecc_public_headers = files(
   'nn/nn_mul_redc1.h',
   'nn/nn_mul.h',
   'nn/nn_logical.h',
-  'nn/nn_add_public.h',
+  'nn/nn_add.h',
   'nn/nn_modinv.h',
   'nn/nn_div_public.h',
   'nn/nn_rand.h',
