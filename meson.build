@@ -42,6 +42,7 @@ endif
 libarith_lib = library('libarith',
     sources: [ fp_mod_src, nn_mod_src, rand_src, utils_arith_src ],
     include_directories: ecc_inc,
+    install : true,
 )
 libarith_dep = declare_dependency(
     link_with: libarith_lib,
@@ -52,6 +53,7 @@ libec_lib = library('libecc',
   sources: [ curves_mod_src, utils_ec_src ],
   link_with: libarith_lib,
   include_directories: ecc_inc,
+  install : true,
 )
 libec_dep = declare_dependency(
     link_with: libec_lib,
@@ -62,6 +64,7 @@ libsign_lib = library('libsign',
   sources: [ hash_mod_src, sig_mod_src, key_mod_src, utils_sign_src, ecdh_mod_src ],
   link_with: libarith_lib,
   include_directories: ecc_inc,
+  install : true,
 )
 libsign_dep = declare_dependency(
     link_with: libsign_lib,
