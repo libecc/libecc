@@ -1,7 +1,7 @@
 project('ecc', 'c',
     meson_version: '>=1.1.0',
     version: run_command('dunamai', 'from', 'git', '--style', 'semver', '--dirty', check: true).stdout().strip(),
-    default_options: ['c_std=gnu11' ])
+    default_options: ['c_std=gnu11', 'default_library=static', 'warning_level=3' ])
 
 top_dir = meson.current_source_dir()
 
@@ -32,10 +32,14 @@ else
 rand_src = files()
 endif
 
-# static library declaration. For each library, the library itself and the
+# libecc libraries declaration. For each library, the library itself and the
 # corresponding dependency object (includedir and library to link with) is
 # also declared
-libarith_lib = static_library('libarith',
+#
+# INFO: defaulting to static lib only (see project declaration).
+# to build both static and dynamic library, use -Ddefault_library=both option
+#
+libarith_lib = library('libarith',
     sources: [ fp_mod_src, nn_mod_src, rand_src, utils_arith_src ],
     include_directories: ecc_inc,
 )
@@ -44,7 +48,7 @@ libarith_dep = declare_dependency(
     include_directories: ecc_inc,
 )
 
-libec_lib = static_library('libecc',
+libec_lib = library('libecc',
   sources: [ curves_mod_src, utils_ec_src ],
   link_with: libarith_lib,
   include_directories: ecc_inc,
@@ -54,7 +58,7 @@ libec_dep = declare_dependency(
     include_directories: ecc_inc,
 )
 
-libsign_lib = static_library('libsign',
+libsign_lib = library('libsign',
   sources: [ hash_mod_src, sig_mod_src, key_mod_src, utils_sign_src, ecdh_mod_src ],
   link_with: libarith_lib,
   include_directories: ecc_inc,
@@ -63,3 +67,11 @@ libsign_dep = declare_dependency(
     link_with: libsign_lib,
     include_directories: ecc_inc,
 )
+
+# building dynamic libraries on request only
+with_dynamic_libs_opt = get_option('with_dynamic_libs')
+if with_dynamic_libs_opt
+
+
+
+endif
