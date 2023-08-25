@@ -2,7 +2,7 @@ project('libecc', 'c',
     meson_version: '>=1.1.0',
     version: run_command('dunamai', 'from', 'git', '--style', 'semver', '--dirty', check: true).stdout().strip(),
     default_options: ['c_std=gnu11', 'default_library=static', 'warning_level=3' ],
-    license: [ 'BSD-3-Clause', 'GPL-2.0-or-later' ],
+    license: 'BSD-3-Clause OR GPL-2.0-or-later',
     license_files: [ 'LICENSE' ],
 )
 
