@@ -112,6 +112,38 @@ libsign_dep = declare_dependency(
     include_directories: ecc_inc,
 )
 
+# in order to build native tools that depends on libsign library, we should
+# check if the nominal library built has been made native or cross. If
+# cross, another build must be made natively for native tooling
+if meson.is_cross_build()
+  native_libsign_lib = library('sign_native',
+    sources: [
+      hash_mod_src,
+      sig_mod_src,
+      key_mod_src,
+      utils_sign_src,
+      ecdh_mod_src,
+      curves_mod_src,
+      utils_ec_src,
+      fp_mod_src,
+      nn_mod_src,
+      rand_src,
+      utils_arith_src
+    ],
+    include_directories: ecc_inc,
+    install : false,
+    c_args: build_args,
+    native: true,
+  )
+  native_libsign_dep = declare_dependency(
+    link_with: native_libsign_lib,
+    include_directories: ecc_inc,
+  )
+else
+    native_libsign_lib = libsign_lib
+    native_libsign_dep = libsign_dep
+endif
+
 # About tests, see src/tests/meson.build. Enabled with -Dwith_tests=true
 with_tests_opt = get_option('with_tests')
 if with_tests_opt
