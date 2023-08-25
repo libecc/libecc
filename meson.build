@@ -42,10 +42,393 @@ build_args = [
   '-fno-builtin',
   '-D_FORTIFY_SOURCE=2',
   '-fstack-protector-strong',
-  '-DWITH_STDLIB',
   '-DUSE_WARN_UNUSED_RET',
   '-ffreestanding'
 ]
+
+
+# About configurable options, based on makefiles
+
+# 1. build-relative options first
+
+# info compilers arguments (such as m32/m64 should be cross-file related.
+# just using a different cross-file (event for m32 on m64 arch for e.g. is enough
+# to change the behavior
+with_wordsize_opt = get_option('with_wordsize')
+if with_wordsize_opt == '16'
+  build_args += '-DWORDSIZE=16'
+elif with_wordsize_opt == '32'
+  build_args += '-DWORDSIZE=32'
+elif with_wordsize_opt == '64'
+  build_args += '-DWORDSIZE=64'
+endif
+
+with_stdlib_opt = get_option('with_stdlib')
+if with_stdlib_opt
+  build_args += '-DWITH_STDLIB'
+endif
+
+# 2. security relative options
+
+with_sig_blinding_opt = get_option('with_sig_blinding')
+if with_sig_blinding_opt
+  build_args += '-DUSE_SIG_BLINDING'
+endif
+
+with_complete_formulas_opt = get_option('with_complete_formulas')
+if with_complete_formulas_opt
+  build_args += '-DNO_USE_COMPLETE_FORMULAS'
+endif
+
+with_double_add_opt = get_option('with_double_add')
+if with_double_add_opt == 'true'
+  build_args += '-DUSE_DOUBLE_ADD_ALWAYS'
+elif with_double_add_opt == 'false'
+  build_args += '-DUSE_MONTY_LADDER'
+endif
+
+with_small_stack_opt = get_option('with_small_stack')
+if with_small_stack_opt
+  build_args += '-DUSE_SMALL_STACK'
+endif
+
+# 3. crypto engines relative options. It is possible to fully disable all
+# engines and manually select which one must be built
+
+with_override_ecc_config_opt = get_option('with_override_ecc_config')
+if with_override_ecc_config_opt
+build_args += '-DWITH_LIBECC_CONFIG_OVERRIDE'
+
+with_curve_frp256v1_opt = get_option('with_curve_frp256v1')
+if with_curve_frp256v1_opt
+  build_args += '-DWITH_CURVE_FRP256V1'
+endif
+with_curve_secp192r1_opt = get_option('with_curve_secp192r1')
+if with_curve_secp192r1_opt
+  build_args += '-DWITH_CURVE_SECP192R1'
+endif
+with_curve_secp224r1_opt = get_option('with_curve_secp224r1')
+if with_curve_secp224r1_opt
+  build_args += '-DWITH_CURVE_SECP224R1'
+endif
+with_curve_secp256r1_opt = get_option('with_curve_secp256r1')
+if with_curve_secp256r1_opt
+  build_args += '-DWITH_CURVE_SECP256R1'
+endif
+with_curve_secp384r1_opt = get_option('with_curve_secp384r1')
+if with_curve_secp384r1_opt
+  build_args += '-DWITH_CURVE_SECP384R1'
+endif
+with_curve_secp521r1_opt = get_option('with_curve_secp521r1')
+if with_curve_secp521r1_opt
+  build_args += '-DWITH_CURVE_SECP521R1'
+endif
+with_curve_brainpoolp192r1_opt = get_option('with_curve_brainpoolp192r1')
+if with_curve_brainpoolp192r1_opt
+  build_args += '-DWITH_CURVE_BRAINPOOLP192R1'
+endif
+with_curve_brainpoolp224r1_opt = get_option('with_curve_brainpoolp224r1')
+if with_curve_brainpoolp224r1_opt
+  build_args += '-DWITH_CURVE_BRAINPOOLP224R1'
+endif
+with_curve_brainpoolp256r1_opt = get_option('with_curve_brainpoolp256r1')
+if with_curve_brainpoolp256r1_opt
+  build_args += '-DWITH_CURVE_BRAINPOOLP256R1'
+endif
+with_curve_brainpoolp384r1_opt = get_option('with_curve_brainpoolp384r1')
+if with_curve_brainpoolp384r1_opt
+  build_args += '-DWITH_CURVE_BRAINPOOLP384R1'
+endif
+with_curve_brainpoolp512r1_opt = get_option('with_curve_brainpoolp512r1')
+if with_curve_brainpoolp512r1_opt
+  build_args += '-DWITH_CURVE_BRAINPOOLP512R1'
+endif
+with_curve_gost256_opt = get_option('with_curve_gost256')
+if with_curve_gost256_opt
+  build_args += '-DWITH_CURVE_GOST256'
+endif
+with_curve_gost512_opt = get_option('with_curve_gost512')
+if with_curve_gost512_opt
+  build_args += '-DWITH_CURVE_GOST512'
+endif
+with_curve_sm2p256test_opt = get_option('with_curve_sm2p256test')
+if with_curve_sm2p256test_opt
+  build_args += '-DWITH_CURVE_SM2P256TEST'
+endif
+with_curve_sm2p256v1_opt = get_option('with_curve_sm2p256v1')
+if with_curve_sm2p256v1_opt
+  build_args += '-DWITH_CURVE_SM2P256V1'
+endif
+with_curve_wei25519_opt = get_option('with_curve_wei25519')
+if with_curve_wei25519_opt
+  build_args += '-DWITH_CURVE_WEI25519'
+endif
+with_curve_wei448_opt = get_option('with_curve_wei448')
+if with_curve_wei448_opt
+  build_args += '-DWITH_CURVE_WEI448'
+endif
+with_curve_gost_r3410_2012_256_paramseta_opt = get_option('with_curve_gost_r3410_2012_256_paramseta')
+if with_curve_gost_r3410_2012_256_paramseta_opt
+  build_args += '-DWITH_CURVE_GOST_R3410_2012_256_PARAMSETA'
+endif
+with_curve_secp256k1_opt = get_option('with_curve_secp256k1')
+if with_curve_secp256k1_opt
+  build_args += '-DWITH_CURVE_SECP256K1'
+endif
+with_curve_gost_r3410_2001_testparamset_opt = get_option('with_curve_gost_r3410_2001_testparamset')
+if with_curve_gost_r3410_2001_testparamset_opt
+  build_args += '-DWITH_CURVE_GOST_R3410_2001_TESTPARAMSET'
+endif
+with_curve_gost_r3410_2001_cryptopro_a_paramset_opt = get_option('with_curve_gost_r3410_2001_cryptopro_a_paramset')
+if with_curve_gost_r3410_2001_cryptopro_a_paramset_opt
+  build_args += '-DWITH_CURVE_GOST_R3410_2001_CRYPTOPRO_A_PARAMSET'
+endif
+with_curve_gost_r3410_2001_cryptopro_b_paramset_opt = get_option('with_curve_gost_r3410_2001_cryptopro_b_paramset')
+if with_curve_gost_r3410_2001_cryptopro_b_paramset_opt
+  build_args += '-DWITH_CURVE_GOST_R3410_2001_CRYPTOPRO_B_PARAMSET'
+endif
+with_curve_gost_r3410_2001_cryptopro_c_paramset_opt = get_option('with_curve_gost_r3410_2001_cryptopro_c_paramset')
+if with_curve_gost_r3410_2001_cryptopro_c_paramset_opt
+  build_args += '-DWITH_CURVE_GOST_R3410_2001_CRYPTOPRO_C_PARAMSET'
+endif
+with_curve_gost_r3410_2001_cryptopro_xcha_paramset_opt = get_option('with_curve_gost_r3410_2001_cryptopro_xcha_paramset')
+if with_curve_gost_r3410_2001_cryptopro_xcha_paramset_opt
+  build_args += '-DWITH_CURVE_GOST_R3410_2001_CRYPTOPRO_XCHA_PARAMSET'
+endif
+with_curve_gost_r3410_2001_cryptopro_xchb_paramset_opt = get_option('with_curve_gost_r3410_2001_cryptopro_xchb_paramset')
+if with_curve_gost_r3410_2001_cryptopro_xchb_paramset_opt
+  build_args += '-DWITH_CURVE_GOST_R3410_2001_CRYPTOPRO_XCHB_PARAMSET'
+endif
+with_curve_gost_r3410_2012_256_paramsetb_opt = get_option('with_curve_gost_r3410_2012_256_paramsetb')
+if with_curve_gost_r3410_2012_256_paramsetb_opt
+  build_args += '-DWITH_CURVE_GOST_R3410_2012_256_PARAMSETB'
+endif
+with_curve_gost_r3410_2012_256_paramsetc_opt = get_option('with_curve_gost_r3410_2012_256_paramsetc')
+if with_curve_gost_r3410_2012_256_paramsetc_opt
+  build_args += '-DWITH_CURVE_GOST_R3410_2012_256_PARAMSETC'
+endif
+with_curve_gost_r3410_2012_256_paramsetd_opt = get_option('with_curve_gost_r3410_2012_256_paramsetd')
+if with_curve_gost_r3410_2012_256_paramsetd_opt
+  build_args += '-DWITH_CURVE_GOST_R3410_2012_256_PARAMSETD'
+endif
+with_curve_gost_r3410_2012_512_paramsettest_opt = get_option('with_curve_gost_r3410_2012_512_paramsettest')
+if with_curve_gost_r3410_2012_512_paramsettest_opt
+  build_args += '-DWITH_CURVE_GOST_R3410_2012_512_PARAMSETTEST'
+endif
+with_curve_gost_r3410_2012_512_paramseta_opt = get_option('with_curve_gost_r3410_2012_512_paramseta')
+if with_curve_gost_r3410_2012_512_paramseta_opt
+  build_args += '-DWITH_CURVE_GOST_R3410_2012_512_PARAMSETA'
+endif
+with_curve_gost_r3410_2012_512_paramsetb_opt = get_option('with_curve_gost_r3410_2012_512_paramsetb')
+if with_curve_gost_r3410_2012_512_paramsetb_opt
+  build_args += '-DWITH_CURVE_GOST_R3410_2012_512_PARAMSETB'
+endif
+with_curve_gost_r3410_2012_512_paramsetc_opt = get_option('with_curve_gost_r3410_2012_512_paramsetc')
+if with_curve_gost_r3410_2012_512_paramsetc_opt
+  build_args += '-DWITH_CURVE_GOST_R3410_2012_512_PARAMSETC'
+endif
+with_curve_secp192k1_opt = get_option('with_curve_secp192k1')
+if with_curve_secp192k1_opt
+  build_args += '-DWITH_CURVE_SECP192K1'
+endif
+with_curve_secp224k1_opt = get_option('with_curve_secp224k1')
+if with_curve_secp224k1_opt
+  build_args += '-DWITH_CURVE_SECP224K1'
+endif
+with_curve_brainpoolp192t1_opt = get_option('with_curve_brainpoolp192t1')
+if with_curve_brainpoolp192t1_opt
+  build_args += '-DWITH_CURVE_BRAINPOOLP192T1'
+endif
+with_curve_brainpoolp224t1_opt = get_option('with_curve_brainpoolp224t1')
+if with_curve_brainpoolp224t1_opt
+  build_args += '-DWITH_CURVE_BRAINPOOLP224T1'
+endif
+with_curve_brainpoolp256t1_opt = get_option('with_curve_brainpoolp256t1')
+if with_curve_brainpoolp256t1_opt
+  build_args += '-DWITH_CURVE_BRAINPOOLP256T1'
+endif
+with_curve_brainpoolp320r1_opt = get_option('with_curve_brainpoolp320r1')
+if with_curve_brainpoolp320r1_opt
+  build_args += '-DWITH_CURVE_BRAINPOOLP320R1'
+endif
+with_curve_brainpoolp320t1_opt = get_option('with_curve_brainpoolp320t1')
+if with_curve_brainpoolp320t1_opt
+  build_args += '-DWITH_CURVE_BRAINPOOLP320T1'
+endif
+with_curve_brainpoolp384t1_opt = get_option('with_curve_brainpoolp384t1')
+if with_curve_brainpoolp384t1_opt
+  build_args += '-DWITH_CURVE_BRAINPOOLP384T1'
+endif
+with_curve_brainpoolp512t1_opt = get_option('with_curve_brainpoolp512t1')
+if with_curve_brainpoolp512t1_opt
+  build_args += '-DWITH_CURVE_BRAINPOOLP512T1'
+endif
+with_curve_bign256v1_opt = get_option('with_curve_bign256v1')
+if with_curve_bign256v1_opt
+  build_args += '-DWITH_CURVE_BIGN256V1'
+endif
+with_curve_bign384v1_opt = get_option('with_curve_bign384v1')
+if with_curve_bign384v1_opt
+  build_args += '-DWITH_CURVE_BIGN384V1'
+endif
+with_curve_bign512v1_opt = get_option('with_curve_bign512v1')
+if with_curve_bign512v1_opt
+  build_args += '-DWITH_CURVE_BIGN512V1'
+endif
+with_hash_sha224_opt = get_option('with_hash_sha224')
+if with_hash_sha224_opt
+  build_args += '-DWITH_HASH_SHA224'
+endif
+with_hash_sha256_opt = get_option('with_hash_sha256')
+if with_hash_sha256_opt
+  build_args += '-DWITH_HASH_SHA256'
+endif
+with_hash_sha384_opt = get_option('with_hash_sha384')
+if with_hash_sha384_opt
+  build_args += '-DWITH_HASH_SHA384'
+endif
+with_hash_sha512_opt = get_option('with_hash_sha512')
+if with_hash_sha512_opt
+  build_args += '-DWITH_HASH_SHA512'
+endif
+with_hash_sha512_224_opt = get_option('with_hash_sha512_224')
+if with_hash_sha512_224_opt
+  build_args += '-DWITH_HASH_SHA512_224'
+endif
+with_hash_sha512_256_opt = get_option('with_hash_sha512_256')
+if with_hash_sha512_256_opt
+  build_args += '-DWITH_HASH_SHA512_256'
+endif
+with_hash_sha3_224_opt = get_option('with_hash_sha3_224')
+if with_hash_sha3_224_opt
+  build_args += '-DWITH_HASH_SHA3_224'
+endif
+with_hash_sha3_256_opt = get_option('with_hash_sha3_256')
+if with_hash_sha3_256_opt
+  build_args += '-DWITH_HASH_SHA3_256'
+endif
+with_hash_sha3_384_opt = get_option('with_hash_sha3_384')
+if with_hash_sha3_384_opt
+  build_args += '-DWITH_HASH_SHA3_384'
+endif
+with_hash_sha3_512_opt = get_option('with_hash_sha3_512')
+if with_hash_sha3_512_opt
+  build_args += '-DWITH_HASH_SHA3_512'
+endif
+with_hash_sm3_opt = get_option('with_hash_sm3')
+if with_hash_sm3_opt
+  build_args += '-DWITH_HASH_SM3'
+endif
+with_hash_shake256_opt = get_option('with_hash_shake256')
+if with_hash_shake256_opt
+  build_args += '-DWITH_HASH_SHAKE256'
+endif
+with_hash_streebog256_opt = get_option('with_hash_streebog256')
+if with_hash_streebog256_opt
+  build_args += '-DWITH_HASH_STREEBOG256'
+endif
+with_hash_streebog512_opt = get_option('with_hash_streebog512')
+if with_hash_streebog512_opt
+  build_args += '-DWITH_HASH_STREEBOG512'
+endif
+with_hash_ripemd160_opt = get_option('with_hash_ripemd160')
+if with_hash_ripemd160_opt
+  build_args += '-DWITH_HASH_RIPEMD160'
+endif
+with_hash_belt_hash_opt = get_option('with_hash_belt_hash')
+if with_hash_belt_hash_opt
+  build_args += '-DWITH_HASH_BELT_HASH'
+endif
+with_hash_bash224_opt = get_option('with_hash_bash224')
+if with_hash_bash224_opt
+  build_args += '-DWITH_HASH_BASH224'
+endif
+with_hash_bash256_opt = get_option('with_hash_bash256')
+if with_hash_bash256_opt
+  build_args += '-DWITH_HASH_BASH256'
+endif
+with_hash_bash384_opt = get_option('with_hash_bash384')
+if with_hash_bash384_opt
+  build_args += '-DWITH_HASH_BASH384'
+endif
+with_hash_bash512_opt = get_option('with_hash_bash512')
+if with_hash_bash512_opt
+  build_args += '-DWITH_HASH_BASH512'
+endif
+with_hmac_opt = get_option('with_hmac')
+if with_hmac_opt
+  build_args += '-DWITH_HMAC'
+endif
+with_sig_ecdsa_opt = get_option('with_sig_ecdsa')
+if with_sig_ecdsa_opt
+  build_args += '-DWITH_SIG_ECDSA'
+endif
+with_sig_eckcdsa_opt = get_option('with_sig_eckcdsa')
+if with_sig_eckcdsa_opt
+  build_args += '-DWITH_SIG_ECKCDSA'
+endif
+with_sig_ecsdsa_opt = get_option('with_sig_ecsdsa')
+if with_sig_ecsdsa_opt
+  build_args += '-DWITH_SIG_ECSDSA'
+endif
+with_sig_ecosdsa_opt = get_option('with_sig_ecosdsa')
+if with_sig_ecosdsa_opt
+  build_args += '-DWITH_SIG_ECOSDSA'
+endif
+with_sig_ecfsdsa_opt = get_option('with_sig_ecfsdsa')
+if with_sig_ecfsdsa_opt
+  build_args += '-DWITH_SIG_ECFSDSA'
+endif
+with_sig_ecgdsa_opt = get_option('with_sig_ecgdsa')
+if with_sig_ecgdsa_opt
+  build_args += '-DWITH_SIG_ECGDSA'
+endif
+with_sig_ecrdsa_opt = get_option('with_sig_ecrdsa')
+if with_sig_ecrdsa_opt
+  build_args += '-DWITH_SIG_ECRDSA'
+endif
+with_sig_sm2_opt = get_option('with_sig_sm2')
+if with_sig_sm2_opt
+  build_args += '-DWITH_SIG_SM2'
+endif
+with_sig_eddsa25519_opt = get_option('with_sig_eddsa25519')
+if with_sig_eddsa25519_opt
+  build_args += '-DWITH_SIG_EDDSA25519'
+endif
+with_sig_eddsa448_opt = get_option('with_sig_eddsa448')
+if with_sig_eddsa448_opt
+  build_args += '-DWITH_SIG_EDDSA448'
+endif
+with_sig_decdsa_opt = get_option('with_sig_decdsa')
+if with_sig_decdsa_opt
+  build_args += '-DWITH_SIG_DECDSA'
+endif
+with_sig_bign_opt = get_option('with_sig_bign')
+if with_sig_bign_opt
+  build_args += '-DWITH_SIG_BIGN'
+endif
+with_sig_dbign_opt = get_option('with_sig_dbign')
+if with_sig_dbign_opt
+  build_args += '-DWITH_SIG_DBIGN'
+endif
+with_sig_bip0340_opt = get_option('with_sig_bip0340')
+if with_sig_bip0340_opt
+  build_args += '-DWITH_SIG_BIP0340'
+endif
+with_ecccdh_opt = get_option('with_ecccdh')
+if with_ecccdh_opt
+  build_args += '-DWITH_ECCCDH'
+endif
+with_x25519_opt = get_option('with_x25519')
+if with_x25519_opt
+  build_args += '-DWITH_X25519'
+endif
+with_x448_opt = get_option('with_x448')
+if with_x448_opt
+  build_args += '-DWITH_X448'
+endif
+
+endif # override_ecc_config_opt
 
 
 # libecc libraries declaration. For each library, the library itself and the
