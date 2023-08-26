@@ -1,5 +1,7 @@
 # about compilation
 option('use_external_rand', type: 'boolean', value: false, description: 'use external get_random() implementation')
+option('use_external_print', type: 'boolean', value: false, description: 'use external ext_printf() implementation')
+option('use_external_time', type: 'boolean', value: false, description: 'use external get_ms_time() implementation')
 option('with_tests', type: 'boolean', value: false, description: 'enable test suites support')
 option('with_rand_source', type: 'string', value: '', description: 'get_random() implementation source')
 option('with_wordsize', type: 'combo',  choices : ['0', '16', '32', '64'], value : '0', description: 'force wordsize, 0 means no forcing')

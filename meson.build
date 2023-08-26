@@ -36,6 +36,21 @@ if use_external_rand_opt
 else
   rand_src = files()
 endif
+# detect if an external print source implementation is passed
+use_external_print_opt = get_option('use_external_print')
+if use_external_print_opt
+  print_src = files(get_option('with_print_source'))
+else
+  print_src = files()
+endif
+# detect if an external time source implementation is passed
+use_external_time_opt = get_option('use_external_time')
+if use_external_time_opt
+  time_src = files(get_option('with_time_source'))
+else
+  time_src = files()
+endif
+
 
 # globally used build args, TODO: to make configurable
 build_args = [
@@ -538,6 +553,8 @@ libarith_lib = library('arith',
       fp_mod_src,
       nn_mod_src,
       rand_src,
+      print_src,
+      time_src,
       utils_arith_src,
     ],
     include_directories: ecc_inc,
@@ -556,6 +573,8 @@ libec_lib = library('ecc',
     fp_mod_src,
     nn_mod_src,
     rand_src,
+    print_src,
+    time_src,
     utils_arith_src
   ],
   include_directories: ecc_inc,
@@ -579,6 +598,8 @@ libsign_lib = library('sign',
     fp_mod_src,
     nn_mod_src,
     rand_src,
+    print_src,
+    time_src,
     utils_arith_src
   ],
   include_directories: ecc_inc,
@@ -606,6 +627,8 @@ if meson.is_cross_build()
       fp_mod_src,
       nn_mod_src,
       rand_src,
+      print_src,
+      time_src,
       utils_arith_src
     ],
     include_directories: ecc_inc,
