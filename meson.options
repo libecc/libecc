@@ -8,15 +8,15 @@ option('with_stdlib', type: 'boolean', value : true, description: 'trigger stdli
 # about security
 option('with_sig_blinding', type: 'boolean', value: false, description: 'blind signature against some side channels')
 option('with_complete_formulas', type: 'boolean', value: true, description: 'use complete formulas for point addition and doubling')
-## FIXME: what's the diff with the montgomery ladder option, which seems to behave as the exact oposite ?
 option('with_double_add', type: 'combo', choices: ['unset', 'false', 'true'], value: 'unset', description: 'force Double and Add always usage')
+option('with_monty_ladder', type: 'combo', choices: ['unset', 'false', 'true'], value: 'unset', description: 'force Montgomery Ladder usage')
 option('with_small_stack', type: 'boolean', value: false, description: 'force small stack usage')
 
 # about curves
 option('with_iso14888_3_ecrdsa', type: 'boolean', value: false, description: 'ISO14888-3 version of the ECRDSA algorithm with discrepancies from the Russian RFC references')
 
 # curve, sig and hash selectors. These selectors can be used only if with_override_ecc_config is set to true
-option('with_override_ecc_config', type: 'boolean', value: false, description: 'disable all default config. select manually all cryptographic engines')
+option('with_override_ecc_config', type: 'boolean', value: false, description: 'disable all default config. manually select all cryptographic engines')
 
 option('with_curve_frp256v1', type: 'boolean', value: false, description: 'enable FRP256V1 when override is set')
 option('with_curve_secp192r1', type: 'boolean', value: false, description: 'enable SECP192R1 when override is set')
