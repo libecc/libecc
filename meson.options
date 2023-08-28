@@ -20,86 +20,100 @@ option('with_iso14888_3_ecrdsa', type: 'boolean', value: false, description: 'IS
 # curve, sig and hash selectors. These selectors can be used only if with_override_ecc_config is set to true
 option('with_override_ecc_config', type: 'boolean', value: false, description: 'disable all default config. manually select all cryptographic engines')
 
-option('with_curve_frp256v1', type: 'boolean', value: false, description: 'enable FRP256V1 when override is set')
-option('with_curve_secp192r1', type: 'boolean', value: false, description: 'enable SECP192R1 when override is set')
-option('with_curve_secp224r1', type: 'boolean', value: false, description: 'enable SECP224R1 when override is set')
-option('with_curve_secp256r1', type: 'boolean', value: false, description: 'enable SECP256R1 when override is set')
-option('with_curve_secp384r1', type: 'boolean', value: false, description: 'enable SECP384R1 when override is set')
-option('with_curve_secp521r1', type: 'boolean', value: false, description: 'enable SECP521R1 when override is set')
-option('with_curve_brainpoolp192r1', type: 'boolean', value: false, description: 'enable BRAINPOOLP192R1 when override is set')
-option('with_curve_brainpoolp224r1', type: 'boolean', value: false, description: 'enable BRAINPOOLP224R1 when override is set')
-option('with_curve_brainpoolp256r1', type: 'boolean', value: false, description: 'enable BRAINPOOLP256R1 when override is set')
-option('with_curve_brainpoolp384r1', type: 'boolean', value: false, description: 'enable BRAINPOOLP384R1 when override is set')
-option('with_curve_brainpoolp512r1', type: 'boolean', value: false, description: 'enable BRAINPOOLP512R1 when override is set')
-option('with_curve_gost256', type: 'boolean', value: false, description: 'enable GOST256 when override is set')
-option('with_curve_gost512', type: 'boolean', value: false, description: 'enable GOST512 when override is set')
-option('with_curve_sm2p256test', type: 'boolean', value: false, description: 'enable SM2P256TEST when override is set')
-option('with_curve_sm2p256v1', type: 'boolean', value: false, description: 'enable SM2P256V1 when override is set')
-option('with_curve_wei25519', type: 'boolean', value: false, description: 'enable WEI25519 when override is set')
-option('with_curve_wei448', type: 'boolean', value: false, description: 'enable WEI448 when override is set')
-option('with_curve_gost_r3410_2012_256_paramseta', type: 'boolean', value: false, description: 'enable GOST_R3410_2012_256_PARAMSETA when override is set')
-option('with_curve_secp256k1', type: 'boolean', value: false, description: 'enable SECP256K1 when override is set')
-option('with_curve_gost_r3410_2001_testparamset', type: 'boolean', value: false, description: 'enable GOST_R3410_2001_TESTPARAMSET when override is set')
-option('with_curve_gost_r3410_2001_cryptopro_a_paramset', type: 'boolean', value: false, description: 'enable GOST_R3410_2001_CRYPTOPRO_A_PARAMSET when override is set')
-option('with_curve_gost_r3410_2001_cryptopro_b_paramset', type: 'boolean', value: false, description: 'enable GOST_R3410_2001_CRYPTOPRO_B_PARAMSET when override is set')
-option('with_curve_gost_r3410_2001_cryptopro_c_paramset', type: 'boolean', value: false, description: 'enable GOST_R3410_2001_CRYPTOPRO_C_PARAMSET when override is set')
-option('with_curve_gost_r3410_2001_cryptopro_xcha_paramset', type: 'boolean', value: false, description: 'enable GOST_R3410_2001_CRYPTOPRO_XCHA_PARAMSET when override is set')
-option('with_curve_gost_r3410_2001_cryptopro_xchb_paramset', type: 'boolean', value: false, description: 'enable GOST_R3410_2001_CRYPTOPRO_XCHB_PARAMSET when override is set')
-option('with_curve_gost_r3410_2012_256_paramsetb', type: 'boolean', value: false, description: 'enable GOST_R3410_2012_256_PARAMSETB when override is set')
-option('with_curve_gost_r3410_2012_256_paramsetc', type: 'boolean', value: false, description: 'enable GOST_R3410_2012_256_PARAMSETC when override is set')
-option('with_curve_gost_r3410_2012_256_paramsetd', type: 'boolean', value: false, description: 'enable GOST_R3410_2012_256_PARAMSETD when override is set')
-option('with_curve_gost_r3410_2012_512_paramsettest', type: 'boolean', value: false, description: 'enable GOST_R3410_2012_512_PARAMSETTEST when override is set')
-option('with_curve_gost_r3410_2012_512_paramseta', type: 'boolean', value: false, description: 'enable GOST_R3410_2012_512_PARAMSETA when override is set')
-option('with_curve_gost_r3410_2012_512_paramsetb', type: 'boolean', value: false, description: 'enable GOST_R3410_2012_512_PARAMSETB when override is set')
-option('with_curve_gost_r3410_2012_512_paramsetc', type: 'boolean', value: false, description: 'enable GOST_R3410_2012_512_PARAMSETC when override is set')
-option('with_curve_secp192k1', type: 'boolean', value: false, description: 'enable SECP192K1 when override is set')
-option('with_curve_secp224k1', type: 'boolean', value: false, description: 'enable SECP224K1 when override is set')
-option('with_curve_brainpoolp192t1', type: 'boolean', value: false, description: 'enable BRAINPOOLP192T1 when override is set')
-option('with_curve_brainpoolp224t1', type: 'boolean', value: false, description: 'enable BRAINPOOLP224T1 when override is set')
-option('with_curve_brainpoolp256t1', type: 'boolean', value: false, description: 'enable BRAINPOOLP256T1 when override is set')
-option('with_curve_brainpoolp320r1', type: 'boolean', value: false, description: 'enable BRAINPOOLP320R1 when override is set')
-option('with_curve_brainpoolp320t1', type: 'boolean', value: false, description: 'enable BRAINPOOLP320T1 when override is set')
-option('with_curve_brainpoolp384t1', type: 'boolean', value: false, description: 'enable BRAINPOOLP384T1 when override is set')
-option('with_curve_brainpoolp512t1', type: 'boolean', value: false, description: 'enable BRAINPOOLP512T1 when override is set')
-option('with_curve_bign256v1', type: 'boolean', value: false, description: 'enable BIGN256V1 when override is set')
-option('with_curve_bign384v1', type: 'boolean', value: false, description: 'enable BIGN384V1 when override is set')
-option('with_curve_bign512v1', type: 'boolean', value: false, description: 'enable BIGN512V1 when override is set')
-option('with_hash_sha224', type: 'boolean', value: false, description: 'enable SHA224 when override is set')
-option('with_hash_sha256', type: 'boolean', value: false, description: 'enable SHA256 when override is set')
-option('with_hash_sha384', type: 'boolean', value: false, description: 'enable SHA384 when override is set')
-option('with_hash_sha512', type: 'boolean', value: false, description: 'enable SHA512 when override is set')
-option('with_hash_sha512_224', type: 'boolean', value: false, description: 'enable SHA512_224 when override is set')
-option('with_hash_sha512_256', type: 'boolean', value: false, description: 'enable SHA512_256 when override is set')
-option('with_hash_sha3_224', type: 'boolean', value: false, description: 'enable SHA3_224 when override is set')
-option('with_hash_sha3_256', type: 'boolean', value: false, description: 'enable SHA3_256 when override is set')
-option('with_hash_sha3_384', type: 'boolean', value: false, description: 'enable SHA3_384 when override is set')
-option('with_hash_sha3_512', type: 'boolean', value: false, description: 'enable SHA3_512 when override is set')
-option('with_hash_sm3', type: 'boolean', value: false, description: 'enable SM3 when override is set')
-option('with_hash_shake256', type: 'boolean', value: false, description: 'enable SHAKE256 when override is set')
-option('with_hash_streebog256', type: 'boolean', value: false, description: 'enable STREEBOG256 when override is set')
-option('with_hash_streebog512', type: 'boolean', value: false, description: 'enable STREEBOG512 when override is set')
-option('with_hash_ripemd160', type: 'boolean', value: false, description: 'enable RIPEMD160 when override is set')
-option('with_hash_belt_hash', type: 'boolean', value: false, description: 'enable BELT_HASH when override is set')
-option('with_hash_bash224', type: 'boolean', value: false, description: 'enable BASH224 when override is set')
-option('with_hash_bash256', type: 'boolean', value: false, description: 'enable BASH256 when override is set')
-option('with_hash_bash384', type: 'boolean', value: false, description: 'enable BASH384 when override is set')
-option('with_hash_bash512', type: 'boolean', value: false, description: 'enable BASH512 when override is set')
-option('with_hmac', type: 'boolean', value: false, description: 'enable WITH_HMAC when override is set')
-option('with_sig_ecdsa', type: 'boolean', value: false, description: 'enable ECDSA when override is set')
-option('with_sig_eckcdsa', type: 'boolean', value: false, description: 'enable ECKCDSA when override is set')
-option('with_sig_ecsdsa', type: 'boolean', value: false, description: 'enable ECSDSA when override is set')
-option('with_sig_ecosdsa', type: 'boolean', value: false, description: 'enable ECOSDSA when override is set')
-option('with_sig_ecfsdsa', type: 'boolean', value: false, description: 'enable ECFSDSA when override is set')
-option('with_sig_ecgdsa', type: 'boolean', value: false, description: 'enable ECGDSA when override is set')
-option('with_sig_ecrdsa', type: 'boolean', value: false, description: 'enable ECRDSA when override is set')
-option('with_sig_sm2', type: 'boolean', value: false, description: 'enable SM2 when override is set')
-option('with_sig_eddsa25519', type: 'boolean', value: false, description: 'enable EDDSA25519 when override is set')
-option('with_sig_eddsa448', type: 'boolean', value: false, description: 'enable EDDSA448 when override is set')
-option('with_sig_decdsa', type: 'boolean', value: false, description: 'enable DECDSA when override is set')
-option('with_sig_bign', type: 'boolean', value: false, description: 'enable BIGN when override is set')
-option('with_sig_dbign', type: 'boolean', value: false, description: 'enable DBIGN when override is set')
-option('with_sig_bip0340', type: 'boolean', value: false, description: 'enable BIP0340 when override is set')
-option('with_ecccdh', type: 'boolean', value: false, description: 'enable WITH_ECCCDH when override is set')
-option('with_x25519', type: 'boolean', value: false, description: 'enable WITH_X25519 when override is set')
-option('with_x448', type: 'boolean', value: false, description: 'enable WITH_X448 when override is set')
 
+# All the curves options
+option('with_curves', type: 'array', choices: [
+	'frp256v1',
+	'secp192r1',
+	'secp224r1',
+	'secp256r1',
+	'secp384r1',
+	'secp521r1',
+	'brainpoolp192r1',
+	'brainpoolp224r1',
+	'brainpoolp256r1',
+	'brainpoolp384r1',
+	'brainpoolp512r1',
+	'gost256',
+	'gost512',
+	'sm2p256test',
+	'sm2p256v1',
+	'wei25519',
+	'wei448',
+	'gost_r3410_2012_256_paramseta',
+	'secp256k1',
+	'gost_r3410_2001_testparamset',
+	'gost_r3410_2001_cryptopro_a_paramset',
+	'gost_r3410_2001_cryptopro_b_paramset',
+	'gost_r3410_2001_cryptopro_c_paramset',
+	'gost_r3410_2001_cryptopro_xcha_paramset',
+	'gost_r3410_2001_cryptopro_xchb_paramset',
+	'gost_r3410_2012_256_paramsetb',
+	'gost_r3410_2012_256_paramsetc',
+	'gost_r3410_2012_256_paramsetd',
+	'gost_r3410_2012_512_paramsettest',
+	'gost_r3410_2012_512_paramseta',
+	'gost_r3410_2012_512_paramsetb',
+	'gost_r3410_2012_512_paramsetc',
+	'secp192k1',
+	'secp224k1',
+	'brainpoolp192t1',
+	'brainpoolp224t1',
+	'brainpoolp256t1',
+	'brainpoolp320r1',
+	'brainpoolp320t1',
+	'brainpoolp384t1',
+	'brainpoolp512t1',
+	'bign256v1',
+	'bign384v1',
+	'bign512v1'
+	],
+value: [], description: 'enable a set of curves when override is set')
+
+# All the hashes options
+option('with_hashes', type: 'array', choices: [
+	'sha224',
+	'sha256',
+	'sha384',
+	'sha512',
+	'sha512_224',
+	'sha512_256',
+	'sha3_224',
+	'sha3_256',
+	'sha3_384',
+	'sha3_512',
+	'sm3',
+	'shake256',
+	'streebog256',
+	'streebog512',
+	'ripemd160',
+	'belt_hash',
+	'bash224',
+	'bash256',
+	'bash384',
+	'bash512',
+	'with_hmac',
+	],
+value: [], description: 'enable a set of hashes when override is set')
+
+# All the algorithms options
+option('with_algs', type: 'array', choices: [
+	'sig_ecdsa',
+	'sig_eckcdsa',
+	'sig_ecsdsa',
+	'sig_ecosdsa',
+	'sig_ecfsdsa',
+	'sig_ecgdsa',
+	'sig_ecrdsa',
+	'sig_sm2',
+	'sig_eddsa25519',
+	'sig_eddsa448',
+	'sig_decdsa',
+	'sig_bign',
+	'sig_dbign',
+	'sig_bip0340',
+	'ecccdh',
+	'x25519',
+	'x448',
+	],
+value: [], description: 'enable a set of algorithms when override is set')
