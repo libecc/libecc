@@ -66,7 +66,11 @@ option('with_curves', type: 'array', choices: [
 	'brainpoolp512t1',
 	'bign256v1',
 	'bign384v1',
-	'bign512v1'
+	'bign512v1',
+# ADD curves meson option here
+# XXX: Do not remove the comment above, as it is
+# used by external tools as a placeholder to add or
+# remove automatically generated code.
 	],
 value: [], description: 'enable a set of curves when override is set')
 

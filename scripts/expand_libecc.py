@@ -1744,6 +1744,7 @@ def parse_cmd_line(args):
     lib_ecc_types_path = script_path + "../include/libecc/"
     lib_ecc_config_path = script_path + "../include/libecc/"
     ec_self_tests_path = script_path + "../src/tests/"
+    meson_options_path = script_path + "../"
 
     # If remove is True, we have been asked to remove already existing user defined curves
     if remove == True:
@@ -1767,6 +1768,7 @@ def parse_cmd_line(args):
         file_remove_pattern(lib_ecc_config_path + "lib_ecc_config.h", ".*"+name.upper()+".*")
         file_remove_pattern(ec_self_tests_path + "ec_self_tests_core.h", ".*"+name+".*")
         file_remove_pattern(ec_self_tests_path + "ec_self_tests_core.h", ".*"+name.upper()+".*")
+        file_remove_pattern(meson_options_path + "meson.options", ".*"+name.lower()+".*")
         try:
             remove_file(ec_params_path + "ec_params_"+name+".h")
         except:
@@ -1794,6 +1796,7 @@ def parse_cmd_line(args):
         file_remove_pattern(lib_ecc_config_path + "lib_ecc_config.h", ".*USER_DEFINED.*")
         file_remove_pattern(ec_self_tests_path + "ec_self_tests_core.h", ".*USER_DEFINED.*")
         file_remove_pattern(ec_self_tests_path + "ec_self_tests_core.h", ".*user_defined.*")
+        file_remove_pattern(meson_options_path + "meson.options", ".*user_defined.*")
         remove_files_pattern(ec_params_path + "ec_params_user_defined_*.h")
         remove_files_pattern(ec_self_tests_path + "ec_self_tests_core_user_defined_*.h")
         return True
@@ -1912,6 +1915,11 @@ def parse_cmd_line(args):
     magic_re = "\/\* "+magic+" \*\/"
     magic_back = "/* "+magic+" */"
     file_replace_pattern(lib_ecc_config_path + "lib_ecc_config.h", magic_re, "#define WITH_CURVE_"+name.upper()+"\n"+magic_back)
+    # Add the new curve meson option in the meson.options file
+    magic = "ADD curves meson option here"
+    magic_re = "# " + magic
+    magic_back = "# " + magic
+    file_replace_pattern(meson_options_path + "meson.options", magic_re, "\t'"+name.lower()+"',\n"+magic_back)
 
     # Do we need to add some test vectors?
     if add_test_vectors != None:
