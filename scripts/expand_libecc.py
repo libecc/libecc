@@ -1917,8 +1917,8 @@ def parse_cmd_line(args):
     file_replace_pattern(lib_ecc_config_path + "lib_ecc_config.h", magic_re, "#define WITH_CURVE_"+name.upper()+"\n"+magic_back)
     # Add the new curve meson option in the meson.options file
     magic = "ADD curves meson option here"
-    magic_re = "# " + magic
-    magic_back = "# " + magic
+    magic_re = "# " + magic
+    magic_back = "# " + magic
     file_replace_pattern(meson_options_path + "meson.options", magic_re, "\t'"+name.lower()+"',\n"+magic_back)
 
     # Do we need to add some test vectors?
