@@ -78,6 +78,11 @@ elif with_wordsize_opt == '64'
   build_args += '-DWORDSIZE=64'
 endif
 
+with_debug_opt = get_option('with_debug')
+if with_debug_opt
+  build_args += '-DDEBUG'
+endif
+
 with_stdlib_opt = get_option('with_stdlib')
 if with_stdlib_opt
   build_args += '-DWITH_STDLIB'

@@ -6,6 +6,7 @@ option('with_tests', type: 'boolean', value: false, description: 'enable test su
 option('with_rand_source', type: 'string', value: '', description: 'get_random() implementation source')
 option('with_wordsize', type: 'combo',  choices : ['0', '16', '32', '64'], value : '0', description: 'force wordsize, 0 means no forcing')
 option('with_stdlib', type: 'boolean', value : true, description: 'trigger stdlib usage (default to true)')
+option('with_debug', type: 'boolean', value : false, description: 'activate libecc debug assertions and checks')
 
 # about security
 option('with_sig_blinding', type: 'boolean', value: false, description: 'blind signature against some side channels')
