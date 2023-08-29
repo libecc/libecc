@@ -78,14 +78,29 @@ elif with_wordsize_opt == '64'
   build_args += '-DWORDSIZE=64'
 endif
 
+with_stdlib_opt = get_option('with_stdlib')
+if with_stdlib_opt
+  build_args += '-DWITH_STDLIB'
+endif
+
 with_debug_opt = get_option('with_debug')
 if with_debug_opt
   build_args += '-DDEBUG'
 endif
 
-with_stdlib_opt = get_option('with_stdlib')
-if with_stdlib_opt
-  build_args += '-DWITH_STDLIB'
+use_cryptofuzz_opt = get_option('use_cryptofuzz')
+if use_cryptofuzz_opt
+  build_args += '-DUSE_CRYPTOFUZZ'
+endif
+
+assert_print_opt = get_option('assert_print')
+if assert_print_opt
+  build_args += '-DUSE_ASSERT_PRINT'
+endif
+
+no_warn_unused_ret_opt = get_option('no_warn_unused_ret')
+if not no_warn_unused_ret_opt
+  build_args += '-DUSE_WARN_UNUSED_RET'
 endif
 
 # 2. security relative options
