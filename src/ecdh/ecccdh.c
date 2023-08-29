@@ -8,10 +8,10 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "../lib_ecc_config.h"
+#include <libecc/lib_ecc_config.h>
 #if defined(WITH_ECCCDH)
 
-#include "ecccdh.h"
+#include <libecc/ecdh/ecccdh.h>
 
 /*
  * This module implements the "Elliptic Curve Cryptography Cofactor Diffie-Hellman (ECC CDH)

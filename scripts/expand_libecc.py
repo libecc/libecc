@@ -1475,11 +1475,11 @@ def curve_params(name, prime, pbitlen, a, b, gx, gy, order, cofactor, oid, alpha
     npoints = order * cofactor
 
     # Now output the parameters
-    ec_params_string =  "#include \"../../lib_ecc_config.h\"\n"
+    ec_params_string =  "#include <libecc/lib_ecc_config.h>\n"
     ec_params_string += "#ifdef WITH_CURVE_"+name.upper()+"\n\n"
     ec_params_string += "#ifndef __EC_PARAMS_"+name.upper()+"_H__\n"
     ec_params_string += "#define __EC_PARAMS_"+name.upper()+"_H__\n"
-    ec_params_string += "#include \"../known/ec_params_external.h\"\n"
+    ec_params_string += "#include <libecc/curves/known/ec_params_external.h>\n"
     ec_params_string += export_curve_int(name, "p", prime, bytesize)
 
     ec_params_string += "#define CURVE_"+name.upper()+"_P_BITLEN "+str(pbitlen)+"\n"
@@ -1739,11 +1739,12 @@ def parse_cmd_line(args):
 
     # File paths
     script_path = os.path.abspath(os.path.dirname(sys.argv[0])) + "/"
-    ec_params_path = script_path + "../src/curves/user_defined/"
-    curves_list_path = script_path + "../src/curves/"
-    lib_ecc_types_path = script_path + "../src/"
-    lib_ecc_config_path = script_path + "../src/"
+    ec_params_path = script_path + "../include/libecc/curves/user_defined/"
+    curves_list_path = script_path + "../include/libecc/curves/"
+    lib_ecc_types_path = script_path + "../include/libecc/"
+    lib_ecc_config_path = script_path + "../include/libecc/"
     ec_self_tests_path = script_path + "../src/tests/"
+    meson_options_path = script_path + "../"
 
     # If remove is True, we have been asked to remove already existing user defined curves
     if remove == True:
@@ -1767,6 +1768,7 @@ def parse_cmd_line(args):
         file_remove_pattern(lib_ecc_config_path + "lib_ecc_config.h", ".*"+name.upper()+".*")
         file_remove_pattern(ec_self_tests_path + "ec_self_tests_core.h", ".*"+name+".*")
         file_remove_pattern(ec_self_tests_path + "ec_self_tests_core.h", ".*"+name.upper()+".*")
+        file_remove_pattern(meson_options_path + "meson.options", ".*"+name.lower()+".*")
         try:
             remove_file(ec_params_path + "ec_params_"+name+".h")
         except:
@@ -1794,6 +1796,7 @@ def parse_cmd_line(args):
         file_remove_pattern(lib_ecc_config_path + "lib_ecc_config.h", ".*USER_DEFINED.*")
         file_remove_pattern(ec_self_tests_path + "ec_self_tests_core.h", ".*USER_DEFINED.*")
         file_remove_pattern(ec_self_tests_path + "ec_self_tests_core.h", ".*user_defined.*")
+        file_remove_pattern(meson_options_path + "meson.options", ".*user_defined.*")
         remove_files_pattern(ec_params_path + "ec_params_user_defined_*.h")
         remove_files_pattern(ec_self_tests_path + "ec_self_tests_core_user_defined_*.h")
         return True
@@ -1894,7 +1897,7 @@ def parse_cmd_line(args):
     magic = "ADD curves header here"
     magic_re = "\/\* "+magic+" \*\/"
     magic_back = "/* "+magic+" */"
-    file_replace_pattern(curves_list_path + "curves_list.h", magic_re, "#include \"user_defined/ec_params_"+name+".h\"\n"+magic_back)
+    file_replace_pattern(curves_list_path + "curves_list.h", magic_re, "#include <libecc/curves/user_defined/ec_params_"+name+".h>\n"+magic_back)
     # Add the curve mapping
     magic = "ADD curves mapping here"
     magic_re = "\/\* "+magic+" \*\/"
@@ -1912,6 +1915,11 @@ def parse_cmd_line(args):
     magic_re = "\/\* "+magic+" \*\/"
     magic_back = "/* "+magic+" */"
     file_replace_pattern(lib_ecc_config_path + "lib_ecc_config.h", magic_re, "#define WITH_CURVE_"+name.upper()+"\n"+magic_back)
+    # Add the new curve meson option in the meson.options file
+    magic = "ADD curves meson option here"
+    magic_re = "# " + magic
+    magic_back = "# " + magic
+    file_replace_pattern(meson_options_path + "meson.options", magic_re, "\t'"+name.lower()+"',\n"+magic_back)
 
     # Do we need to add some test vectors?
     if add_test_vectors != None:

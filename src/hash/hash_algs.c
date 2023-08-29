@@ -13,7 +13,7 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "hash_algs.h"
+#include <libecc/hash/hash_algs.h>
 
 /*
  * Return the hash mapping entry 'hm' associated with given hash name

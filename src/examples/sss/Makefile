@@ -5,7 +5,7 @@ include $(ROOT_DIR)/common.mk
 # Remove old includes with bad relative folders
 CFLAGS := $(patsubst -I%,,$(CFLAGS))
 # Add proper includes
-CFLAGS += -I$(ROOT_DIR)/src/ -I$(ROOT_DIR)/src/external_deps
+CFLAGS += -I$(ROOT_DIR)/include/
 
 KEEP_SYMBOLS=--keep-global-symbol=sss_generate --keep-global-symbol=sss_combine --keep-global-symbol=sss_regenerate
 

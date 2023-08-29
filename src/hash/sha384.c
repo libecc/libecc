@@ -13,10 +13,10 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "../lib_ecc_config.h"
+#include <libecc/lib_ecc_config.h>
 #ifdef WITH_HASH_SHA384
 
-#include "sha384.h"
+#include <libecc/hash/sha384.h>
 
 /* SHA-2 core processing. Returns 0 on success, -1 on error. */
 ATTRIBUTE_WARN_UNUSED_RET static int sha384_process(sha384_context *ctx,

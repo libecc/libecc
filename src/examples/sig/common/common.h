@@ -3,9 +3,7 @@
 #define __COMMON_H__
 
 /* Include our arithmetic layer */
-#include "libarith.h"
-/* Include the non public nn_add for conditional add */
-#include "nn/nn_add.h"
+#include <libecc/libarith.h>
 
 /* I2OSP and OS2IP internal primitives */
 ATTRIBUTE_WARN_UNUSED_RET static inline int _i2osp(nn_src_t x, u8 *buf, u16 buflen)

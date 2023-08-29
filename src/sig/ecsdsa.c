@@ -13,16 +13,16 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "../lib_ecc_config.h"
+#include <libecc/lib_ecc_config.h>
 #ifdef WITH_SIG_ECSDSA
 
-#include "ecsdsa_common.h"
-#include "sig_algs_internal.h"
-#include "ec_key.h"
+#include <libecc/sig/ecsdsa_common.h>
+#include <libecc/sig/sig_algs_internal.h>
+#include <libecc/sig/ec_key.h>
 #ifdef VERBOSE_INNER_VALUES
 #define EC_SIG_ALG "ECSDSA"
 #endif
-#include "../utils/dbg_sig.h"
+#include <libecc/utils/dbg_sig.h>
 
 /*
  * Initialize public key 'out_pub' from input private key 'in_priv'. The

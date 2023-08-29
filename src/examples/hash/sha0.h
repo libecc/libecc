@@ -12,7 +12,7 @@
 #define __SHA0_H__
 
 /* Include libec for useful types and macros */
-#include "libec.h"
+#include <libecc/libec.h>
 
 /****************************************************/
 /*

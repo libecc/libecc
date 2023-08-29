@@ -8,7 +8,7 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "aff_pt.h"
+#include <libecc/curves/aff_pt.h>
 
 #define AFF_PT_MONTGOMERY_MAGIC ((word_t)(0x7390a9bc43d94598ULL))
 

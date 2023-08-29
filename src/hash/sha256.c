@@ -13,10 +13,10 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "../lib_ecc_config.h"
+#include <libecc/lib_ecc_config.h>
 #ifdef WITH_HASH_SHA256
 
-#include "sha256.h"
+#include <libecc/hash/sha256.h>
 
 /* SHA-2 core processing */
 ATTRIBUTE_WARN_UNUSED_RET static int sha256_process(sha256_context *ctx,

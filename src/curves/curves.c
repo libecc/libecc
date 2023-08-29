@@ -13,7 +13,7 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "curves.h"
+#include <libecc/curves/curves.h>
 
 /*
  * From a null-terminated string 'ec_name' of exact length 'ec_name_len'

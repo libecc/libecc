@@ -8,7 +8,7 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "../lib_ecc_config.h"
+#include <libecc/lib_ecc_config.h>
 #if defined(WITH_HASH_STREEBOG256) || defined(WITH_HASH_STREEBOG512)
 
 /*
@@ -17,12 +17,12 @@
  * between the two digest versions.
  */
 
-#include "../utils/utils.h"
+#include <libecc/utils/utils.h>
 #if defined(WITH_HASH_STREEBOG256)
-#include "streebog256.h"
+#include <libecc/hash/streebog256.h>
 #endif
 #if defined(WITH_HASH_STREEBOG512)
-#include "streebog512.h"
+#include <libecc/hash/streebog512.h>
 #endif
 
 /*** Generic functions for both STREEBOG256 and STREEBOG512 ***/

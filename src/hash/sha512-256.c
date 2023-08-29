@@ -13,10 +13,10 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "../lib_ecc_config.h"
+#include <libecc/lib_ecc_config.h>
 #ifdef WITH_HASH_SHA512_256
 
-#include "sha512-256.h"
+#include <libecc/hash/sha512-256.h>
 
 /* Init hash function. Returns 0 on success, -1 on error. */
 int sha512_256_init(sha512_256_context *ctx)

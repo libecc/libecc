@@ -13,7 +13,7 @@
 #define __TDES_H__
 
 /* Include libec for useful types and macros */
-#include "libec.h"
+#include <libecc/libec.h>
 
 typedef enum {
         DES_ENCRYPTION = 0,

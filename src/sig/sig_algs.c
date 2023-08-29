@@ -13,7 +13,7 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "sig_algs.h"
+#include <libecc/sig/sig_algs.h>
 
 /*
  * Generic private key generation (generate a scalar in ]0,q[

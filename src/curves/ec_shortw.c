@@ -13,7 +13,7 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "ec_shortw.h"
+#include <libecc/curves/ec_shortw.h>
 
 #define EC_SHORTW_CRV_MAGIC ((word_t)(0x9c7c46a1a04c6720ULL))
 

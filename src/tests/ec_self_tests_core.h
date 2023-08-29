@@ -16,7 +16,7 @@
 #ifndef __EC_SELF_TESTS_CORE_H__
 #define __EC_SELF_TESTS_CORE_H__
 
-#include "../libsig.h"
+#include <libecc/libsig.h>
 
 /* A test is fully defined by the attributes pointed in this structure. */
 typedef struct {

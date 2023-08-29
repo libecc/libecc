@@ -8,7 +8,7 @@ SDSA_DIR=sdsa/
 KCDSA_DIR=kcdsa/
 GOST_DIR=gostr34_10_94/
 
-CFLAGS += -I$(ROOT_DIR)/src/ -I$(ROOT_DIR)/src/external_deps
+CFLAGS += -I$(ROOT_DIR)/include/
 
 all:	_rsa _dsa _sdsa _kcdsa _gost
 ifeq ($(WITH_DYNAMIC_LIBS),1)

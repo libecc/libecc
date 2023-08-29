@@ -13,9 +13,9 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "../lib_ecc_config.h"
+#include <libecc/lib_ecc_config.h>
 #if defined(WITH_HASH_SHA512) || defined(WITH_HASH_SHA512_224) || defined(WITH_HASH_SHA512_256)
-#include "sha512_core.h"
+#include <libecc/hash/sha512_core.h>
 
 /* SHA-2 core processing. Returns 0 on success, -1 on error. */
 ATTRIBUTE_WARN_UNUSED_RET static int sha512_core_process(sha512_core_context *ctx,

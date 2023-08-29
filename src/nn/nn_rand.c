@@ -13,12 +13,14 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "nn_rand.h"
-#include "nn_div.h"
-#include "nn_add.h"
-#include "nn_logical.h"
+#include <libecc/nn/nn_rand.h>
+#include <libecc/nn/nn_add.h>
+#include <libecc/nn/nn_logical.h>
+/* Include the "internal" header as we use non public API here */
+#include "../nn/nn_div.h"
 
-#include "../external_deps/rand.h"
+
+#include <libecc/external_deps/rand.h>
 
 /*
  * The function initializes nn structure pointed by 'out' to a random value of

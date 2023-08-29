@@ -13,10 +13,10 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "../lib_ecc_config.h"
+#include <libecc/lib_ecc_config.h>
 #ifdef WITH_HASH_SHA3_224
 
-#include "sha3-224.h"
+#include <libecc/hash/sha3-224.h>
 
 /* Init hash function. Returns 0 on success, -1 on error. */
 int sha3_224_init(sha3_224_context *ctx)

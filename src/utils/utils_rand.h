@@ -11,7 +11,7 @@
 #ifndef __UTILS_RAND_H__
 #define __UTILS_RAND_H__
 
-#include "../words/words.h"
+#include <libecc/words/words.h>
 #include "../external_deps/rand.h"
 
 /* WARNING: use with care, this is useful when "fast" but somehow unsafe

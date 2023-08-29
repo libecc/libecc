@@ -20,11 +20,11 @@
  * operations will take place in Fp with p a public known
  * prime number.
  */
-#include "../lib_ecc_config.h"
-#include "libarith.h"
+#include <libecc/lib_ecc_config.h>
+#include <libecc/libarith.h>
 /* We use HMAC */
-#include "../hash/hmac.h"
+#include <libecc/hash/hmac.h>
 /* We generate random */
-#include "../external_deps/rand.h"
+#include <libecc/external_deps/rand.h>
 
 #endif /* __SSS_PRIVATE_H__ */

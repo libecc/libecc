@@ -8,8 +8,8 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "../utils/utils.h"
-#include "shake.h"
+#include <libecc/utils/utils.h>
+#include <libecc/hash/shake.h>
 
 /* Init function depending on the digest size */
 int _shake_init(shake_context *ctx, u8 digest_size, u8 block_size)

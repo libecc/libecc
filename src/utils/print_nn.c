@@ -13,7 +13,7 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "print_nn.h"
+#include <libecc/utils/print_nn.h>
 
 /* Print out given nn, prepending msg to the output */
 void nn_print(const char *msg, nn_src_t a)

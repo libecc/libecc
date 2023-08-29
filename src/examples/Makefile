@@ -11,7 +11,7 @@ SIG_DIR=sig/
 # Shamir Secret Sharing directory
 SSS_DIR=sss/
 
-CFLAGS += -I$(ROOT_DIR)/src/ -I$(ROOT_DIR)/src/external_deps
+CFLAGS += -I$(ROOT_DIR)/include/
 
 all:	_basic _hash _sig _sss
 ifeq ($(WITH_DYNAMIC_LIBS),1)

@@ -8,7 +8,7 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "ec_montgomery.h"
+#include <libecc/curves/ec_montgomery.h>
 
 #define EC_MONTGOMERY_CRV_MAGIC ((word_t)(0x83734673a0443720ULL))
 

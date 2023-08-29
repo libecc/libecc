@@ -14,14 +14,14 @@
  *  See LICENSE file at the root folder of the project.
  */
 #define NN_CONSISTENCY_CHECK
-#include "nn.h"
+#include <libecc/nn/nn.h>
 
 /* 
  * Used for the conditional swap algorithm SCA
  * resistance, see below in the implementation of
  * nn_cnd_swap.
  */
-#include "../utils/utils_rand.h"
+#include <libecc/utils/utils_rand.h>
 
 /*
  * Except otherwise specified, all functions accept *initialized* nn.

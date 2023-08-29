@@ -13,11 +13,11 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "../lib_ecc_config.h"
+#include <libecc/lib_ecc_config.h>
 
 #if defined(WITH_HASH_SHA3_224) || defined(WITH_HASH_SHA3_256) || defined(WITH_HASH_SHA3_384) || defined(WITH_HASH_SHA3_512)
-#include "../utils/utils.h"
-#include "sha3.h"
+#include <libecc/utils/utils.h>
+#include <libecc/hash/sha3.h>
 
 /* Init function depending on the digest size. Return 0 on success, -1 on error. */
 int _sha3_init(sha3_context *ctx, u8 digest_size)

@@ -5,7 +5,7 @@ include $(ROOT_DIR)/common.mk
 # Remove old includes with bad relative folders
 CFLAGS := $(patsubst -I%,,$(CFLAGS))
 # Add proper includes
-CFLAGS += -I$(ROOT_DIR)/src/ -I$(ROOT_DIR)/src/external_deps
+CFLAGS += -I$(ROOT_DIR)/include/
 
 HASHES = gostr34_11_94.c md2.c md4.c md5.c mdc2.c sha0.c sha1.c tdes.c
 

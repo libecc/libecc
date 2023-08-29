@@ -13,7 +13,7 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "libarith.h"
+#include <libecc/libarith.h>
 
 /* Declare our Miller-Rabin test implemented
  * in another module.

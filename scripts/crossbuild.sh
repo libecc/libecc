@@ -58,6 +58,7 @@ check_triplet_wordsize(){
 	mkdir -p $ROOT_DIR
 	# Copy necessary source files from the root project
 	cp -r $SRC_DIR/src/ $ROOT_DIR/
+	cp -r $SRC_DIR/include/ $ROOT_DIR/
 	cp $SRC_DIR/common.mk $ROOT_DIR/
 	cp $SRC_DIR/Makefile $ROOT_DIR/
 	mkdir -p $ROOT_DIR/build

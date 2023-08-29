@@ -8,7 +8,7 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "../lib_ecc_config.h"
+#include <libecc/lib_ecc_config.h>
 #if defined(WITH_SIG_BIP0340)
 
 /* BIP0340 needs SHA-256: check it */
@@ -16,17 +16,17 @@
 #error "Error: BIP0340 needs SHA-256 to be defined! Please define it in libecc config file"
 #endif
 
-#include "../nn/nn_rand.h"
-#include "../nn/nn_mul.h"
-#include "../nn/nn_logical.h"
+#include <libecc/nn/nn_rand.h>
+#include <libecc/nn/nn_mul_public.h>
+#include <libecc/nn/nn_logical.h>
 
-#include "sig_algs_internal.h"
-#include "sig_algs.h"
-#include "ec_key.h"
+#include <libecc/sig/sig_algs_internal.h>
+#include <libecc/sig/sig_algs.h>
+#include <libecc/sig/ec_key.h>
 #ifdef VERBOSE_INNER_VALUES
 #define EC_SIG_ALG "BIP0340"
 #endif
-#include "../utils/dbg_sig.h"
+#include <libecc/utils/dbg_sig.h>
 
 /*
  * The current implementation is for the BIP0340 signature as described
