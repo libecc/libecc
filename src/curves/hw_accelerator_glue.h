@@ -15,9 +15,9 @@
 #if defined(WITH_EC_HW_ACCELERATOR)
 
 /* Hardware/external accelerator driver abstraction */
-#include "prj_pt.h"
-#include "aff_pt.h"
-#include "../nn/nn_logical.h"
+#include <libecc/curves/prj_pt.h>
+#include <libecc/curves/aff_pt.h>
+#include <libecc/nn/nn_logical.h>
 
 int hw_set_curve(ec_shortw_crv_src_t curve);
 
