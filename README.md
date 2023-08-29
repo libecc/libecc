@@ -146,7 +146,7 @@ tests purposes.
 **NOTE**: for all the primitives (specifically relevant for signature primitives), a maximum
 allowed size for big numbers is **4096 bits** with word size **64 bits** (this will be less
 for word sizes 16 and 32 bits). This is due to an internal limitation of libecc
-on big numbers allocation documented [here](src/nn/nn_config.h). We can live with
+on big numbers allocation documented [here](include/libecc/nn/nn_config.h). We can live with
 this limitation as the library is primarily intended to focus on ECC based algorithms.
 However, one should be aware that for example RSA with modulus > 4096 will fail (as well
 and DSA and other El-Gamal based algorithms): these primitives are only included as
@@ -324,8 +324,8 @@ we provide some examples in the [src/examples](src/examples) folder. Compiling t
 has neither been designed to be efficient nor robust against side channel attacks). Their purpose is only to show basic usage of the
 libarith and libec libraries.
 
-The **public headers** containing the functions to be used by higher level code are [src/libarith.h](src/libarith.h),
-[src/libec.h](src/libec.h) and [src/libsig.h](src/libsig.h): they are respectively used for the NN and Fp arithmetic layers,
+The **public headers** containing the functions to be used by higher level code are [include/libecc/libarith.h](include/libecc/libarith.h),
+[include/libecc/libec.h](include/libecc/libec.h) and [include/libecc/libsig.h](include/libecc/libsig.h): they are respectively used for the NN and Fp arithmetic layers,
 the Elliptic Curves layer, and the signature layer.
 
 More advanced examples are present in the examples folder:
@@ -336,7 +336,7 @@ SHA-1, and TDES for supporting MDC2). Please **be careful** when using them, it 
 
 * Pre-ECC Signature schemes (based on Fp finite fields discrete logarithm) in [src/examples/sig](src/examples/sig) (RSA, DSA, SDSA, KCDSA,
 GOSTR34-10-94). Beware that for these signatures, you will have to expand the NN size to bigger values than the default (e.g. supporting RSA 4096
-will need a size of at least 4096 bits for NN, see how to expand the size in the documentation [here](src/nn/nn_config.h)). Although some
+will need a size of at least 4096 bits for NN, see how to expand the size in the documentation [here](include/libecc/nn/nn_config.h)). Although some
 efforts have been made when developing these signature algorithms, using them in production code should be decided with care (e.g. regarding
 side-channel attack and so on).
 
@@ -358,6 +358,25 @@ NN, over Fp, ...).
 * [src/arithmetic&lowbar;tests/arithmetic&lowbar;tests&lowbar;generator.py](src/arithmetic_tests/arithmetic_tests_generator.py): a python
 script that generates a set of arithmetic tests.
 
+### Building with the meson build system
+
+In parallel to the `Makefile` build system, a migration to the newer and more user friendly `meson` build is a
+**work in progress**. Compiling with `meson` can be simply achieved with:
+
+<pre>
+	$ meson setup builddir && cd builddir && meson dist
+</pre>
+
+Please note that you will need `meson`, `ninja` and `dunamai` (that can be installed from the Python `pip` installer).
+
+Most of libecc compilation options have been migrated, please check the output of the `meson configure` command to get
+a complete list of these (in the 'Project options' category). For instance, compiling libecc with a word size of 32 and
+a debug mode can be triggered with:
+
+<pre>
+	$ meson setup -Dwith_wordsize=32 -Dwith_debug=true builddir && cd builddir && meson dist
+</pre>
+
 ## Configuring the libecc library
 
 ### Basic configuration
@@ -365,7 +384,7 @@ script that generates a set of arithmetic tests.
 libecc can be statically configured at compilation time: the user can tune what curves, hash functions and signature
 algorithms are embedded in 'libsign.a' and all the binaries using it.
 
-The main entry point to configure/tune the library is [src/lib&lowbar;ecc&lowbar;config.h](src/lib_ecc_config.h). By default libecc
+The main entry point to configure/tune the library is [include/libecc/lib&lowbar;ecc&lowbar;config.h](include/libecc/lib_ecc_config.h). By default libecc
 embeds everything. In order to remove something, one has to **comment** the element to remove (i.e. comment the
 `WITH_XXX` macro). For instance, removing
 FRP256V1 is simply done by commenting the line:
@@ -389,7 +408,7 @@ FRP256V1 is simply done by commenting the line:
 As another example, if one wants to build a custom project supporting only
 ECFSDA using SHA3-256 on BrainpoolP256R1, this can be done by keeping only the
 following elements in
-[src/lib&lowbar;ecc&lowbar;config.h](src/lib_ecc_config.h):
+[include/libecc/lib&lowbar;ecc&lowbar;config.h](include/libecc/lib_ecc_config.h):
 
 <pre>
 	#define WITH_SIG_ECFSDSA
@@ -404,7 +423,7 @@ following elements in
 libecc supports 16, 32 and 64 bits word sizes. Though this word size is usually inferred during compilation
 and adapted depending on the detected platform (to fit the best performance), the user can force it in three ways:
 
-* Overloading the `WORDSIZE` macro in [src/words/words.h](src/words/words.h).
+* Overloading the `WORDSIZE` macro in [include/libecc/words/words.h](include/libecc/words/words.h).
 * Overloading the `WORDSIZE` macro in the Makefile `CFLAGS`.
 * Use specific Makefile targets.
 
@@ -413,7 +432,7 @@ Please refer to the [portability guide](#libecc-portability-guide) for details o
 #### Modifying the big numbers size
 
 libecc infers the Natural Numbers maximum length from the **curves** parameters that have been statically
-defined in [src/lib&lowbar;ecc&lowbar;config.h](src/lib_ecc_config.h). Though this behaviour is perfectly fine and transparent
+defined in [include/libecc/lib&lowbar;ecc&lowbar;config.h](include/libecc/lib_ecc_config.h). Though this behaviour is perfectly fine and transparent
 for the user when dealing with the elliptic curves and signature layers, this can become a limitation when building
 code around the NN and Fp arithmetic layers. The user will be stuck with a hard coded maximum size of numbers depending
 on the curve that is used by libecc, which can be a nonsense if he is only interested in the big number basic
@@ -422,14 +441,14 @@ parameters).
 
 libecc provides a way to **overload the NN maximum size**, with a strong limit depending on the word size (around
 5300 bits for 64-bit words, around 2650 bits for 32-bit words, and around 1300 bits for 16-bit words). See
-the comments in [src/nn/nn&lowbar;config.h](src/nn/nn_config.h) for more details about this. In order to manually increase
+the comments in [include/libecc/nn/nn&lowbar;config.h](include/libecc/nn/nn_config.h) for more details about this. In order to manually increase
 the NN size, the user will have to define the macro `USER_NN_BIT_LEN`, either directly in
-[src/nn/nn&lowbar;config.h](src/nn/nn_config.h), or more appropriately through overloading the Makefile `CFLAGS`
+[include/libecc/nn/nn&lowbar;config.h](include/libecc/nn/nn_config.h), or more appropriately through overloading the Makefile `CFLAGS`
 with `-DUSER_NN_BIT_LEN=` (see [the dedicated section](#overloading-makefile-variables) for more on how to do this).
 
 **NOTE**: objects and binaries compiled with different word sizes and/or user defined NN maximum bit lengths **are not compatible**,
 and could produce executables with dangerous runtime behaviour. In order to prevent possible honest mistakes, there is
-a safety net function catching such situations **at compilation time** in [src/nn/nn&lowbar;config.h](src/nn/nn_config.h): the
+a safety net function catching such situations **at compilation time** in [include/libecc/nn/nn&lowbar;config.h](include/libecc/nn/nn_config.h): the
 `nn_check_libconsistency` routine will throw an error. For instance, if 'libarith.a' has been compiled with
 `WORDSIZE=64`, and one tries to compile the arithmetic tests with `WORDSIZE=32`, here is the error the compiler
 should produce:
@@ -453,7 +472,7 @@ APIs should ease this task.
 
 A companion python script [scripts/expand&lowbar;libecc.py](scripts/expand_libecc.py) will transparently add (and remove) new
 user defined curves in the source tree of the project. The '.h' headers defining the new curves
-will be created in a dedicated folder: [src/curves/user&lowbar;defined/](src/curves/user_defined/).
+will be created in a dedicated folder: [include/libecc/curves/user&lowbar;defined/](include/libecc/curves/user_defined/).
 
 The python script should have a self explanatory and complete help:
 <pre>
@@ -482,10 +501,10 @@ option that is important here). Now, in order to add this new curve to libecc, w
 	1/56
 </pre>
 
-This will create a new header file 'ec&lowbar;params&lowbar;user&lowbar;defined&lowbar;mynewcurve.h' in the [src/curves/user&lowbar;defined/](src/curves/user_defined/)
+This will create a new header file 'ec&lowbar;params&lowbar;user&lowbar;defined&lowbar;mynewcurve.h' in the [include/libecc/curves/user&lowbar;defined/](include/libecc/curves/user_defined/)
 folder, and it will modify some libecc core files to transparently add this curve for the next compilation (modified files 
-are [src/curves/curves&lowbar;list.h](src/curves/curves_list.h), [src/tests/ec&lowbar;self&lowbar;tests&lowbar;core.h](src/tests/ec_self_tests_core.h),
-[src/lib&lowbar;ecc&lowbar;config.h](src/lib_ecc_config.h) and [src/lib&lowbar;ecc&lowbar;types.h](src/lib_ecc_types.h)).
+are [include/libecc/curves/curves&lowbar;list.h](include/libecc/curves/curves_list.h), [src/tests/ec&lowbar;self&lowbar;tests&lowbar;core.h](src/tests/ec_self_tests_core.h),
+[include/libecc/lib&lowbar;ecc&lowbar;config.h](include/libecc/lib_ecc_config.h) and [include/libecc/lib&lowbar;ecc&lowbar;types.h](include/libecc/lib_ecc_types.h)).
 
 The test vectors generation can take some time since all the possible triplets (curve, hash function, signature algorithm) are
 processed with the new curve.
@@ -546,7 +565,7 @@ named curves, generates a DER file with their parameters, and adds them to libec
 Obviously, adding new algorithms (hash or signature) will require adding new code.
 
 #### Adding new hash functions
-We detail hereafter the necessary steps to add a new hash function. The main file listing all the hash functions is [src/hash/hash&lowbar;algs.h](src/hash/hash_algs.h). The new hash
+We detail hereafter the necessary steps to add a new hash function. The main file listing all the hash functions is [include/libecc/hash/hash&lowbar;algs.h](include/libecc/hash/hash_algs.h). The new hash
 algorithm should be added here in compliance with the API described in the `hash_mapping struct`. This API includes:
 
   * The digest and block sizes and a pretty print name for the algorithm.
@@ -558,15 +577,15 @@ algorithm should be added here in compliance with the API described in the `hash
 
 These libecc API functions are in fact redirections to the core routines of the hash algorithm, and
 the user is expected to add the specific implementation in '.c' and '.h' files inside the [src/hash/](src/hash/)
-folder. See [src/hash/sha224.c](src/hash/sha224.c) and [src/hash/sha224.h](src/hash/sha224.h) for a practical
+folder. See [src/hash/sha224.c](src/hash/sha224.c) and [include/libecc/hash/sha224.h](include/libecc/hash/sha224.h) for a practical
 example of how to do this with SHA-224.
 
-Finally, the user is expected to update the libecc main configuration file [src/lib&lowbar;ecc&lowbar;config.h](src/lib_ecc_config.h)
+Finally, the user is expected to update the libecc main configuration file [include/libecc/lib&lowbar;ecc&lowbar;config.h](include/libecc/lib_ecc_config.h)
 with the `WITH_MY_NEW_HASH` toggle ('my&lowbar;new&lowbar;hash' being the new hash function).
 
 #### Adding new signature algorithms
 In order to add a new elliptic curve based signature algorithm, here is the needed work:
-* The main file listing all the signature algorithms is [src/sig/sig&lowbar;algs&lowbar;internal.h](src/sig/sig_algs_internal.h).
+* The main file listing all the signature algorithms is [include/libecc/sig/sig&lowbar;algs&lowbar;internal.h](include/libecc/sig/sig_algs_internal.h).
 The signature algorithm should be added in compliance with the API described in the `ec_sig_mapping struct`. This
 API includes:
   * The signature type and a pretty print name.
@@ -578,10 +597,9 @@ API includes:
    it with input buffers, and finalizing it to produce a check status (i.e. signature OK or not OK).
 
 These libecc APIs have to be plugged to the core signature functions, and the user is expected to handle this implementation
-with adding the specific '.c' and '.h' files inside the [src/sig](src/sig) folder. See [src/sig/ecdsa.c](src/sig/ecdsa.c) and
-[src/sig/ecdsa.h](src/sig/ecdsa.h) for a practical example of how to do this with ECDSA.
+with adding the specific '.c' files inside the [src/sig](src/sig) folder and the specific '.h' files inside the [include/libecc/sig](include/libecc/sig) folder. See [src/sig/ecdsa.c](src/sig/ecdsa.c) and [include/libecc/sig/ecdsa.h](include/libecc/sig/ecdsa.h) for a practical example of how to do this with ECDSA.
 
-Finally, the user is expected to update the libecc main configuration file [src/lib&lowbar;ecc&lowbar;config.h](src/lib_ecc_config.h)
+Finally, the user is expected to update the libecc main configuration file [include/libecc/lib&lowbar;ecc&lowbar;config.h](include/libecc/lib_ecc_config.h)
 with the `WITH_MY_NEW_SIGN_ALG` toggle ('my&lowbar;new&lowbar;sign&lowbar;alg' being the new signature algorithm).
 
 ## <a name="performance"></a> Performance
@@ -892,14 +910,14 @@ provide this flag.
 `LIBECC_NOSTDLIB=1` will trigger the **non usage** of standard includes and libraries. Standard C library headers and files
 are used for two things in the project:
   * Defining standard types through the `stdint.h` header.
-Though using this header helps libecc to properly define basic types in [src/words/types.h](src/words/types.h), it is not
+Though using this header helps libecc to properly define basic types in [include/libecc/words/types.h](include/libecc/words/types.h), it is not
 required to use it and some heuristics can be used to define these types without standard headers (see explanations on that
-in [src/words/types.h](src/words/types.h)) comments.
+in [include/libecc/words/types.h](include/libecc/words/types.h)) comments.
   * Defining standard library functions used by external dependencies as well as `ec_utils`. Compiling without `WITH_STDLIB`
 flag means that one has to provide these.
 
 In any case, if the user forgot to provide important preprocessing flags whenever they are necessary, **errors will be thrown** during
-the compilation process. As explained in [src/words/types.h](src/words/types.h), when `stdint.h` is not used (i.e. `WITH_STDLIB`
+the compilation process. As explained in [include/libecc/words/types.h](include/libecc/words/types.h), when `stdint.h` is not used (i.e. `WITH_STDLIB`
 not defined), heuristics are used to guess primitive types sizes. These heuristics can fail and the user will have to adapt the types
 definitions accordingly depending on the platform.
 
@@ -1106,7 +1124,9 @@ Currently, no specific effort has been made to render conditional operations rob
 
 
 ## Software architecture
-The source code is composed of eight main parts that consist of the
+
+The public header of the libecc API are in the [include/libecc/](include/libecc/)
+folder. Then, the source code is composed of eight main parts that consist of the
 **core source code**:
 
   * [1] Machine code: in [src/words](src/words/)
@@ -1133,8 +1153,8 @@ The source code is composed of eight main parts that consist of the
     >handling elliptic curves over prime fields, including point
     >addition and doubling, affine and projective coordinates, ...
 
-  * [5] Curves definitions: in [src/curves/known](src/curves/known) and
-    [src/curves/user&lowbar;defined](src/curves/user_defined)
+  * [5] Curves definitions: in [include/libecc/curves/known](include/libecc/curves/known) and
+    [include/libecc/curves/user&lowbar;defined](include/libecc/curves/user_defined)
 
     >These are the definitions of some standard curves (SECP, Brainpool,
     >FRP, ...).
@@ -1184,7 +1204,8 @@ are also provided:
 
     >User examples for each of the NN, Fp and curves layers. These
     >examples show what are headers to use, and how to interact with
-    >the abstract mathematical objects of each layer.
+    >the abstract mathematical objects of each layer. Other examples beyond
+    >the basic ones (such as RSA signatures, SSS, etc.) are also present there.
 
 The configuration of the library [13] as well as an external dependencies
 abstraction layer are also provided:
@@ -1198,7 +1219,7 @@ abstraction layer are also provided:
     >If no C standard library is provided, the user must implement
     >those functions.
 
-  * [13] Configuration files: in [src/lib&lowbar;ecc&lowbar;config.h](src/lib_ecc_config.h)
+  * [13] Configuration files: in [include/libecc/lib&lowbar;ecc&lowbar;config.h](include/libecc/lib_ecc_config.h)
 
     >These are top C headers that are used for
     >libecc configuration, i.e. activate given hash/curve/signature
