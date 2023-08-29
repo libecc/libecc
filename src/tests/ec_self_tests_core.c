@@ -13,11 +13,11 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
+#include <libecc/utils/utils.h>
+#include <libecc/external_deps/rand.h>
+#include <libecc/external_deps/time.h>
+#include <libecc/external_deps/print.h>
 #include "ec_self_tests_core.h"
-#include "../utils/utils.h"
-#include "../external_deps/rand.h"
-#include "../external_deps/time.h"
-#include "../external_deps/print.h"
 
 /* Parallelize self tests? */
 #ifdef WITH_OPENMP_SELF_TESTS

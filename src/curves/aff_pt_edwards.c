@@ -8,7 +8,7 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "aff_pt.h"
+#include <libecc/curves/aff_pt.h>
 
 /* NOTE: Edwards here implies Twisted Edwards curves
  * (these in fact include/extend basic form Edwards curves).

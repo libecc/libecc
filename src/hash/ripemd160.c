@@ -8,10 +8,10 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "../lib_ecc_config.h"
+#include <libecc/lib_ecc_config.h>
 #ifdef WITH_HASH_RIPEMD160
 
-#include "ripemd160.h"
+#include <libecc/hash/ripemd160.h>
 
 /****************************************************/
 /*

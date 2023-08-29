@@ -22,7 +22,7 @@
  *
  */
 
-#include "../libsig.h"
+#include <libecc/libsig.h>
 
 typedef struct {
 	/* Test case name */

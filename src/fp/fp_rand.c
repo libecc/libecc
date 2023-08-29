@@ -14,8 +14,8 @@
  *  See LICENSE file at the root folder of the project.
  */
 
-#include "fp_rand.h"
-#include "../nn/nn_rand.h"
+#include <libecc/fp/fp_rand.h>
+#include <libecc/nn/nn_rand.h>
 
 /*
  * Initialize given Fp element in 'out' storage space to a Fp value chosen

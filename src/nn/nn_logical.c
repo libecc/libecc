@@ -13,8 +13,8 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "nn_logical.h"
-#include "nn.h"
+#include <libecc/nn/nn_logical.h>
+#include <libecc/nn/nn.h>
 
 /*
  * nn_lshift_fixedlen: left logical shift in N, i.e. compute out = (in << cnt).

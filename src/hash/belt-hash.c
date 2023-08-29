@@ -8,10 +8,10 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "../lib_ecc_config.h"
+#include <libecc/lib_ecc_config.h>
 #ifdef WITH_HASH_BELT_HASH
 
-#include "belt-hash.h"
+#include <libecc/hash/belt-hash.h>
 
 /*
  * This is an implementation of the BELT-HASH hash function as

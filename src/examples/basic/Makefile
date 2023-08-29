@@ -2,7 +2,7 @@ ROOT_DIR=../../..
 BUILD_DIR=$(ROOT_DIR)/build
 include $(ROOT_DIR)/common.mk
 
-CFLAGS += -I$(ROOT_DIR)/src/ -I$(ROOT_DIR)/src/external_deps
+CFLAGS += -I$(ROOT_DIR)/include/
 
 all:	nn_example fp_example curve_basic_examples curve_ecdh
 ifeq ($(WITH_DYNAMIC_LIBS),1)

@@ -13,7 +13,7 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "aff_pt.h"
+#include <libecc/curves/aff_pt.h>
 
 #define AFF_PT_MAGIC ((word_t)(0x4c82a9bcd0d9ffabULL))
 

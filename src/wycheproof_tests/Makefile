@@ -7,7 +7,7 @@ ifeq ($(VERBOSE_ACCEPTABLE), 1)
 CFLAGS += -DVERBOSE_ACCEPTABLE
 endif
 
-CFLAGS += -I$(ROOT_DIR)/src/ -I$(ROOT_DIR)/src/external_deps
+CFLAGS += -I$(ROOT_DIR)/include/
 
 all:
 	$(CC) $(BIN_CFLAGS) libecc_wycheproof.c $(ROOT_DIR)/src/external_deps/print.c $(ROOT_DIR)/src/external_deps/rand.c $(LIBSIGN) $(BIN_LDFLAGS) -o libecc_wycheproof

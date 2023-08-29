@@ -8,7 +8,7 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "../lib_ecc_config.h"
+#include <libecc/lib_ecc_config.h>
 #if defined(WITH_X25519) || defined(WITH_X448)
 
 /*
@@ -25,15 +25,15 @@
 #error "Error: X448 needs curve WEI448 to be defined! Please define it in libecc config file"
 #endif
 
-#include "x25519_448.h"
+#include <libecc/ecdh/x25519_448.h>
 
-#include "../curves/curves.h"
-#include "../sig/ec_key.h"
-#include "../utils/utils.h"
-#include "../fp/fp_sqrt.h"
+#include <libecc/curves/curves.h>
+#include <libecc/sig/ec_key.h>
+#include <libecc/utils/utils.h>
+#include <libecc/fp/fp_sqrt.h>
 
 /* For randomness source */
-#include "../external_deps/rand.h"
+#include <libecc/external_deps/rand.h>
 
 /* This module mainly implements the X25519 and X448 functions strictly as defined in
  * RFC7748.

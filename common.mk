@@ -215,6 +215,10 @@ ifdef EXTRA_LDFLAGS
 LDFLAGS += $(EXTRA_LDFLAGS)
 endif
 
+# Add the include folder
+LIBECC_INCLUDE_FOLDER = include/
+LIB_CFLAGS += -I$(LIBECC_INCLUDE_FOLDER)
+BIN_CFLAGS += -I$(LIBECC_INCLUDE_FOLDER)
 
 # Static libraries to produce or link to
 LIBARITH = $(BUILD_DIR)/libarith.a

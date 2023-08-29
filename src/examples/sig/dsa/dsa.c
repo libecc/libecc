@@ -14,9 +14,9 @@
 /* We include the rand external dependency because we have to generate
  * some random data for the nonces.
  */
-#include "rand.h"
+#include <libecc/external_deps/rand.h>
 /* We include the printf external dependency for printf output */
-#include "print.h"
+#include <libecc/external_deps/print.h>
 /* We include our common helpers */
 #include "../common/common.h"
 
@@ -454,7 +454,7 @@ err:
 }
 
 #ifdef DSA
-#include "utils/print_buf.h"
+#include <libecc/utils/print_buf.h>
 int main(int argc, char *argv[])
 {
  	int ret = 0;

@@ -14,7 +14,7 @@
  *  See LICENSE file at the root folder of the project.
  */
 
-#include "../libsig.h"
+#include <libecc/libsig.h>
 
 #ifdef WITH_STDLIB
 #include <string.h>

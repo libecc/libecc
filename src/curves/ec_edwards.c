@@ -13,7 +13,7 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "ec_edwards.h"
+#include <libecc/curves/ec_edwards.h>
 
 #define EC_EDWARDS_CRV_MAGIC ((word_t)(0x9c7349a1837c6794ULL))
 

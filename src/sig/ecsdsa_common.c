@@ -13,20 +13,20 @@
  *  This software is licensed under a dual BSD and GPL v2 license.
  *  See LICENSE file at the root folder of the project.
  */
-#include "../lib_ecc_config.h"
+#include <libecc/lib_ecc_config.h>
 #if (defined(WITH_SIG_ECSDSA) || defined(WITH_SIG_ECOSDSA))
 
-#include "../nn/nn_rand.h"
-#include "../nn/nn_mul.h"
-#include "../nn/nn_logical.h"
+#include <libecc/nn/nn_rand.h>
+#include <libecc/nn/nn_mul_public.h>
+#include <libecc/nn/nn_logical.h>
 
-#include "ecsdsa_common.h"
-#include "sig_algs_internal.h"
-#include "ec_key.h"
+#include <libecc/sig/ecsdsa_common.h>
+#include <libecc/sig/sig_algs_internal.h>
+#include <libecc/sig/ec_key.h>
 #ifdef VERBOSE_INNER_VALUES
 #define EC_SIG_ALG "EC[O]SDSA"
 #endif
-#include "../utils/dbg_sig.h"
+#include <libecc/utils/dbg_sig.h>
 
 /*
  * Generic *internal* helper for EC-{,O}SDSA public key initialization
