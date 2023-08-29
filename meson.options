@@ -7,6 +7,9 @@ option('with_rand_source', type: 'string', value: '', description: 'get_random()
 option('with_wordsize', type: 'combo',  choices : ['0', '16', '32', '64'], value : '0', description: 'force wordsize, 0 means no forcing')
 option('with_stdlib', type: 'boolean', value : true, description: 'trigger stdlib usage (default to true)')
 option('with_debug', type: 'boolean', value : false, description: 'activate libecc debug assertions and checks')
+option('use_cryptofuzz', type: 'boolean', value : false, description: 'activate cryptofuzz fuzzing tool API (mainly raw signatures)')
+option('assert_print', type: 'boolean', value : false, description: 'activate printing on assertions')
+option('no_warn_unused_ret', type: 'boolean', value : false, description: 'do not trigger a warning for unused functions return values')
 
 # about security
 option('with_sig_blinding', type: 'boolean', value: false, description: 'blind signature against some side channels')
