@@ -1236,11 +1236,12 @@ ATTRIBUTE_WARN_UNUSED_RET static int _rsaes_pkcs1_v1_5_decrypt(const rsa_priv_ke
 	/* NOTE: we try our best to do the following in constant time to
 	 * limit padding oracles here (see Bleichenbacher attacks).
 	 */
-	ret = !((em[0] == 0x00) && (em[1] == 0x02));
+	ret = (1 - (!!(em[0] == 0x00) & !!(em[1] == 0x02)));
 	pos = 0;
 	/* Handle the first zero octet after PS in constant time */
 	for(i = 2; i < k; i++){
-		pos = ((em[i] == 0x00) && (pos == 0)) ? i : pos;
+		unsigned int mask = !!(em[i] == 0x00) & !!(pos == 0);
+		pos = (mask * i) + ((1 - mask) * pos);
 	}
 	ret |= !(pos >= (2 + 8)); /* PS length is at least 8 (also implying we found a 0x00) */
 	pos = (pos == 0) ? pos : (pos + 1);
@@ -1502,7 +1503,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int _rsaes_oaep_decrypt(const rsa_priv_key *pri
 	 * limit padding oracles here (see Manger attacks).
 	 */
 	/* Y must be != 0 */
-	ret = !(em[0] == 0x00);
+	ret = em[0];
 	/* Isolate and compare lHash' to lHash */
 	ret |= are_equal(&db[0], lhash, hlen, &cmp);
 	ret |= ((~cmp) & 0x1);
