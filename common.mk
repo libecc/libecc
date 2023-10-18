@@ -321,6 +321,10 @@ install_hw_driver:
 	@rm -rf tmp_install_hw_driver
 	@mkdir tmp_install_hw_driver
 	@cd tmp_install_hw_driver && git clone $(IPECC_REPO)
+	@echo "[+] Generating the headers"
+	@cd tmp_install_hw_driver/IPECC/hdl/common/ecc_curve_iram && $(MAKE) -C ./
+	@echo "[+] Copying the headers"
+	@cp tmp_install_hw_driver/IPECC/hdl/common/ecc_curve_iram/*.h src/curves/ 
 	@cp tmp_install_hw_driver/IPECC/driver/hw_accelerator_driver*.c src/curves/
 	@cp tmp_install_hw_driver/IPECC/driver/hw_accelerator_driver*.h src/curves/
 	@rm -rf tmp_install_hw_driver
