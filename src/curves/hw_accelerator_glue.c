@@ -499,7 +499,7 @@ static int _hw_prj_pt_mul_ltr(prj_pt_t out, nn_src_t m, prj_pt_src_t in)
 	out_y_sz = sizeof(out_y);
 	ret = hw_driver_mul(x, nn_byte_len(x_nn), y, nn_byte_len(y_nn),
 			    scalar, nn_byte_len(&(in->crv->order)),
-			    out_x, &out_x_sz, out_y, &out_y_sz); EG(ret, err);
+			    out_x, &out_x_sz, out_y, &out_y_sz, NULL); EG(ret, err);
 
 	/* Import to the output */
 	MUST_HAVE((out_x_sz < 0xffff), ret, err);
