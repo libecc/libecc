@@ -606,7 +606,7 @@ def eckcdsa_sign(hashfunc, keypair, message, k=None):
     # Compute the hash
     (h, _, _) = hashfunc(z + message)
     # Truncate hash value
-    h = truncate(h, q_limit_len, "RIGHT")
+    h = truncate(h, 8 * int(math.ceil(q_limit_len / 8)), "RIGHT")
     OK = False
     while OK == False:
         if k == None:
@@ -615,7 +615,7 @@ def eckcdsa_sign(hashfunc, keypair, message, k=None):
             continue
         W = k * G
         (r, _, _) = hashfunc(expand(inttostring(W.x), 8*getbytelen(p), "LEFT"))
-        r = truncate(r, q_limit_len, "RIGHT")
+        r = truncate(r, 8 * int(math.ceil(q_limit_len / 8)), "RIGHT")
         e = (stringtoint(r) ^ stringtoint(h)) % q
         s = (privkey.x * (k - e)) % q
         if s == 0:
@@ -671,11 +671,11 @@ def eckcdsa_verify(hashfunc, keypair, message, sig):
     # Compute the hash
     (h, _, _) = hashfunc(z + message)
     # Truncate hash value
-    h = truncate(h, q_limit_len, "RIGHT")
+    h = truncate(h, 8 * int(math.ceil(q_limit_len / 8)), "RIGHT")
     e = (r ^ stringtoint(h)) % q
     W_ = (s * pubkey.Y) + (e * G)
     (h, _, _) = hashfunc(expand(inttostring(W_.x), 8*getbytelen(p), "LEFT"))
-    r_ = truncate(h, q_limit_len, "RIGHT")
+    r_ = truncate(h, 8 * int(math.ceil(q_limit_len / 8)), "RIGHT")
     if stringtoint(r_) == r:
         return True
     else:
