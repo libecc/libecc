@@ -535,10 +535,10 @@ int hw_prj_pt_mul_ltr_blind(prj_pt_t out, nn_src_t m, prj_pt_src_t in)
 	ret = prj_pt_check_initialized(in); EG(ret, err);
 
 	/* Activate the blinding.
-	 * NOTE: we set the blinding at the size of the curve order
-	 * for maximum security.
-	 */
-	ret = hw_driver_set_blinding(nn_bit_len(&(in->crv->order))); EG(ret, err);
+         * NOTE: we set the blinding at the size of the curve order minus one
+         * (maximum value) for maximum security.
+         */
+	ret = hw_driver_set_blinding(nn_bit_len(&(in->crv->order)) - 1); EG(ret, err);
 
 	/* Perform the scalar multiplication */
 	ret = _hw_prj_pt_mul_ltr(out, m, in); EG(ret, err);
