@@ -459,6 +459,18 @@ arithmetic_tests.c:(.text+0x3af21) : undefined reference to « nn_consistency_
 ...
 </pre>
 
+#### Small RAM footprint devices (small stack usage)
+
+In order to squeeze the stack usage on very constrained devices, a `SMALLSTACK` toggle can be activated. Beware that this toggle
+removes some countermeasures (Itoh et al. masking) in order to fit in 8KB of RAM stack usage. Also beware that this is incompatible
+with EdDSA and X25519 as these specific functions need more than this amount of stack because of the isogenies usage (you should get
+a compilation error when trying to activate them with `SMALLSTACK=1`).
+
+<pre>
+$ SMALLSTACK=1 make
+</pre>
+
+
 ## Expanding the libecc library
 
 Though libecc has been designed to be compiled with a static embedding of all its features (i.e. no dynamic modules
@@ -823,7 +835,9 @@ GNU ld linker script specific to the target platform (`linker_script.ld` in the 
 **NOTE1**: By default, the linker scripts share the RAM between heap and stack. Since libecc only uses stack, it is convenient
 (sometimes necessary, specifically on devices with very constrained RAM, such as Cortex-M0 with 8KB) to adapt the **stack base address**
 so that no stack overflow errors occur. These errors can be tricky to detect since they generally produce hard faults silently at
-run time.
+run time. Also, a `SMALLSTACK=1` compilation toggle allows to limit stack consumption further: you can use it carefully if your device
+does not have enough stack for the regular compilation options (use with care as some side channels countermeasures are deactivated, and this
+mode is not compatible with the EdDSA signature and X25519 ECDH algorithm).
 
 **NOTE2**: It is up to the user to link against the libc (if standard functions are necessary) or not, but this will obviously influence the
 program size in flash. As already stated, the libc footprint is not included in the figured that have been given in
@@ -1268,7 +1282,64 @@ between the modules previously described:
     | numbers arithmetic      |        |   (words, ...)     [1] |
     +-------------------------+        +------------------------+
 
+</pre>
 
+## Integration with hardware acceleration: IPECC
 
+On the IPECC branch of the libecc repository, there is an integration
+with the [IPECC](https://github.com/ANSSI-FR/IPECC) hardware accelerator
+project. This project provides hardware acceleration for ECC points operations
+(addition, doubling, scalar multiplication, etc.) with advanced SCA countermeasures.
+
+In order to use this accelerator, please follow these steps. First checkout the
+IPECC branch:
+
+<pre>
+	$ git clone https://github.com/libecc/libecc
+	$ git checkout -b IPECC
+</pre>
+
+Then fetch the dedicated driver on the [IPECC repository](https://github.com/ANSSI-FR/IPECC)
+(this will clone the current repository and place the IPECC drivers in the `src/curve` folder):
+
+<pre>
+	$ make install_hw_driver
+</pre>
+
+Then, you can compile the library with hardware acceleration by selecting the underlying platform:
+
+<pre>
+	$ make clean && CC=arm-linux-gnueabihf-gcc EXTRA_CFLAGS="-Wall -Wextra -O3 -g3 -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -static" VERBOSE=1 USE_EC_HW=1 USE_EC_HW_DEVMEM=1 USE_EC_HW_LOCKING=1 BLINDING=1 make
+</pre>
+
+Please note that `USE_EC_HW=1` selects the hardware accelerator (this is mandatory to activate the hardware acceleration backend in libecc),
+and `USE_EC_HW_DEVMEM=1` selects the DEVMEM backend (you can use `USE_EC_HW_STANDALONE=1` for the standalone mode, `USE_EC_HW_UIO=1` for UIO,
+and `USE_EC_HW_SOCKET_EMUL=1` for the socket emulation using the Python server).
+We also override the `CC` compiler to `arm-linux-gnueabihf-gcc` for the Zynq platform (adapt at your will depending on your
+target), and add some necessary extra CFLAGS for the platform (as well as a `-static` binary compilation to avoid library dependency issues).
+Finally, `USE_EC_HW_LOCKING=1` is used here for thread safety during hardware access: this flag is necessary for multi-threading.
+
+libecc has been successfully tested on a [Zynq Arty Z7](https://digilent.com/reference/programmable-logic/arty-z7/start) board with
+a **factor 6** performance improvement compared to pure software on the same platform (with SCA countermeasures):
+
+<pre>
+az7-ecc-axi:/home/petalinux# ./ec_self_tests_sw perf
+======= Performance test ========================
+[+]          ECDSA-SHA224/FRP256V1 perf: 6 sign/s and 6 verif/s
+[+]         ECDSA-SHA224/SECP192R1 perf: 9 sign/s and 9 verif/s
+[+]         ECDSA-SHA224/SECP224R1 perf: 7 sign/s and 7 verif/s
+[+]         ECDSA-SHA224/SECP256R1 perf: 6 sign/s and 6 verif/s
+...
+
+az7-ecc-axi:/home/petalinux# ./ec_self_tests_hw perf
+======= Performance test ========================
+[+]          ECDSA-SHA224/FRP256V1 perf: 34 sign/s and 32 verif/s
+[+]         ECDSA-SHA224/SECP192R1 perf: 57 sign/s and 52 verif/s
+[+]         ECDSA-SHA224/SECP224R1 perf: 44 sign/s and 39 verif/s
+[+]         ECDSA-SHA224/SECP256R1 perf: 34 sign/s and 32 verif/s
+[+]         ECDSA-SHA224/SECP384R1 perf: 16 sign/s and 15 verif/s
+[+]         ECDSA-SHA224/SECP521R1 perf: 8 sign/s and 8 verif/s
+[+]   ECDSA-SHA224/BRAINPOOLP192R1 perf: 57 sign/s and 52 verif/s
+[+]   ECDSA-SHA224/BRAINPOOLP224R1 perf: 44 sign/s and 40 verif/s
 </pre>
 
