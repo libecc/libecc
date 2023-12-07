@@ -459,6 +459,18 @@ arithmetic_tests.c:(.text+0x3af21) : undefined reference to « nn_consistency_
 ...
 </pre>
 
+#### Small RAM footprint devices (small stack usage)
+
+In order to squeeze the stack usage on very constrained devices, a `SMALLSTACK` toggle can be activated. Beware that this toggle
+removes some countermeasures (Itoh et al. masking) in order to fit in 8KB of RAM stack usage. Also beware that this is incompatible
+with EdDSA and X25519 as these specific functions need more than this amount of stack because of the isogenies usage (you should get
+a compilation error when trying to activate them with `SMALLSTACK=1`).
+
+<pre>
+$ SMALLSTACK=1 make
+</pre>
+
+
 ## Expanding the libecc library
 
 Though libecc has been designed to be compiled with a static embedding of all its features (i.e. no dynamic modules
@@ -823,7 +835,9 @@ GNU ld linker script specific to the target platform (`linker_script.ld` in the 
 **NOTE1**: By default, the linker scripts share the RAM between heap and stack. Since libecc only uses stack, it is convenient
 (sometimes necessary, specifically on devices with very constrained RAM, such as Cortex-M0 with 8KB) to adapt the **stack base address**
 so that no stack overflow errors occur. These errors can be tricky to detect since they generally produce hard faults silently at
-run time.
+run time. Also, a `SMALLSTACK=1` compilation toggle allows to limit stack consumption further: you can use it carefully if your device
+does not have enough stack for the regular compilation options (use with care as some side channels countermeasures are deactivated, and this
+mode is not compatible with the EdDSA signature and X25519 ECDH algorithm).
 
 **NOTE2**: It is up to the user to link against the libc (if standard functions are necessary) or not, but this will obviously influence the
 program size in flash. As already stated, the libc footprint is not included in the figured that have been given in
