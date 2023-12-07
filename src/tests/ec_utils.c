@@ -276,7 +276,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int generate_and_export_key_pair(const char *ec
 	ret = local_memset(fname, 0, fname_len); EG(ret, err);
 	ret = local_memcpy(fname, fname_prefix, prefix_len); EG(ret, err);
 	ret = local_strncat(fname, "_private_key.bin", (u32)(fname_len - prefix_len)); EG(ret, err);
-	file = fopen(fname, "w");
+	file = fopen(fname, "wb");
 	if (file == NULL) {
 		ret = -1;
 		printf("Error: file %s cannot be opened\n", fname);
@@ -319,7 +319,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int generate_and_export_key_pair(const char *ec
 	ret = local_memset(fname, 0, fname_len); EG(ret, err);
 	ret = local_memcpy(fname, fname_prefix, prefix_len); EG(ret, err);
 	ret = local_strncat(fname, "_public_key.bin", (u32)(fname_len - prefix_len)); EG(ret, err);
-	file = fopen(fname, "w");
+	file = fopen(fname, "wb");
 	if (file == NULL) {
 		ret = -1;
 		printf("Error: file %s cannot be opened\n", fname);
@@ -390,13 +390,13 @@ ATTRIBUTE_WARN_UNUSED_RET static int store_sig(const char *in_fname, const char 
 	MUST_HAVE(EC_STRUCTURED_SIG_EXPORT_SIZE(siglen) <= sizeof(buf), ret, err);
 #endif
 	/* Import the data from the input file */
-	in_file = fopen(in_fname, "r");
+	in_file = fopen(in_fname, "rb");
 	if (in_file == NULL) {
 		ret = -1;
 		printf("Error: file %s cannot be opened\n", in_fname);
 		goto err;
 	}
-	out_file = fopen(out_fname, "w");
+	out_file = fopen(out_fname, "wb");
 	if (out_file == NULL) {
 		ret = -1;
 		printf("Error: file %s cannot be opened\n", out_fname);
@@ -480,7 +480,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int get_file_size(const char *in_fname, size_t 
 
 	*outsz = 0;
 
-	in_file = fopen(in_fname, "r");
+	in_file = fopen(in_fname, "rb");
 	if (in_file == NULL) {
 		ret = -1;
 		printf("Error: file %s cannot be opened\n", in_fname);
@@ -693,7 +693,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int sign_bin_file(const char *ec_name, const ch
 
 	/************************************/
 	/* Import the private key from the file */
-	in_key_file = fopen(in_key_fname, "r");
+	in_key_file = fopen(in_key_fname, "rb");
 	if (in_key_file == NULL) {
 		ret = -1;
 		printf("Error: file %s cannot be opened\n", in_key_fname);
@@ -775,7 +775,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int sign_bin_file(const char *ec_name, const ch
 		 * Read file content chunk by chunk up to file length, passing each
 		 * chunk to signature update function
 		 */
-		in_file = fopen(in_fname, "r");
+		in_file = fopen(in_fname, "rb");
 		if (in_file == NULL) {
 			ret = -1;
 			printf("Error: file %s cannot be opened\n", in_fname);
@@ -788,6 +788,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int sign_bin_file(const char *ec_name, const ch
 			to_read =
 				(raw_data_len <
 				sizeof(buf)) ? raw_data_len : sizeof(buf);
+			memset(buf, 0, sizeof(buf));
 			read = fread(buf, 1, to_read, in_file);
 			if (read != to_read) {
 				/* Check if this was EOF */
@@ -847,7 +848,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int sign_bin_file(const char *ec_name, const ch
 			memcpy(allocated_buff, &hdr, sizeof(hdr));
 			offset += sizeof(hdr);
 		}
-		in_file = fopen(in_fname, "r");
+		in_file = fopen(in_fname, "rb");
 		if (in_file == NULL) {
 			ret = -1;
 			printf("Error: file %s cannot be opened\n", in_fname);
@@ -921,7 +922,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int sign_bin_file(const char *ec_name, const ch
 		/* Store the raw binary signature in the output file */
 		size_t written;
 
-		out_file = fopen(out_fname, "w");
+		out_file = fopen(out_fname, "wb");
 		if (out_file == NULL) {
 			ret = -1;
 			printf("Error: file %s cannot be opened\n", out_fname);
@@ -1060,7 +1061,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int verify_bin_file(const char *ec_name, const 
 
 	/************************************/
 	/* Import the public key from the file */
-	in_key_file = fopen(in_key_fname, "r");
+	in_key_file = fopen(in_key_fname, "rb");
 	if (in_key_file == NULL) {
 		ret = -1;
 		printf("Error: file %s cannot be opened\n", in_key_fname);
@@ -1092,7 +1093,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int verify_bin_file(const char *ec_name, const 
 	}
 
 	/* Open main file to verify ... */
-	in_file = fopen(in_fname, "r");
+	in_file = fopen(in_fname, "rb");
 	if (in_file == NULL) {
 		ret = -1;
 		printf("Error: file %s cannot be opened\n", in_fname);
@@ -1227,7 +1228,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int verify_bin_file(const char *ec_name, const 
 		}
 		siglen = (u8)to_read;
 		/* Read the raw signature from the signature file */
-		in_sig_file = fopen(in_sig_fname, "r");
+		in_sig_file = fopen(in_sig_fname, "rb");
 		if (in_sig_file == NULL) {
 			ret = -1;
 			printf("Error: file %s cannot be opened\n",
@@ -1428,7 +1429,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int ec_scalar_mult(const char *ec_name,
 		goto err;
 	}
 	/* Open main file to verify ... */
-	in_file = fopen(scalar_file, "r");
+	in_file = fopen(scalar_file, "rb");
 	if (in_file == NULL) {
 		ret = -1;
 		printf("Error: file %s cannot be opened\n", scalar_file);
@@ -1459,7 +1460,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int ec_scalar_mult(const char *ec_name,
 	ret = fclose(in_file); EG(ret, err);
 	in_file = NULL;
 	/* Open main file to verify ... */
-	in_file = fopen(point_file, "r");
+	in_file = fopen(point_file, "rb");
 	if (in_file == NULL) {
 		ret = -1;
 		printf("Error: file %s cannot be opened\n", point_file);
@@ -1502,7 +1503,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int ec_scalar_mult(const char *ec_name,
 		goto err;
 	}
 	/* Now save the coordinates in the output file */
-	out_file = fopen(outfile_name, "w");
+	out_file = fopen(outfile_name, "wb");
 	if (out_file == NULL) {
 		ret = -1;
 		printf("Error: file %s cannot be opened\n", outfile_name);
