@@ -369,6 +369,89 @@ set(LIBSIGN_SRC             ${LIBEC_SRC} ${HASH_SRC} ${SIG_SRC} ${KEY_SRC} ${UTI
 set(EC_SELF_TESTS_SRC       ${TESTS_OBJECTS_CORE_SRC} ${TESTS_OBJECTS_SELF_SRC} ${EXT_DEPS_SRC})
 set(EC_UTILS_SRC            ${TESTS_OBJECTS_CORE_SRC} ${TESTS_OBJECTS_UTILS_SRC} ${EXT_DEPS_SRC})
 
+# --- Compiler switch ---
+if (DEFINED ENV{CC})
+    message("Using compiler " $ENV{CC})
+    set(CMAKE_C_COMPILER $ENV{CC})
+endif()
+
+# --- Compiler and linker options ---
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    add_compile_options(-O3)
+endif()
+
+# --- Small stack ---
+if (DEFINED ENV{SMALL_STACK})
+    if ($ENV{SMALL_STACK} EQUAL "1")
+        message("Activating SMALL_STACK")
+        add_compile_options(-DSMALL_STACK)
+    endif()
+endif()
+
+# --- Ladder or Double and Add always ---
+if (DEFINED ENV{LADDER})
+    if ($ENV{LADDER} EQUAL "1")
+        message("Activating USE_MONTY_LADDER")
+        add_compile_options(-DUSE_MONTY_LADDER)
+    endif()
+    if ($ENV{LADDER} EQUAL "0")
+        message("Activating USE_DOUBLE_ADD_ALWAYS")
+        add_compile_options(-DUSE_DOUBLE_ADD_ALWAYS)
+    endif()
+endif()
+if (DEFINED ENV{ADALWAYS})
+    if ($ENV{ADALWAYS} EQUAL "1")
+        message("Activating USE_DOUBLE_ADD_ALWAYS")
+        add_compile_options(-DUSE_DOUBLE_ADD_ALWAYS)
+    endif()
+    if ($ENV{ADALWAYS} EQUAL "0")
+        message("Activating USE_MONTY_LADDER")
+        add_compile_options(-DUSE_MONTY_LADDER)
+    endif()
+endif()
+
+# --- Cryptofuzz ---
+if (DEFINED ENV{USE_CRYPTOFUZZ})
+    if ($ENV{USE_CRYPTOFUZZ} EQUAL "1")
+        message("Activating USE_CRYPTOFUZZ")
+        add_compile_options(-DUSE_CRYPTOFUZZ)
+    endif()
+endif()
+
+# --- USE_ASSERT_PRINT ---
+if (DEFINED ENV{USE_ASSERT_PRINT})
+    if ($ENV{USE_ASSERT_PRINT} EQUAL "1")
+        message("Activating USE_ASSERT_PRINT")
+        add_compile_options(-DUSE_ASSERT_PRINT)
+    endif()
+endif()
+
+# --- USE_ISO14888_3_ECRDSA ---
+if (DEFINED ENV{USE_ISO14888_3_ECRDSA})
+    if ($ENV{USE_ISO14888_3_ECRDSA} EQUAL "1")
+        message("Activating USE_ISO14888_3_ECRDSA")
+        add_compile_options(-DUSE_ISO14888_3_ECRDSA)
+    endif()
+endif()
+
+# --- OPENMP_SELF_TESTS ---
+if (DEFINED ENV{OPENMP_SELF_TESTS})
+    if ($ENV{OPENMP_SELF_TESTS} EQUAL "1")
+        message("Activating OPENMP_SELF_TESTS")
+        add_compile_options(-DOPENMP_SELF_TESTS -fopenmp)
+        add_link_options(-fopenmp)
+    endif()
+endif()
+
+# --- USE_SANITIZERS ---
+if (DEFINED ENV{USE_SANITIZERS})
+    if ($ENV{USE_SANITIZERS} EQUAL "1")
+        message("Activating USE_SANITIZERS")
+        add_compile_options(-fsanitize=undefined -fsanitize=address -fsanitize=leak)
+        add_link_options(-fsanitize=undefined -fsanitize=address -fsanitize=leak)
+    endif()
+endif()
+
 # --- Static Libraries ---
 if (NOT BUILD_SHARED_LIBS)
     add_library(arith STATIC ${LIBARITH_SRC})
