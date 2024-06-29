@@ -380,6 +380,14 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clan
     add_compile_options(-O3)
 endif()
 
+# --- Blinding ---
+if (DEFINED ENV{BLINDING})
+    if ($ENV{BLINDING} EQUAL "1")
+        message("Activating USE_SIG_BLINDING")
+        add_compile_options(-DUSE_SIG_BLINDING)
+    endif()
+endif()
+
 # --- Small stack ---
 if (DEFINED ENV{SMALL_STACK})
     if ($ENV{SMALL_STACK} EQUAL "1")
