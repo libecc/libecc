@@ -48,6 +48,8 @@ ifneq ($(CLANG),)
   CLANG_VERSION_GTE_13 := $(shell [ $(CLANG_VERSION) -ge 1300 ]  && echo true)
   CLANG_VERSION_GTE_16 := $(shell [ $(CLANG_VERSION) -ge 1600 ]  && echo true)
   CLANG_VERSION_GTE_17 := $(shell [ $(CLANG_VERSION) -ge 1700 ]  && echo true)
+  CLANG_VERSION_GTE_18 := $(shell [ $(CLANG_VERSION) -ge 1800 ]  && echo true)
+  CLANG_VERSION_GTE_19 := $(shell [ $(CLANG_VERSION) -ge 1900 ]  && echo true)
 endif
 
 # Default warning flags
@@ -97,6 +99,10 @@ ifneq ($(CLANG),)
     # we have to wait until this is less sensitive and false positive
     # prone to use it!
     WARNING_CFLAGS += -Wno-unsafe-buffer-usage
+  endif
+  ifeq ($(CLANG_VERSION_GTE_19), true)
+    # Missing include directoies become an issue in clang >= 19
+    WARNING_CFLAGS += -Wno-missing-include-dirs
   endif
 else
   WARNING_CFLAGS += -W -Wextra -Wall -Wunreachable-code
