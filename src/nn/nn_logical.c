@@ -17,12 +17,6 @@
 #include <libecc/nn/nn.h>
 
 /*
- * Used for the get bit masking.
- */
-#include <libecc/utils/utils_rand.h>
-
-
-/*
  * nn_lshift_fixedlen: left logical shift in N, i.e. compute out = (in << cnt).
  *
  * Aliasing is possible for 'in' and 'out', i.e. x <<= cnt can be computed
@@ -580,48 +574,4 @@ int nn_getbit(nn_src_t in, bitcnt_t bit, u8 *bitval)
 
 err:
 	return ret;
-}
-
-/*
- * This is a masked version to be used in sensitive contexts.
- * This directly returns the bit value after some masking.
- * The input retval contains the return status: 0 on success and -1 on error.
- * The output is meaningless in case of error.
- */
-inline word_t nn_getbit_masked(nn_src_t in, bitcnt_t bit, int *retval)
-{
-	bitcnt_t widx = bit / WORD_BITS;
-	u8 bidx = bit % WORD_BITS;
-	word_t r;
-	/* NOTE: volatile to avoid optimization by the compiler */
-	volatile word_t r_mask = 0;
-	volatile word_t shift = 1;
-	int ret;
-
-	/* Sanity check */
-	ret = nn_check_initialized(in); EG(ret, err);
-	MUST_HAVE((bit < NN_MAX_BIT_LEN), ret, err);
-	MUST_HAVE((retval != NULL), ret, err);
-
-	/* Get a random value for masking */
-	ret = get_unsafe_random((u8*)&r, sizeof(r));
-	r_mask = r;
-
-err:
-	if(retval != NULL){
-		(*retval) = ret;
-	}
-	if(!ret){
-		/* bidx is less than WORD_BITS so shift operations below are ok */
-		REGISTER word_t a = ((word_t)(in->val[widx] ^ r_mask) >> bidx);
-		REGISTER word_t b = (word_t)(r_mask >> bidx);
-		REGISTER word_t c = (word_t)((a >> shift) << shift);
-		REGISTER word_t d = (word_t)((b >> shift) << shift);
-		a ^= c;
-		b ^= d;
-		return (a ^ b);
-	}
-	else{
-		return 0;
-	}
 }

@@ -339,6 +339,7 @@ endif
 ifneq ($(CLANGPP),)
 CFLAGS := $(patsubst -std=c99, -std=c++2a, $(CFLAGS))
 CFLAGS += -Wno-deprecated -Wno-c++98-c++11-c++14-c++17-compat-pedantic -Wno-old-style-cast -Wno-zero-as-null-pointer-constant -Wno-c++98-compat-pedantic
+CFLAGS += -Wno-main
 endif
 
 # Makefile verbosity
