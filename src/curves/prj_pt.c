@@ -1319,7 +1319,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int _prj_pt_mul_ltr_monty_dbl_add_always(prj_pt
 	/* We use Itoh et al. notations here for T and the random r */
 	prj_pt T[3];
 	bitcnt_t mlen;
-	u8 mbit, rbit;
+	register u8 mbit, rbit;
 	/* Random for masking the Double and Add Always algorithm */
 	nn r;
 	/* The new scalar we will use with MSB fixed to 1 (noted m' above).
@@ -1375,7 +1375,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int _prj_pt_mul_ltr_monty_dbl_add_always(prj_pt
 	/* Get a random r with the same size of m_msb_fixed */
 	ret = nn_get_random_len(&r, m_msb_fixed.wlen * WORD_BYTES); EG(ret, err);
 
-	ret = nn_getbit(&r, mlen, &rbit); EG(ret, err);
+	rbit = (u8)nn_getbit_masked(&r, mlen, &ret); EG(ret, err);
 
 	/* Initialize points */
 	ret = prj_pt_init(&T[0], in->crv); EG(ret, err);
@@ -1393,13 +1393,13 @@ ATTRIBUTE_WARN_UNUSED_RET static int _prj_pt_mul_ltr_monty_dbl_add_always(prj_pt
 
 	/* Main loop of Double and Add Always */
 	while (mlen > 0) {
-		u8 rbit_next;
+		register u8 rbit_next;
 		--mlen;
 		/* rbit is r[i+1], and rbit_next is r[i] */
-		ret = nn_getbit(&r, mlen, &rbit_next); EG(ret, err);
+		rbit_next = (u8)nn_getbit_masked(&r, mlen, &ret); EG(ret, err);
 
 		/* mbit is m[i] */
-		ret = nn_getbit(&m_msb_fixed, mlen, &mbit); EG(ret, err);
+		mbit = (u8)nn_getbit_masked(&m_msb_fixed, mlen, &ret); EG(ret, err);
 
 		/* Double: T[r[i+1]] = ECDBL(T[r[i+1]]) */
 #ifndef NO_USE_COMPLETE_FORMULAS
@@ -1466,7 +1466,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int _prj_pt_mul_ltr_monty_dbl_add_always(prj_pt
 	/*******************/
 	{
 		bitcnt_t mlen;
-		u8 mbit;
+		register u8 mbit;
 		/* The new scalar we will use with MSB fixed to 1 (noted m' above).
 		 * This helps dealing with constant time.
 		 */
@@ -1529,7 +1529,7 @@ err1:
 			while (mlen > 0) {
 				--mlen;
 				/* mbit is m[i] */
-				ret = nn_getbit(&m_msb_fixed, mlen, &mbit); EG(ret, err2);
+				mbit = (u8)nn_getbit_masked(&m_msb_fixed, mlen, &ret); EG(ret, err2);
 
 #ifndef NO_USE_COMPLETE_FORMULAS
 				/*
@@ -1571,7 +1571,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int _prj_pt_mul_ltr_monty_ladder(prj_pt_t out, 
 	/* We use Itoh et al. notations here for T and the random r */
 	prj_pt T[3];
 	bitcnt_t mlen;
-	u8 mbit, rbit;
+	register u8 mbit, rbit;
 	/* Random for masking the Montgomery Ladder algorithm */
 	nn r;
 	/* The new scalar we will use with MSB fixed to 1 (noted m' above).
@@ -1630,7 +1630,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int _prj_pt_mul_ltr_monty_ladder(prj_pt_t out, 
 	/* Get a random r with the same size of m_msb_fixed */
 	ret = nn_get_random_len(&r, (u16)(m_msb_fixed.wlen * WORD_BYTES)); EG(ret, err);
 
-	ret = nn_getbit(&r, mlen, &rbit); EG(ret, err);
+	rbit = (u8)nn_getbit_masked(&r, mlen, &ret); EG(ret, err);
 
 	/* Initialize points */
 	ret = prj_pt_init(&T[0], in->crv); EG(ret, err);
@@ -1658,13 +1658,13 @@ ATTRIBUTE_WARN_UNUSED_RET static int _prj_pt_mul_ltr_monty_ladder(prj_pt_t out, 
 
 	/* Main loop of the Montgomery Ladder */
 	while (mlen > 0) {
-		u8 rbit_next;
+		register u8 rbit_next;
 		--mlen;
 		/* rbit is r[i+1], and rbit_next is r[i] */
-		ret = nn_getbit(&r, mlen, &rbit_next); EG(ret, err);
+		rbit_next = (u8)nn_getbit_masked(&r, mlen, &ret); EG(ret, err);
 
 		/* mbit is m[i] */
-		ret = nn_getbit(&m_msb_fixed, mlen, &mbit); EG(ret, err);
+		mbit = (u8)nn_getbit_masked(&m_msb_fixed, mlen, &ret); EG(ret, err);
 		/* Double: T[2] = ECDBL(T[d[i] ^ r[i+1]]) */
 
 #ifndef NO_USE_COMPLETE_FORMULAS

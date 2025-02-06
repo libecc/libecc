@@ -30,5 +30,6 @@ ATTRIBUTE_WARN_UNUSED_RET int nn_not(nn_t B, nn_src_t A);
 ATTRIBUTE_WARN_UNUSED_RET int nn_clz(nn_src_t A, bitcnt_t *lz);
 ATTRIBUTE_WARN_UNUSED_RET int nn_bitlen(nn_src_t A, bitcnt_t *blen);
 ATTRIBUTE_WARN_UNUSED_RET int nn_getbit(nn_src_t in, bitcnt_t bit, u8 *bitval);
+ATTRIBUTE_WARN_UNUSED_RET word_t nn_getbit_masked(nn_src_t in, bitcnt_t bit, int *retval);
 
 #endif /* __LOGICAL_H__ */

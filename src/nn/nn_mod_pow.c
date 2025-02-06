@@ -41,7 +41,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int _nn_exp_monty_ladder_ltr(nn_t out, nn_src_t
 	nn T[3];
 	nn mask;
 	bitcnt_t explen, oldexplen;
- 	u8 expbit, rbit;
+	register u8 expbit, rbit;
 	int ret, cmp;
 	T[0].magic = T[1].magic = T[2].magic = mask.magic = WORD(0);
 
@@ -65,7 +65,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int _nn_exp_monty_ladder_ltr(nn_t out, nn_src_t
 	oldexplen = explen;
 	explen = (explen < 2) ? 2 : explen;
 
-	ret = nn_getbit(&mask, (bitcnt_t)(explen - 1), &rbit); EG(ret, err);
+	rbit = (u8)nn_getbit_masked(&mask, (bitcnt_t)(explen - 1), &ret); EG(ret, err);
 
 	/* Reduce the base if necessary */
 	ret = nn_cmp(base, mod, &cmp); EG(ret, err);
@@ -101,13 +101,13 @@ ATTRIBUTE_WARN_UNUSED_RET static int _nn_exp_monty_ladder_ltr(nn_t out, nn_src_t
 	 */
 	explen = (bitcnt_t)(explen - 1);
 	while (explen > 0) {
-		u8 rbit_next;
+		register u8 rbit_next;
 		explen = (bitcnt_t)(explen - 1);
 
 		/* rbit is r[i+1], and rbit_next is r[i] */
-		ret = nn_getbit(&mask, explen, &rbit_next); EG(ret, err);
+		rbit_next = (u8)nn_getbit_masked(&mask, explen, &ret); EG(ret, err);
 		/* Get the exponent bit */
-		ret = nn_getbit(exp, explen, &expbit); EG(ret, err);
+		expbit = (u8)nn_getbit_masked(exp, explen, &ret); EG(ret, err);
 
 		/* Square */
 		if(r != NULL){
