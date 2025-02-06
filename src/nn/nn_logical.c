@@ -613,10 +613,10 @@ err:
 	}
 	if(!ret){
 		/* bidx is less than WORD_BITS so shift operations below are ok */
-		register word_t a = ((in->val[widx] ^ r_mask) >> bidx);
-		register word_t b = (r_mask >> bidx);
-		register word_t c = (a >> shift) << shift;
-		register word_t d = (b >> shift) << shift;
+		register word_t a = ((word_t)(in->val[widx] ^ r_mask) >> bidx);
+		register word_t b = (word_t)(r_mask >> bidx);
+		register word_t c = (word_t)(a >> shift) << shift;
+		register word_t d = (word_t)(b >> shift) << shift;
 		a ^= c;
 		b ^= d;
 		return (a ^ b);
