@@ -41,7 +41,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int _nn_exp_monty_ladder_ltr(nn_t out, nn_src_t
 	nn T[3];
 	nn mask;
 	bitcnt_t explen, oldexplen;
-	register u8 expbit, rbit;
+	REGISTER u8 expbit, rbit;
 	int ret, cmp;
 	T[0].magic = T[1].magic = T[2].magic = mask.magic = WORD(0);
 
@@ -101,7 +101,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int _nn_exp_monty_ladder_ltr(nn_t out, nn_src_t
 	 */
 	explen = (bitcnt_t)(explen - 1);
 	while (explen > 0) {
-		register u8 rbit_next;
+		REGISTER u8 rbit_next;
 		explen = (bitcnt_t)(explen - 1);
 
 		/* rbit is r[i+1], and rbit_next is r[i] */

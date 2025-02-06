@@ -1319,7 +1319,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int _prj_pt_mul_ltr_monty_dbl_add_always(prj_pt
 	/* We use Itoh et al. notations here for T and the random r */
 	prj_pt T[3];
 	bitcnt_t mlen;
-	register u8 mbit, rbit;
+	REGISTER u8 mbit, rbit;
 	/* Random for masking the Double and Add Always algorithm */
 	nn r;
 	/* The new scalar we will use with MSB fixed to 1 (noted m' above).
@@ -1393,7 +1393,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int _prj_pt_mul_ltr_monty_dbl_add_always(prj_pt
 
 	/* Main loop of Double and Add Always */
 	while (mlen > 0) {
-		register u8 rbit_next;
+		REGISTER u8 rbit_next;
 		--mlen;
 		/* rbit is r[i+1], and rbit_next is r[i] */
 		rbit_next = (u8)nn_getbit_masked(&r, mlen, &ret); EG(ret, err);
@@ -1466,7 +1466,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int _prj_pt_mul_ltr_monty_dbl_add_always(prj_pt
 	/*******************/
 	{
 		bitcnt_t mlen;
-		register u8 mbit;
+		REGISTER u8 mbit;
 		/* The new scalar we will use with MSB fixed to 1 (noted m' above).
 		 * This helps dealing with constant time.
 		 */
@@ -1571,7 +1571,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int _prj_pt_mul_ltr_monty_ladder(prj_pt_t out, 
 	/* We use Itoh et al. notations here for T and the random r */
 	prj_pt T[3];
 	bitcnt_t mlen;
-	register u8 mbit, rbit;
+	REGISTER u8 mbit, rbit;
 	/* Random for masking the Montgomery Ladder algorithm */
 	nn r;
 	/* The new scalar we will use with MSB fixed to 1 (noted m' above).
@@ -1658,7 +1658,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int _prj_pt_mul_ltr_monty_ladder(prj_pt_t out, 
 
 	/* Main loop of the Montgomery Ladder */
 	while (mlen > 0) {
-		register u8 rbit_next;
+		REGISTER u8 rbit_next;
 		--mlen;
 		/* rbit is r[i+1], and rbit_next is r[i] */
 		rbit_next = (u8)nn_getbit_masked(&r, mlen, &ret); EG(ret, err);

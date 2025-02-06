@@ -52,6 +52,14 @@
  */
 #define FORCE_USED_VAR(a) ((void)(a))
 
+#ifndef __cplusplus
+#define REGISTER register
+#else
+/* NOTE: the 'register' keyword is not allowed in C++, so
+ * we avoid its usage there. */
+#define REGISTER
+#endif
+
 /*** Handling the types ****/
 #ifdef WITH_STDLIB
 
