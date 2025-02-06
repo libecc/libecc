@@ -588,6 +588,13 @@ err:
  * The input retval contains the return status: 0 on success and -1 on error.
  * The output is meaningless in case of error.
  */
+#ifndef __cplusplus
+#define REGISTER register
+#else
+/* NOTE: the 'register' keyword is not allowed in C++, so
+ * we avoid its usage there. */
+#define REGISTER
+#endif
 inline word_t nn_getbit_masked(nn_src_t in, bitcnt_t bit, int *retval)
 {
 	bitcnt_t widx = bit / WORD_BITS;
@@ -613,10 +620,10 @@ err:
 	}
 	if(!ret){
 		/* bidx is less than WORD_BITS so shift operations below are ok */
-		register word_t a = ((word_t)(in->val[widx] ^ r_mask) >> bidx);
-		register word_t b = (word_t)(r_mask >> bidx);
-		register word_t c = (word_t)(a >> shift) << shift;
-		register word_t d = (word_t)(b >> shift) << shift;
+		REGISTER word_t a = ((word_t)(in->val[widx] ^ r_mask) >> bidx);
+		REGISTER word_t b = (word_t)(r_mask >> bidx);
+		REGISTER word_t c = (word_t)(a >> shift) << shift;
+		REGISTER word_t d = (word_t)(b >> shift) << shift;
 		a ^= c;
 		b ^= d;
 		return (a ^ b);
