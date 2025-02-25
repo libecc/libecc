@@ -3,7 +3,7 @@ name: libecc
 on: push
 jobs:
   cross_arch_tests:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       #max-parallel: 10
       matrix:
