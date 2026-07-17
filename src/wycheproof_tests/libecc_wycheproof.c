@@ -114,14 +114,14 @@ static int check_wycheproof_ecdsa(void)
 		ret = ec_verify(t->sig, (u8)(t->siglen), &pub_key, t->msg, t->msglen, t->sig_alg, t->hash, NULL, 0);
 		/* Valid result */
 		if ((t->result == 1) && ret) {
-			ext_printf("[-] Error when verifying ECDSA test %d / %s (verification NOK while must be valid)\n", i, t->name);
+			ext_printf("[-] Error when verifying ECDSA test %u / %s (verification NOK while must be valid)\n", i, t->name);
 			ext_printf("    (comment = %s)\n", t->comment);
 			ret = -1;
 			OPENMP_EG(ret, err);
 		}
 		/* Invalid result */
 		if ((t->result == -1) && !ret) {
-			ext_printf("[-] Error when verifying ECDSA test %d / %s (verification OK while must be invalid)\n", i, t->name);
+			ext_printf("[-] Error when verifying ECDSA test %u / %s (verification OK while must be invalid)\n", i, t->name);
 			ext_printf("    (comment = %s)\n", t->comment);
 			ret = -1;
 			OPENMP_EG(ret, err);
@@ -135,7 +135,7 @@ static int check_wycheproof_ecdsa(void)
 				ecdsa_acceptable_invalid++;
 			}
 #ifdef VERBOSE_ACCEPTABLE
-			ext_printf("\t[~] ECDSA test %d / %s (verification %d while acceptable)\n", i, t->name, ret);
+			ext_printf("\t[~] ECDSA test %u / %s (verification %d while acceptable)\n", i, t->name, ret);
 			ext_printf("\t    (comment = %s)\n", t->comment);
 #endif
 		}
@@ -232,14 +232,14 @@ static int check_wycheproof_eddsa(void)
 		ret = ec_verify(t->sig, (u8)(t->siglen), &pub_key, t->msg, t->msglen, t->sig_alg, t->hash, NULL, 0);
 		/* Valid result */
 		if ((t->result == 1) && ret) {
-			ext_printf("[-] Error when verifying EDDSA test %d / %s (verification NOK while must be valid)\n", i, t->name);
+			ext_printf("[-] Error when verifying EDDSA test %u / %s (verification NOK while must be valid)\n", i, t->name);
 			ext_printf("    (comment = %s)\n", t->comment);
 			ret = -1;
 			OPENMP_EG(ret, err);
 		}
 		/* Invalid result */
 		if ((t->result == -1) && !ret) {
-			ext_printf("[-] Error when verifying EDDSA test %d / %s (verification OK while must be invalid)\n", i, t->name);
+			ext_printf("[-] Error when verifying EDDSA test %u / %s (verification OK while must be invalid)\n", i, t->name);
 			ext_printf("    (comment = %s)\n", t->comment);
 			ret = -1;
 			OPENMP_EG(ret, err);
@@ -254,7 +254,7 @@ static int check_wycheproof_eddsa(void)
 				eddsa_acceptable_invalid++;
 			}
 #ifdef VERBOSE_ACCEPTABLE
-			ext_printf("\t[~] EDDSA test %d / %s (verification %d while acceptable)\n", i, t->name, ret);
+			ext_printf("\t[~] EDDSA test %u / %s (verification %d while acceptable)\n", i, t->name, ret);
 			ext_printf("\t    (comment = %s)\n", t->comment);
 #endif
 			OPENMP_UNLOCK();
@@ -321,7 +321,7 @@ static int check_wycheproof_xdh(void)
 		/* Reject bad lengths */
 		if(t->privkeylen != alglen){
 			if(t->result != -1){
-				ext_printf("[-] Error: XDH tests error, unkown private key length %d with valid result\n", t->privkeylen);
+				ext_printf("[-] Error: XDH tests error, unkown private key length %u with valid result\n", t->privkeylen);
 				ext_printf("    (comment = %s)\n", t->comment);
 				ret = -1;
 				OPENMP_EG(ret, err);
@@ -332,7 +332,7 @@ static int check_wycheproof_xdh(void)
 		}
 		if(t->peerpubkeylen != alglen){
 			if(t->result != -1){
-				ext_printf("[-] Error: XDH tests error, unkown peer public key length %d with valid result\n", t->peerpubkeylen);
+				ext_printf("[-] Error: XDH tests error, unkown peer public key length %u with valid result\n", t->peerpubkeylen);
 				ext_printf("    (comment = %s)\n", t->comment);
 				ret = -1;
 				OPENMP_EG(ret, err);
@@ -343,7 +343,7 @@ static int check_wycheproof_xdh(void)
 		}
 		if(t->sharedsecretlen != alglen){
 			if(t->result != -1){
-				ext_printf("[-] Error: XDH tests error, unkown shared secret length %d with valid result\n", t->sharedsecretlen);
+				ext_printf("[-] Error: XDH tests error, unkown shared secret length %u with valid result\n", t->sharedsecretlen);
 				ext_printf("    (comment = %s)\n", t->comment);
 				ret = -1;
 				OPENMP_EG(ret, err);
@@ -354,7 +354,7 @@ static int check_wycheproof_xdh(void)
 		}
 		if((t->ourpubkeylen != 0) && (t->ourpubkeylen != alglen)){
 			if(t->result != -1){
-				ext_printf("[-] Error: XDH tests error, unkown our public key length %d with valid result\n", t->ourpubkeylen);
+				ext_printf("[-] Error: XDH tests error, unkown our public key length %u with valid result\n", t->ourpubkeylen);
 				ext_printf("    (comment = %s)\n", t->comment);
 				ret = -1;
 				OPENMP_EG(ret, err);
@@ -391,7 +391,7 @@ static int check_wycheproof_xdh(void)
 					OPENMP_LOCK();
 					xdh_acceptable_invalid++;
 #ifdef VERBOSE_ACCEPTABLE
-					ext_printf("\t[~] XDH test %d / %s (shared secret derivation NOK while acceptable)\n", i, t->name);
+					ext_printf("\t[~] XDH test %u / %s (shared secret derivation NOK while acceptable)\n", i, t->name);
 					ext_printf("\t    (comment = %s)\n", t->comment);
 #endif
 					OPENMP_UNLOCK();
@@ -446,7 +446,7 @@ static int check_wycheproof_xdh(void)
 					OPENMP_LOCK();
 					xdh_acceptable_invalid++;
 #ifdef VERBOSE_ACCEPTABLE
-					ext_printf("\t[~] XDH test %d / %s (shared secret derivation NOK while acceptable)\n", i, t->name);
+					ext_printf("\t[~] XDH test %u / %s (shared secret derivation NOK while acceptable)\n", i, t->name);
 					ext_printf("\t    (comment = %s)\n", t->comment);
 #endif
 					OPENMP_UNLOCK();
@@ -478,7 +478,7 @@ static int check_wycheproof_xdh(void)
 			OPENMP_LOCK();
 			xdh_acceptable_valid++;
 #ifdef VERBOSE_ACCEPTABLE
-			ext_printf("\t[~] XDH test %d / %s (shared secret OK while acceptable)\n", i, t->name);
+			ext_printf("\t[~] XDH test %u / %s (shared secret OK while acceptable)\n", i, t->name);
 			ext_printf("\t    (comment = %s)\n", t->comment);
 #endif
 			OPENMP_UNLOCK();
@@ -664,7 +664,7 @@ static int check_wycheproof_ecdh(void)
 		else{
 			/* No point compression is used, copy our raw buffer as public key */
 			if((t->peerpubkeylen != serialized_pub_key_size) && (t->result >= 0)){
-				ext_printf("[-] Error: ECDH tests error when checking our public key size, got %d instead of %d\n", t->peerpubkeylen, serialized_pub_key_size);
+				ext_printf("[-] Error: ECDH tests error when checking our public key size, got %u instead of %u\n", t->peerpubkeylen, serialized_pub_key_size);
 				ext_printf("    (comment = %s)\n", t->comment);
 				ret = -1;
 				OPENMP_EG(ret, err);
@@ -689,7 +689,7 @@ static int check_wycheproof_ecdh(void)
 			continue;
 		}
 		if(sharedsecretsize != t->sharedsecretlen){
-			ext_printf("Error: ECDH tests error, bad shared secret size %d instead of %d\n", sharedsecretsize, t->sharedsecretlen);
+			ext_printf("Error: ECDH tests error, bad shared secret size %u instead of %u\n", sharedsecretsize, t->sharedsecretlen);
 			ext_printf("    (comment = %s)\n", t->comment);
 			ret = -1;
 			OPENMP_EG(ret, err);
@@ -707,7 +707,7 @@ static int check_wycheproof_ecdh(void)
 			OPENMP_LOCK();
 			ecdh_acceptable_valid++;
 #ifdef VERBOSE_ACCEPTABLE
-			ext_printf("\t[~] ECDH test %d / %s (shared secret OK while acceptable)\n", i, t->name);
+			ext_printf("\t[~] ECDH test %u / %s (shared secret OK while acceptable)\n", i, t->name);
 			ext_printf("\t    (comment = %s)\n", t->comment);
 #endif
 			OPENMP_UNLOCK();
@@ -763,7 +763,7 @@ static int check_wycheproof_hmac(void)
 			OPENMP_EG(ret, err);
 		}
 		if((hlen < t->taglen) && (t->result >= 0)){
-			ext_printf("[-] Error: HMAC tests error: size error %d < %d\n", hlen, t->taglen);
+			ext_printf("[-] Error: HMAC tests error: size error %u < %u\n", hlen, t->taglen);
 			ext_printf("    (comment = %s)\n", t->comment);
 			ret = -1;
 			OPENMP_EG(ret, err);
@@ -781,7 +781,7 @@ static int check_wycheproof_hmac(void)
 			OPENMP_LOCK();
 			hmac_acceptable_valid++;
 #ifdef VERBOSE_ACCEPTABLE
-			ext_printf("\t[~] HMAC test %d / %s (shared secret OK while acceptable)\n", i, t->name);
+			ext_printf("\t[~] HMAC test %u / %s (shared secret OK while acceptable)\n", i, t->name);
 			ext_printf("\t    (comment = %s)\n", t->comment);
 #endif
 			OPENMP_UNLOCK();
@@ -803,35 +803,35 @@ int main(int argc, char *argv[])
 	FORCE_USED_VAR(argv);
 
 	/**********************/
-	ext_printf("==== Checking ECDH =========== Imported = %d, Skipped = %d (valid = %d, invalid = %d, acceptable = %d)\n", NUM_WYCHEPROOF_ECDH_TESTS_IMPORTED, NUM_WYCHEPROOF_ECDH_TESTS_SKIPPED, NUM_WYCHEPROOF_ECDH_TESTS_VALID, NUM_WYCHEPROOF_ECDH_TESTS_INVALID, NUM_WYCHEPROOF_ECDH_TESTS_ACCEPTABLE);
+	ext_printf("==== Checking ECDH =========== Imported = %u, Skipped = %u (valid = %u, invalid = %u, acceptable = %u)\n", NUM_WYCHEPROOF_ECDH_TESTS_IMPORTED, NUM_WYCHEPROOF_ECDH_TESTS_SKIPPED, NUM_WYCHEPROOF_ECDH_TESTS_VALID, NUM_WYCHEPROOF_ECDH_TESTS_INVALID, NUM_WYCHEPROOF_ECDH_TESTS_ACCEPTABLE);
 	if(check_wycheproof_ecdh()){
 		goto err;
 	}
-	ext_printf("[+][%d] All ECDH tests went OK! (%d acceptable/valid, %d acceptable/invalid)\n", ecdh_all_performed, ecdh_acceptable_valid, ecdh_acceptable_invalid);
+	ext_printf("[+][%u] All ECDH tests went OK! (%u acceptable/valid, %u acceptable/invalid)\n", ecdh_all_performed, ecdh_acceptable_valid, ecdh_acceptable_invalid);
 	/**********************/
-	ext_printf("==== Checking XDH =========== Imported = %d, Skipped = %d (valid = %d, invalid = %d, acceptable = %d)\n", NUM_WYCHEPROOF_XDH_TESTS_IMPORTED, NUM_WYCHEPROOF_XDH_TESTS_SKIPPED, NUM_WYCHEPROOF_XDH_TESTS_VALID, NUM_WYCHEPROOF_XDH_TESTS_INVALID, NUM_WYCHEPROOF_XDH_TESTS_ACCEPTABLE);
+	ext_printf("==== Checking XDH =========== Imported = %u, Skipped = %u (valid = %u, invalid = %u, acceptable = %u)\n", NUM_WYCHEPROOF_XDH_TESTS_IMPORTED, NUM_WYCHEPROOF_XDH_TESTS_SKIPPED, NUM_WYCHEPROOF_XDH_TESTS_VALID, NUM_WYCHEPROOF_XDH_TESTS_INVALID, NUM_WYCHEPROOF_XDH_TESTS_ACCEPTABLE);
 	if(check_wycheproof_xdh()){
 		goto err;
 	}
-	ext_printf("[+][%d] All XDH tests went OK! (%d acceptable/valid, %d acceptable/invalid)\n", xdh_all_performed, xdh_acceptable_valid, xdh_acceptable_invalid);
+	ext_printf("[+][%u] All XDH tests went OK! (%u acceptable/valid, %u acceptable/invalid)\n", xdh_all_performed, xdh_acceptable_valid, xdh_acceptable_invalid);
 	/**********************/
-	ext_printf("==== Checking ECDSA =========== Imported = %d, Skipped = %d (valid = %d, invalid = %d, acceptable = %d)\n", NUM_WYCHEPROOF_ECDSA_TESTS_IMPORTED, NUM_WYCHEPROOF_ECDSA_TESTS_SKIPPED, NUM_WYCHEPROOF_ECDSA_TESTS_VALID, NUM_WYCHEPROOF_ECDSA_TESTS_INVALID, NUM_WYCHEPROOF_ECDSA_TESTS_ACCEPTABLE);
+	ext_printf("==== Checking ECDSA =========== Imported = %u, Skipped = %u (valid = %u, invalid = %u, acceptable = %u)\n", NUM_WYCHEPROOF_ECDSA_TESTS_IMPORTED, NUM_WYCHEPROOF_ECDSA_TESTS_SKIPPED, NUM_WYCHEPROOF_ECDSA_TESTS_VALID, NUM_WYCHEPROOF_ECDSA_TESTS_INVALID, NUM_WYCHEPROOF_ECDSA_TESTS_ACCEPTABLE);
 	if(check_wycheproof_ecdsa()){
 		goto err;
 	}
-	ext_printf("[+][%d] All ECDSA tests went OK! (%d acceptable/valid, %d acceptable/invalid)\n", ecdsa_all_performed, ecdsa_acceptable_valid, ecdsa_acceptable_invalid);
+	ext_printf("[+][%u] All ECDSA tests went OK! (%u acceptable/valid, %u acceptable/invalid)\n", ecdsa_all_performed, ecdsa_acceptable_valid, ecdsa_acceptable_invalid);
 	/**********************/
-	ext_printf("==== Checking EDDSA =========== Imported = %d, Skipped = %d (valid = %d, invalid = %d, acceptable = %d)\n", NUM_WYCHEPROOF_EDDSA_TESTS_IMPORTED, NUM_WYCHEPROOF_EDDSA_TESTS_SKIPPED, NUM_WYCHEPROOF_EDDSA_TESTS_VALID, NUM_WYCHEPROOF_EDDSA_TESTS_INVALID, NUM_WYCHEPROOF_EDDSA_TESTS_ACCEPTABLE);
+	ext_printf("==== Checking EDDSA =========== Imported = %u, Skipped = %u (valid = %u, invalid = %u, acceptable = %u)\n", NUM_WYCHEPROOF_EDDSA_TESTS_IMPORTED, NUM_WYCHEPROOF_EDDSA_TESTS_SKIPPED, NUM_WYCHEPROOF_EDDSA_TESTS_VALID, NUM_WYCHEPROOF_EDDSA_TESTS_INVALID, NUM_WYCHEPROOF_EDDSA_TESTS_ACCEPTABLE);
 	if(check_wycheproof_eddsa()){
 		goto err;
 	}
-	ext_printf("[+][%d] All EDDSA tests went OK! (%d acceptable/valid, %d acceptable/invalid)\n", eddsa_all_performed, eddsa_acceptable_valid, eddsa_acceptable_invalid);
+	ext_printf("[+][%u] All EDDSA tests went OK! (%u acceptable/valid, %u acceptable/invalid)\n", eddsa_all_performed, eddsa_acceptable_valid, eddsa_acceptable_invalid);
 	/**********************/
-	ext_printf("==== Checking HMAC =========== Imported = %d, Skipped = %d (valid = %d, invalid = %d, acceptable = %d)\n", NUM_WYCHEPROOF_HMAC_TESTS_IMPORTED, NUM_WYCHEPROOF_HMAC_TESTS_SKIPPED, NUM_WYCHEPROOF_HMAC_TESTS_VALID, NUM_WYCHEPROOF_HMAC_TESTS_INVALID, NUM_WYCHEPROOF_HMAC_TESTS_ACCEPTABLE);
+	ext_printf("==== Checking HMAC =========== Imported = %u, Skipped = %u (valid = %u, invalid = %u, acceptable = %u)\n", NUM_WYCHEPROOF_HMAC_TESTS_IMPORTED, NUM_WYCHEPROOF_HMAC_TESTS_SKIPPED, NUM_WYCHEPROOF_HMAC_TESTS_VALID, NUM_WYCHEPROOF_HMAC_TESTS_INVALID, NUM_WYCHEPROOF_HMAC_TESTS_ACCEPTABLE);
 	if(check_wycheproof_hmac()){
 		goto err;
 	}
-	ext_printf("[+][%d] All HMAC tests went OK! (%d acceptable/valid, %d acceptable/invalid)\n", hmac_all_performed, hmac_acceptable_valid, hmac_acceptable_invalid);
+	ext_printf("[+][%u] All HMAC tests went OK! (%u acceptable/valid, %u acceptable/invalid)\n", hmac_all_performed, hmac_acceptable_valid, hmac_acceptable_invalid);
 
 err:
 	return 0;

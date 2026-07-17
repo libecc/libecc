@@ -1388,7 +1388,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int _prj_pt_mul_ltr_monty_dbl_add_always(prj_pt
 	/* We use Itoh et al. notations here for T and the random r */
 	prj_pt T[3];
 	bitcnt_t mlen;
-	u8 mbit, rbit;
+	REGISTER u8 mbit, rbit;
 	/* Random for masking the Double and Add Always algorithm */
 	nn r;
 	/* The new scalar we will use with MSB fixed to 1 (noted m' above).
@@ -1408,24 +1408,41 @@ ATTRIBUTE_WARN_UNUSED_RET static int _prj_pt_mul_ltr_monty_dbl_add_always(prj_pt
 	/* Then compute m' depending on m size */
 	ret = nn_cmp(m, curve_order, &cmp); EG(ret, err);
 	if (cmp < 0){
-		bitcnt_t msb_bit_len, order_bitlen;
+		bitcnt_t order_bitlen;
+		u8 top_bit_set;
 
 		/* Case where m < q */
 		ret = nn_add(&m_msb_fixed, m, curve_order); EG(ret, err);
-		ret = nn_bitlen(&m_msb_fixed, &msb_bit_len); EG(ret, err);
+		/*
+		 * Force a fixed-width representation immediately: nn_cnd_add()
+		 * already unconditionally writes the carry bit into val[curve_order->wlen] regardless of
+		 * whether it grew wlen, so nn_set_wlen() here only changes
+		 * the reported length (not the value), making the following
+		 * bit test and nn_cnd_add() take a fixed number of word
+		 * operations regardless of that carry.
+		 */
+		ret = nn_set_wlen(&m_msb_fixed, (u8)(curve_order->wlen + 1)); EG(ret, err);
 		ret = nn_bitlen(curve_order, &order_bitlen); EG(ret, err);
-		ret = nn_cnd_add((msb_bit_len == order_bitlen), &m_msb_fixed,
+		/*
+		 * m + q lies in [q, 2q), so its bit length is either
+		 * bitlen(q) or bitlen(q)+1: testing bit order_bitlen directly
+		 */
+		ret = nn_getbit(&m_msb_fixed, order_bitlen, &top_bit_set); EG(ret, err);
+		ret = nn_cnd_add((!top_bit_set), &m_msb_fixed,
 				  &m_msb_fixed, curve_order); EG(ret, err);
 	} else {
 		ret = nn_cmp(m, &curve_order_square, &cmp); EG(ret, err);
 		if (cmp < 0) {
-			bitcnt_t msb_bit_len, curve_order_square_bitlen;
+			bitcnt_t curve_order_square_bitlen;
+			u8 top_bit_set;
 
 			/* Case where m >= q and m < (q**2) */
 			ret = nn_add(&m_msb_fixed, m, &curve_order_square); EG(ret, err);
-			ret = nn_bitlen(&m_msb_fixed, &msb_bit_len); EG(ret, err);
+			/* See the m < q case above for the rationale. */
+			ret = nn_set_wlen(&m_msb_fixed, (u8)(curve_order_square.wlen + 1)); EG(ret, err);
 			ret = nn_bitlen(&curve_order_square, &curve_order_square_bitlen); EG(ret, err);
-			ret = nn_cnd_add((msb_bit_len == curve_order_square_bitlen),
+			ret = nn_getbit(&m_msb_fixed, curve_order_square_bitlen, &top_bit_set); EG(ret, err);
+			ret = nn_cnd_add((!top_bit_set),
 					&m_msb_fixed, &m_msb_fixed, &curve_order_square); EG(ret, err);
 		} else {
 			/* Case where m >= (q**2) */
@@ -1444,7 +1461,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int _prj_pt_mul_ltr_monty_dbl_add_always(prj_pt
 	/* Get a random r with the same size of m_msb_fixed */
 	ret = nn_get_random_len(&r, m_msb_fixed.wlen * WORD_BYTES); EG(ret, err);
 
-	ret = nn_getbit(&r, mlen, &rbit); EG(ret, err);
+	rbit = (u8)nn_getbit_masked(&r, mlen, &ret); EG(ret, err);
 
 	/* Initialize points */
 	ret = prj_pt_init(&T[0], in->crv); EG(ret, err);
@@ -1462,13 +1479,13 @@ ATTRIBUTE_WARN_UNUSED_RET static int _prj_pt_mul_ltr_monty_dbl_add_always(prj_pt
 
 	/* Main loop of Double and Add Always */
 	while (mlen > 0) {
-		u8 rbit_next;
+		REGISTER u8 rbit_next;
 		--mlen;
 		/* rbit is r[i+1], and rbit_next is r[i] */
-		ret = nn_getbit(&r, mlen, &rbit_next); EG(ret, err);
+		rbit_next = (u8)nn_getbit_masked(&r, mlen, &ret); EG(ret, err);
 
 		/* mbit is m[i] */
-		ret = nn_getbit(&m_msb_fixed, mlen, &mbit); EG(ret, err);
+		mbit = (u8)nn_getbit_masked(&m_msb_fixed, mlen, &ret); EG(ret, err);
 
 		/* Double: T[r[i+1]] = ECDBL(T[r[i+1]]) */
 #ifndef NO_USE_COMPLETE_FORMULAS
@@ -1535,7 +1552,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int _prj_pt_mul_ltr_monty_dbl_add_always(prj_pt
 	/*******************/
 	{
 		bitcnt_t mlen;
-		u8 mbit;
+		REGISTER u8 mbit;
 		/* The new scalar we will use with MSB fixed to 1 (noted m' above).
 		 * This helps dealing with constant time.
 		 */
@@ -1555,24 +1572,29 @@ ATTRIBUTE_WARN_UNUSED_RET static int _prj_pt_mul_ltr_monty_dbl_add_always(prj_pt
 			/* Then compute m' depending on m size */
 			ret = nn_cmp(m, curve_order, &cmp); EG(ret, err1);
 			if (cmp < 0){
-				bitcnt_t msb_bit_len, order_bitlen;
+				bitcnt_t order_bitlen;
+				u8 top_bit_set;
 
 				/* Case where m < q */
 				ret = nn_add(&m_msb_fixed, m, curve_order); EG(ret, err1);
-				ret = nn_bitlen(&m_msb_fixed, &msb_bit_len); EG(ret, err1);
+				/* See the non-USE_SMALL_STACK variant above for the rationale. */
+				ret = nn_set_wlen(&m_msb_fixed, (u8)(curve_order->wlen + 1)); EG(ret, err1);
 				ret = nn_bitlen(curve_order, &order_bitlen); EG(ret, err1);
-				ret = nn_cnd_add((msb_bit_len == order_bitlen), &m_msb_fixed,
+				ret = nn_getbit(&m_msb_fixed, order_bitlen, &top_bit_set); EG(ret, err1);
+				ret = nn_cnd_add((!top_bit_set), &m_msb_fixed,
 					  &m_msb_fixed, curve_order); EG(ret, err1);
 			} else {
 				ret = nn_cmp(m, &curve_order_square, &cmp); EG(ret, err1);
 				if (cmp < 0) {
-					bitcnt_t msb_bit_len, curve_order_square_bitlen;
+					bitcnt_t curve_order_square_bitlen;
+					u8 top_bit_set;
 
 					/* Case where m >= q and m < (q**2) */
 					ret = nn_add(&m_msb_fixed, m, &curve_order_square); EG(ret, err1);
-					ret = nn_bitlen(&m_msb_fixed, &msb_bit_len); EG(ret, err1);
+					ret = nn_set_wlen(&m_msb_fixed, (u8)(curve_order_square.wlen + 1)); EG(ret, err1);
 					ret = nn_bitlen(&curve_order_square, &curve_order_square_bitlen); EG(ret, err1);
-					ret = nn_cnd_add((msb_bit_len == curve_order_square_bitlen),
+					ret = nn_getbit(&m_msb_fixed, curve_order_square_bitlen, &top_bit_set); EG(ret, err1);
+					ret = nn_cnd_add((!top_bit_set),
 							&m_msb_fixed, &m_msb_fixed, &curve_order_square); EG(ret, err1);
 				} else {
 					/* Case where m >= (q**2) */
@@ -1598,7 +1620,7 @@ err1:
 			while (mlen > 0) {
 				--mlen;
 				/* mbit is m[i] */
-				ret = nn_getbit(&m_msb_fixed, mlen, &mbit); EG(ret, err2);
+				mbit = (u8)nn_getbit_masked(&m_msb_fixed, mlen, &ret); EG(ret, err2);
 
 #ifndef NO_USE_COMPLETE_FORMULAS
 				/*
@@ -1640,7 +1662,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int _prj_pt_mul_ltr_monty_ladder(prj_pt_t out, 
 	/* We use Itoh et al. notations here for T and the random r */
 	prj_pt T[3];
 	bitcnt_t mlen;
-	u8 mbit, rbit;
+	REGISTER u8 mbit, rbit;
 	/* Random for masking the Montgomery Ladder algorithm */
 	nn r;
 	/* The new scalar we will use with MSB fixed to 1 (noted m' above).
@@ -1662,24 +1684,29 @@ ATTRIBUTE_WARN_UNUSED_RET static int _prj_pt_mul_ltr_monty_ladder(prj_pt_t out, 
 	/* Then compute m' depending on m size */
 	ret = nn_cmp(m, curve_order, &cmp); EG(ret, err);
 	if (cmp < 0) {
-		bitcnt_t msb_bit_len, order_bitlen;
+		bitcnt_t order_bitlen;
+		u8 top_bit_set;
 
 		/* Case where m < q */
 		ret = nn_add(&m_msb_fixed, m, curve_order); EG(ret, err);
-		ret = nn_bitlen(&m_msb_fixed, &msb_bit_len); EG(ret, err);
+		/* See _prj_pt_mul_ltr_monty_dbl_add_always() for the rationale. */
+		ret = nn_set_wlen(&m_msb_fixed, (u8)(curve_order->wlen + 1)); EG(ret, err);
 		ret = nn_bitlen(curve_order, &order_bitlen); EG(ret, err);
-		ret = nn_cnd_add((msb_bit_len == order_bitlen), &m_msb_fixed,
+		ret = nn_getbit(&m_msb_fixed, order_bitlen, &top_bit_set); EG(ret, err);
+		ret = nn_cnd_add((!top_bit_set), &m_msb_fixed,
 				&m_msb_fixed, curve_order); EG(ret, err);
 	} else {
 		ret = nn_cmp(m, &curve_order_square, &cmp); EG(ret, err);
 		if (cmp < 0) {
-			bitcnt_t msb_bit_len, curve_order_square_bitlen;
+			bitcnt_t curve_order_square_bitlen;
+			u8 top_bit_set;
 
 			/* Case where m >= q and m < (q**2) */
 			ret = nn_add(&m_msb_fixed, m, &curve_order_square); EG(ret, err);
-			ret = nn_bitlen(&m_msb_fixed, &msb_bit_len); EG(ret, err);
+			ret = nn_set_wlen(&m_msb_fixed, (u8)(curve_order_square.wlen + 1)); EG(ret, err);
 			ret = nn_bitlen(&curve_order_square, &curve_order_square_bitlen); EG(ret, err);
-			ret = nn_cnd_add((msb_bit_len == curve_order_square_bitlen),
+			ret = nn_getbit(&m_msb_fixed, curve_order_square_bitlen, &top_bit_set); EG(ret, err);
+			ret = nn_cnd_add((!top_bit_set),
 					 &m_msb_fixed, &m_msb_fixed, &curve_order_square); EG(ret, err);
 		} else {
 			/* Case where m >= (q**2) */
@@ -1699,7 +1726,7 @@ ATTRIBUTE_WARN_UNUSED_RET static int _prj_pt_mul_ltr_monty_ladder(prj_pt_t out, 
 	/* Get a random r with the same size of m_msb_fixed */
 	ret = nn_get_random_len(&r, (u16)(m_msb_fixed.wlen * WORD_BYTES)); EG(ret, err);
 
-	ret = nn_getbit(&r, mlen, &rbit); EG(ret, err);
+	rbit = (u8)nn_getbit_masked(&r, mlen, &ret); EG(ret, err);
 
 	/* Initialize points */
 	ret = prj_pt_init(&T[0], in->crv); EG(ret, err);
@@ -1727,13 +1754,13 @@ ATTRIBUTE_WARN_UNUSED_RET static int _prj_pt_mul_ltr_monty_ladder(prj_pt_t out, 
 
 	/* Main loop of the Montgomery Ladder */
 	while (mlen > 0) {
-		u8 rbit_next;
+		REGISTER u8 rbit_next;
 		--mlen;
 		/* rbit is r[i+1], and rbit_next is r[i] */
-		ret = nn_getbit(&r, mlen, &rbit_next); EG(ret, err);
+		rbit_next = (u8)nn_getbit_masked(&r, mlen, &ret); EG(ret, err);
 
 		/* mbit is m[i] */
-		ret = nn_getbit(&m_msb_fixed, mlen, &mbit); EG(ret, err);
+		mbit = (u8)nn_getbit_masked(&m_msb_fixed, mlen, &ret); EG(ret, err);
 		/* Double: T[2] = ECDBL(T[d[i] ^ r[i+1]]) */
 
 #ifndef NO_USE_COMPLETE_FORMULAS

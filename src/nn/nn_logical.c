@@ -570,7 +570,7 @@ int nn_getbit(nn_src_t in, bitcnt_t bit, u8 *bitval)
 	MUST_HAVE((bit < NN_MAX_BIT_LEN), ret, err);
 
 	/* bidx is less than WORD_BITS so shift operations below are ok */
-	(*bitval) = (u8)((((in->val[widx]) & (WORD(1) << bidx)) >> bidx) & 0x1);
+	(*bitval) = (u8)((in->val[widx] >> bidx) & 0x1);
 
 err:
 	return ret;
