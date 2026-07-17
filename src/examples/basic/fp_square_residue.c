@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
 				break;
 			} else {
 				/* This should not happen since we have forged our square */
-				ext_printf("Tonelli-Shanks algorithm unkown "
+				ext_printf("Tonelli-Shanks algorithm unknown "
 					   "error ...\n");
 				ext_printf("(Note: this error can be due to "
 					   "Miller-Rabin providing a false "
@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
 
 	return 0;
 err:
-	ext_printf("Error: unkown error ...\n");
+	ext_printf("Error: unknown error ...\n");
 	return -1;
 }
 #endif

@@ -314,14 +314,14 @@ static int check_wycheproof_xdh(void)
 		}
 #endif
 		if(alglen == 0){
-			ext_printf("Error: XDH tests error, unkown algorithm\n");
+			ext_printf("Error: XDH tests error, unknown algorithm\n");
 			ret = -1;
 			OPENMP_EG(ret, err);
 		}
 		/* Reject bad lengths */
 		if(t->privkeylen != alglen){
 			if(t->result != -1){
-				ext_printf("[-] Error: XDH tests error, unkown private key length %u with valid result\n", t->privkeylen);
+				ext_printf("[-] Error: XDH tests error, unknown private key length %u with valid result\n", t->privkeylen);
 				ext_printf("    (comment = %s)\n", t->comment);
 				ret = -1;
 				OPENMP_EG(ret, err);
@@ -332,7 +332,7 @@ static int check_wycheproof_xdh(void)
 		}
 		if(t->peerpubkeylen != alglen){
 			if(t->result != -1){
-				ext_printf("[-] Error: XDH tests error, unkown peer public key length %u with valid result\n", t->peerpubkeylen);
+				ext_printf("[-] Error: XDH tests error, unknown peer public key length %u with valid result\n", t->peerpubkeylen);
 				ext_printf("    (comment = %s)\n", t->comment);
 				ret = -1;
 				OPENMP_EG(ret, err);
@@ -343,7 +343,7 @@ static int check_wycheproof_xdh(void)
 		}
 		if(t->sharedsecretlen != alglen){
 			if(t->result != -1){
-				ext_printf("[-] Error: XDH tests error, unkown shared secret length %u with valid result\n", t->sharedsecretlen);
+				ext_printf("[-] Error: XDH tests error, unknown shared secret length %u with valid result\n", t->sharedsecretlen);
 				ext_printf("    (comment = %s)\n", t->comment);
 				ret = -1;
 				OPENMP_EG(ret, err);
@@ -354,7 +354,7 @@ static int check_wycheproof_xdh(void)
 		}
 		if((t->ourpubkeylen != 0) && (t->ourpubkeylen != alglen)){
 			if(t->result != -1){
-				ext_printf("[-] Error: XDH tests error, unkown our public key length %u with valid result\n", t->ourpubkeylen);
+				ext_printf("[-] Error: XDH tests error, unknown our public key length %u with valid result\n", t->ourpubkeylen);
 				ext_printf("    (comment = %s)\n", t->comment);
 				ret = -1;
 				OPENMP_EG(ret, err);
