@@ -329,7 +329,7 @@ int hw_prj_pt_neg(prj_pt_t out, prj_pt_src_t in)
 	out_x_sz = sizeof(out_x);
 	out_y_sz = sizeof(out_y);
 	ret = hw_driver_neg(x, nn_byte_len(x_nn), y, nn_byte_len(y_nn),
-			    out_x, &out_x_sz, out_y, &out_y_sz); EG(ret, err);
+			    out_x, out_x_sz, out_y, out_y_sz); EG(ret, err);
 
 	/* Import to the output */
 	MUST_HAVE((out_x_sz < 0xffff), ret, err);
@@ -378,7 +378,7 @@ int hw_prj_pt_dbl(prj_pt_t out, prj_pt_src_t in)
 	out_x_sz = sizeof(out_x);
 	out_y_sz = sizeof(out_y);
 	ret = hw_driver_dbl(x, nn_byte_len(x_nn), y, nn_byte_len(y_nn),
-			    out_x, &out_x_sz, out_y, &out_y_sz); EG(ret, err);
+			    out_x, out_x_sz, out_y, out_y_sz); EG(ret, err);
 
 	/* Import to the output */
 	MUST_HAVE((out_x_sz < 0xffff), ret, err);
@@ -441,7 +441,7 @@ int hw_prj_pt_add(prj_pt_t out, prj_pt_src_t in1, prj_pt_src_t in2)
 	out_y_sz = sizeof(out_y);
 	ret = hw_driver_add(x1, nn_byte_len(x1_nn), y1, nn_byte_len(y1_nn),
 			    x2, nn_byte_len(x2_nn), y2, nn_byte_len(y2_nn),
-			    out_x, &out_x_sz, out_y, &out_y_sz); EG(ret, err);
+			    out_x, out_x_sz, out_y, out_y_sz); EG(ret, err);
 
 	/* Import to the output */
 	MUST_HAVE((out_x_sz < 0xffff), ret, err);
@@ -499,7 +499,7 @@ static int _hw_prj_pt_mul_ltr(prj_pt_t out, nn_src_t m, prj_pt_src_t in)
 	out_y_sz = sizeof(out_y);
 	ret = hw_driver_mul(x, nn_byte_len(x_nn), y, nn_byte_len(y_nn),
 			    scalar, nn_byte_len(&(in->crv->order)),
-			    out_x, &out_x_sz, out_y, &out_y_sz, NULL); EG(ret, err);
+			    out_x, out_x_sz, out_y, out_y_sz, NULL); EG(ret, err);
 
 	/* Import to the output */
 	MUST_HAVE((out_x_sz < 0xffff), ret, err);
@@ -558,6 +558,10 @@ int hw_prj_pt_mul_ltr_small_scalar(prj_pt_t out, nn_src_t m, prj_pt_src_t in)
 		
 	mutex_lock();
 
+/* small scalar feature deprecated in the hardware,
+ * we use conventional (full scalar size) scalar mult instead,
+ * even for scalars such as cofactors that we know to be small */
+#if 0
 	ret = nn_bitlen(m, &len); EG(ret, err);
 
 	/* Set the scalar size to be used, less than the nn size so
@@ -566,6 +570,7 @@ int hw_prj_pt_mul_ltr_small_scalar(prj_pt_t out, nn_src_t m, prj_pt_src_t in)
 	 * small scalars (such as cofactors and so on).
 	 * */
 	ret = hw_driver_set_small_scalar_size(len); EG(ret, err);
+#endif
 
 	/* Perform the multiplication */
 	ret = _hw_prj_pt_mul_ltr(out, m, in);
