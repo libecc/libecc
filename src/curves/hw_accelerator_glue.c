@@ -558,6 +558,10 @@ int hw_prj_pt_mul_ltr_small_scalar(prj_pt_t out, nn_src_t m, prj_pt_src_t in)
 		
 	mutex_lock();
 
+/* small scalar feature deprecated in the hardware,
+ * we use conventional (full scalar size) scalar mult instead,
+ * even for scalars such as cofactors that we know to be small */
+#if 0
 	ret = nn_bitlen(m, &len); EG(ret, err);
 
 	/* Set the scalar size to be used, less than the nn size so
@@ -566,6 +570,7 @@ int hw_prj_pt_mul_ltr_small_scalar(prj_pt_t out, nn_src_t m, prj_pt_src_t in)
 	 * small scalars (such as cofactors and so on).
 	 * */
 	ret = hw_driver_set_small_scalar_size(len); EG(ret, err);
+#endif
 
 	/* Perform the multiplication */
 	ret = _hw_prj_pt_mul_ltr(out, m, in);
